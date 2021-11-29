@@ -46,8 +46,8 @@ public:
 	void Reset();
 
 	//Movement
-	void Move();
-	void Tick();
+	void Move(sf::RenderWindow& l_window);
+	void Tick(sf::RenderWindow& l_window);
 	void SetDirection(Direction l_dir);
 	Direction GetDirection();
 
@@ -65,9 +65,12 @@ public:
 	int getY();
 	//void passPhase();
 	void Render(sf::RenderWindow& l_window);
+	void update(float dt);
 	~Player();
 private:
 	void CheckCollision();
+	sf::Sprite playerSprite;
+	sf::Texture playerTexture;
 	int mX, mY;
 	std::string srcImg; //path to the custom pixel spaceShip
 	int width;
