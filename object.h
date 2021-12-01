@@ -58,8 +58,9 @@ public:
 		objTexture.setSmooth(true);
 		
 		objSprite.setTexture(objTexture);
-		objSprite.setOrigin(width / 2, height / 2);
+		
 		sf::Vector2u size = objTexture.getSize();
+		objSprite.setOrigin(width / 2, height / 2);
 		objSprite.setScale((float) width /(float) size.x, (float)height / (float)size.y);
 		
 		/*if (!objBuffer.loadFromFile(this->srcSound)) {
@@ -70,8 +71,10 @@ public:
 	}
 
 	//sX,sY: coordinate of start point.
-	void moveHorizontal(int sX, int sY, float speed, bool toRight, sf::Vector2u windowSize) {
-		
+	void moveHorizontal(int sX, int sY, float mSpeed, bool toRight, sf::Vector2u windowSize) {
+		if (!isStop) {
+			this->speed = mSpeed;
+		}
 		if (first) {
 			mX = sX;
 			mY = sY;
@@ -79,21 +82,34 @@ public:
 		}
 		else {
 			if (toRight) {
-
-				mX += speed;
+				if (mX  >= windowSize.x) {
+					mX = -width / 2;
+				}
+				else
+				{
+					mX += speed;
+				}
 
 			}
 			else {
-				mX -= speed;
+				if (mX +width/2<= 0) {
+					mX = windowSize.x;
+				}
+				else
+				{
+					mX -= speed;
+				}
 			}
 		}
 				
 	}
-	void move(float speed, bool toRight) {
-		mX += speed;
-	}
-	void stop() {
 
+	void stop() {
+		speed = 0;
+		isStop = true;
+	}
+	void continueRun() {
+		isStop = false;
 	}
 	void onSound() {
 		/*objSound.setLoop(true);
@@ -111,6 +127,7 @@ private:
 	bool sound;// true=on, false=off;
 	Direction m_dir; // current direction
 	bool first = true;
+	bool isStop = false;
 };
 
 
