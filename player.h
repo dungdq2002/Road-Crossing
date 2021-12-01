@@ -43,29 +43,31 @@ public:
 	Player(std::string srcImg, int width, int height);
 
 	float GetSpeed();
+	void SetMoveStep(int step);
 	void Reset();
 
 	//Movement
-	void Move(sf::RenderWindow& l_window);
-	void Tick(sf::RenderWindow& l_window);
+	void Move(sf::Vector2u windowSize);
+	void MoveControl(sf::Vector2u windowSize);
 	void SetDirection(Direction l_dir);
 	Direction GetDirection();
 
-	//bool getAliveState();
-	//void useInvisible();
+	//Special ability
+	void Transparent();
+	void unTransparent();
 	
 	//handle Lost
-	//bool hasLost();
+	bool hasLost();
 
 	//handle impacted by the Ostacle
-	//bool isImpact(const Spawner& spw);
-	//bool isImpact(const Obstacle& obs);
+	bool isImpact(const Spawner& spawner);
+	bool isImpact(const Obstacle& obstacle);
+	bool isImpact(const Item& item);
 
 	int getX();
 	int getY();
 	//void passPhase();
 	void Render(sf::RenderWindow& l_window);
-	void update(float dt);
 	~Player();
 private:
 	void CheckCollision();
