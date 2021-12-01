@@ -43,3 +43,4 @@ friend void drawObject(sf::RenderWindow &window, ..object..) {
 ```
 - Các class trên có thêm `getX`, `getY` để lấy tọa độ ô trung tâm nữa.
 - Code tham khảo cho dễ nhìn sơ qua (mình sẽ sử dụng background kiểu này): https://drive.google.com/drive/folders/1r9QRgxVx61quz0DssRqDb-U9xdJAjFis?usp=sharing
+- Code test phần movement của Player: https://drive.google.com/drive/folders/1dUYmvS-l_yRVMCb0Psvv2MfUgTHoykUa?usp=sharing
