@@ -42,7 +42,8 @@ protected:
 //SPAWNER
 class spawner:public object {
 public:
-	spawner(string img, string sound, int width, int height) {
+	spawner(string img, string sound, int width, int height,float speed) {
+		this->speed = speed;
 		srcImg = img;
 		srcSound = sound;
 		this->width = width;
@@ -71,41 +72,41 @@ public:
 	}
 
 	//sX,sY: coordinate of start point.
-	void moveHorizontal(int sX, int sY, float mSpeed, bool toRight, sf::Vector2u windowSize) {
+	void moveHorizontal(int sX, int sY, bool toRight, sf::Vector2u windowSize) {
 		if (!isStop) {
-			this->speed = mSpeed;
-		}
-		if (first) {
-			mX = sX;
-			mY = sY;
-			first = false;
-		}
-		else {
-			if (toRight) {
-				if (mX  >= windowSize.x) {
-					mX = -width / 2;
-				}
-				else
-				{
-					mX += speed;
-				}
-
+			if (first) {
+				mX = sX;
+				mY = sY;
+				first = false;
 			}
 			else {
-				if (mX +width/2<= 0) {
-					mX = windowSize.x;
+				if (toRight) {
+					if (mX >= windowSize.x) {
+						mX = -width / 2;
+					}
+					else
+					{
+						mX += speed;
+					}
+
 				}
-				else
-				{
-					mX -= speed;
+				else {
+					if (mX + width / 2 <= 0) {
+						mX = windowSize.x;
+					}
+					else
+					{
+						mX -= speed;
+					}
 				}
 			}
 		}
+		
 				
 	}
 
 	void stop() {
-		speed = 0;
+		//speed = 0;
 		isStop = true;
 	}
 	void continueRun() {
