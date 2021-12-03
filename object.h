@@ -104,7 +104,18 @@ public:
 		
 				
 	}
-
+	float getX() {
+		return mX;
+	}
+	float getY() {
+		return mY;
+	}
+	int getWidth() {
+		return width;
+	}
+	int getHeight() {
+		return height;
+	}
 	void stop() {
 		//speed = 0;
 		isStop = true;
