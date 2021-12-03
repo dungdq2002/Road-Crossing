@@ -20,9 +20,10 @@ const int randomStartX = 100;
 const int randomStartY = 100;
 const int randomStaticX = 200;
 const int randomStaticY = 200;
-
+const int randomItemX = 250;
+const int randomItemY = 150;
 enum class Direction { None, Up, Down, Left, Right };
-class object{
+class Object{
 protected:
 	string srcImg;
 	string srcSound;
@@ -37,12 +38,18 @@ protected:
 	//sound
 	//sf::SoundBuffer objBuffer;
 	//sf::Sound objSound;
+public:
+	virtual float getX() = 0;
+	virtual float getY() = 0;
+	virtual int getWidth() = 0;
+	virtual int getHeight() = 0;
+	virtual void render(sf::RenderWindow& l_window) = 0;
 };
 
 //SPAWNER
-class spawner:public object {
+class Spawner:public Object {
 public:
-	spawner(string img, string sound, int width, int height,float speed) {
+	Spawner(string img, string sound, int width, int height,float speed) {
 		this->speed = speed;
 		srcImg = img;
 		srcSound = sound;
@@ -63,7 +70,7 @@ public:
 		sf::Vector2u size = objTexture.getSize();
 		objSprite.setOrigin(width / 2, height / 2);
 		objSprite.setScale((float) width /(float) size.x, (float)height / (float)size.y);
-		
+		//testOrigin=objSprite.getOrigin();
 		/*if (!objBuffer.loadFromFile(this->srcSound)) {
 			std::cerr << "error while loading sound " << std::endl;;
 			throw(this->srcSound);
@@ -104,6 +111,9 @@ public:
 		
 				
 	}
+	/*float getOrigin() {
+		return testOrigin.x;
+	}*/
 	float getX() {
 		return mX;
 	}
@@ -140,14 +150,15 @@ private:
 	Direction m_dir; // current direction
 	bool first = true;
 	bool isStop = false;
+	//sf::Vector2f testOrigin;
 };
 
 
 //OBSTACLE
-class obstacle :public object {
+class Obstacle :public Object {
 public:
 
-	obstacle(string img, string sound, int width, int height) {
+	Obstacle(string img, string sound, int width, int height) {
 		srcImg = img;
 		srcSound = sound;
 		if (!objTexture.loadFromFile(this->srcImg)) {
@@ -188,7 +199,18 @@ public:
 		l_window.draw(objSprite);
 
 	}
-
+	float getX() {
+		return mX;
+	}
+	float getY() {
+		return mY;
+	}
+	int getWidth() {
+		return width;
+	}
+	int getHeight() {
+		return height;
+	}
 private:
 
 };
