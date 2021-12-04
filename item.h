@@ -25,9 +25,10 @@ public:
 
 		objSprite.setTexture(objTexture);
 
-		sf::Vector2u size = objTexture.getSize();
-		objSprite.setOrigin(width / 2, height / 2);
-		objSprite.setScale((float)width / (float)size.x, (float)height / (float)size.y);
+		auto size = objSprite.getGlobalBounds();
+		objSprite.setScale((float)width / (float)size.width, (float)height / (float)size.height);
+		sf::FloatRect spriteSize = objSprite.getLocalBounds();
+		objSprite.setOrigin(spriteSize.width / 2, spriteSize.height / 2);
 		this->width = width;
 		this->height = height;
 	}
