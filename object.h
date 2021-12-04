@@ -70,10 +70,13 @@ public:
 		
 		objSprite.setTexture(objTexture);
 		
-		sf::Vector2u size = objTexture.getSize();
-		objSprite.setOrigin(width / 2, height / 2);
-		objSprite.setScale((float) width /(float) size.x, (float)height / (float)size.y);
+		auto size = objSprite.getGlobalBounds();
+		//objSprite.setOrigin(width / 2, height / 2);
+		objSprite.setScale((float) width /(float) size.width, (float)height / (float)size.height);
+		sf::FloatRect spriteSize = objSprite.getLocalBounds();
+		objSprite.setOrigin(spriteSize.width / 2, spriteSize.height / 2);
 		//testOrigin=objSprite.getOrigin();
+
 		/*if (!objBuffer.loadFromFile(this->srcSound)) {
 			std::cerr << "error while loading sound " << std::endl;;
 			throw(this->srcSound);
@@ -142,7 +145,9 @@ public:
 		objSound.play();*/
 	}
 	void render(sf::RenderWindow& l_window) {
-		objSprite.setPosition(mX, mY);
+		//objSprite.setPosition(mX+width/2, mY+height/2);
+		objSprite.setPosition(mX , mY );
+
 		//
 		l_window.draw(objSprite);
 	}
@@ -177,10 +182,10 @@ public:
 		objTexture.setSmooth(true);
 
 		objSprite.setTexture(objTexture);
-		objSprite.setOrigin(width / 2, height / 2);
-		sf::Vector2u size = objTexture.getSize();
-		objSprite.setScale((float)width / (float)size.x, (float)height / (float)size.y);
-
+		auto size = objSprite.getGlobalBounds();
+		objSprite.setScale((float)width / (float)size.width, (float)height / (float)size.height);
+		sf::FloatRect spriteSize = objSprite.getLocalBounds();
+		objSprite.setOrigin(spriteSize.width / 2, spriteSize.height / 2);
 		/*if (!objBuffer.loadFromFile(this->srcSound)) {
 			std::cerr << "error while loading sound " << std::endl;;
 			throw(this->srcSound);
