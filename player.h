@@ -6,38 +6,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <math.h>
+#include "object.h"
+#include "item.h"
 
-//Item test
-class Item { //abstract class
-public:
-	virtual bool isInvisible() = 0;
-private:
+enum class DirectionPlayer { None, Up, Down, Left, Right };
 
-};
-
-class Invisible : public Item {
-public:
-	bool isInvisible() {
-		return true;
-	}
-};
-
-class Heart : public Item {
-public:
-	bool isInvisible() {
-		return false;
-	}
-};
-
-class Obstacle {
-
-};
-
-class Spawner {
-
-};
-
-enum class Direction { None, Up, Down, Left, Right };
 class Player {
 public:
 	Player(std::string srcImg, int width, int height);
@@ -48,9 +22,9 @@ public:
 
 	//Movement
 	void Move(sf::Vector2u windowSize);
-	void MoveControl(sf::Vector2u windowSize);
-	void SetDirection(Direction l_dir);
-	Direction GetDirection();
+	void MoveControl(sf::Vector2u windowSize, Object* obj, float intersectPercent);
+	void SetDirection(DirectionPlayer l_dir);
+	DirectionPlayer GetDirection();
 
 	//Special ability
 	void Transparent();
@@ -59,28 +33,29 @@ public:
 	//handle Lost
 	bool hasLost();
 
-	//handle impacted by the Ostacle
-	bool isImpact(const Spawner& spawner);
-	bool isImpact(const Obstacle& obstacle);
-	bool isImpact(const Item& item);
+	//handle impacted by the Object
+	bool isImpact(Object* obj, float intersectPercent);
 
-	int getX();
-	int getY();
+	//add Item
+	void addItem(const Item& item);
+
+	float getX();
+	float getY();
 	//void passPhase();
 	void Render(sf::RenderWindow& l_window);
 	~Player();
 private:
-	void CheckCollision();
+	void CheckCollision(Object* obj, float intersectPercent);
 	sf::Sprite playerSprite;
 	sf::Texture playerTexture;
-	int mX, mY;
+	float mX, mY;
 	std::string srcImg; //path to the custom pixel spaceShip
 	int width;
 	int height;
 	float speed;
 	int step;
 	bool mState; //Alive or not
-	Direction m_dir;
+	DirectionPlayer m_dir;
 	std::vector<Item> listItem; //Contain special item
 };
 
