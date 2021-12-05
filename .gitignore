@@ -2,6 +2,13 @@
 *.exe
 *.out
 *.app
+*.recipe
+*.iobj
+*.ipdb
+*.log
+*.pdb
+*.tlog
+*.lastbuildstate
 
 test.cpp
 
