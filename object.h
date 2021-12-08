@@ -49,7 +49,10 @@ public:
 //SPAWNER
 class Spawner:public Object {
 public:
-	Spawner(string img, string sound, int width, int height,float speed) {
+	Spawner(string img, string sound, int width, int height,float speed, int sX, int sY, bool toRight) {
+		mX = sX;
+		mY = sY;
+		this->toRight = toRight;
 		this->speed = speed;
 		srcImg = img;
 		srcSound = sound;
@@ -59,8 +62,7 @@ public:
 			std::cerr << "error while loading texture " << std::endl;;
 			throw(this->srcImg);
 		}
-		mX = randomStartX;
-		mY = randomStartY;
+		
 		
 
 		objTexture.setSmooth(true);
@@ -82,32 +84,24 @@ public:
 	}
 
 	//sX,sY: coordinate of start point.
-	void moveHorizontal(int sX, int sY, bool toRight, sf::Vector2u windowSize) {
+	void moveHorizontal(sf::Vector2u windowSize) {
 		if (!isStop) {
-			if (first) {
-				mX = sX;
-				mY = sY;
-				first = false;
+			if (toRight) {
+				if (mX >= windowSize.x) {
+					mX = -width / 2;
+				}
+				else
+				{
+					mX += speed;
+				}
 			}
 			else {
-				if (toRight) {
-					if (mX >= windowSize.x) {
-						mX = -width / 2;
-					}
-					else
-					{
-						mX += speed;
-					}
-
+				if (mX + width / 2 <= 0) {
+					mX = windowSize.x;
 				}
-				else {
-					if (mX + width / 2 <= 0) {
-						mX = windowSize.x;
-					}
-					else
-					{
+				else
+				{
 						mX -= speed;
-					}
 				}
 			}
 		}
@@ -155,6 +149,7 @@ private:
 	Direction m_dir; // current direction
 	bool first = true;
 	bool isStop = false;
+
 	//sf::Vector2f testOrigin;
 };
 
