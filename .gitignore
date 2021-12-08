@@ -2,8 +2,16 @@
 *.exe
 *.out
 *.app
+*.recipe
+*.iobj
+*.ipdb
+*.log
+*.pdb
+*.tlog
+*.lastbuildstate
 
 test.cpp
 
 .vs/
 .vscode/
+Release/

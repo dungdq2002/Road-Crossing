@@ -1,3 +1,0 @@
-D:\Road-Crossing\Release\Road-Crossing.exe
-D:\Learning ZONE\CS202 - Programming Systems\FinalProject\Road-Crossing\Release\Road-Crossing.exe
-E:\cs202\Road-Crossing\Release\Road-Crossing.exe

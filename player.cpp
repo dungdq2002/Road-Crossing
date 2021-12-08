@@ -27,7 +27,7 @@ Player::~Player(){
 }
 
 void Player::Reset() { //Reset when the player is contruct again after losing
-	SetDirection(Direction::None); 
+	SetDirection(DirectionPlayer::None); 
 	speed = 0;
 	step = 5;
 	mState = true;
@@ -46,38 +46,38 @@ void Player::SetMoveStep(int step) {
 
 
 //Direction for movement
-void Player::SetDirection(Direction l_dir) { m_dir = l_dir; }
+void Player::SetDirection(DirectionPlayer l_dir) { m_dir = l_dir; }
 
-Direction Player::GetDirection() { return m_dir; }
+DirectionPlayer Player::GetDirection() { return m_dir; }
 
 
 //Get position of Player
-int Player::getX() { return mX; }
+float Player::getX() { return mX; }
 
-int Player::getY() { return mY; }
+float Player::getY() { return mY; }
 
 
 //Movement 
-void Player::MoveControl(sf::Vector2u windowSize) {
-	if (m_dir == Direction::None) { return; }
+void Player::MoveControl(sf::Vector2u windowSize, Object* obj, float intersectPercent) {
+	CheckCollision(obj, intersectPercent);
+	if (m_dir == DirectionPlayer::None) { return; }
 	Move(windowSize);
-	CheckCollision();
 }
 
 void Player::Move(sf::Vector2u windowSize) {
-	if (m_dir == Direction::None) { return; }
+	if (m_dir == DirectionPlayer::None) { return; }
 	if (speed == 0)
 		speed = 5;
-	if (m_dir == Direction::Left) {
+	if (m_dir == DirectionPlayer::Left) {
 		this->mX -= step;
 	}
-	else if (m_dir == Direction::Right) {
+	else if (m_dir == DirectionPlayer::Right) {
 		this->mX += step;
 	}
-	else if (m_dir == Direction::Up) {
+	else if (m_dir == DirectionPlayer::Up) {
 		this->mY -= step;
 	}
-	else if (m_dir == Direction::Down) {
+	else if (m_dir == DirectionPlayer::Down) {
 		this->mY += step;
 	}
 	//Hanle boundary
@@ -100,30 +100,40 @@ void Player::unTransparent() {
 }
 
 //Check the impact: Obstacle, Spawner of Item
-bool Player::isImpact(const Spawner& spawner) {
+bool Player::isImpact(Object* obj, float intersectPercent) {
+	if (intersectPercent > 1)
+		throw "Intersection has to less than 1.";
+	if (obj == nullptr)
+		return false;
 
+	float conditionalDistanceX = (obj->getWidth() / 2.) + (this->width / 2.) * (1. - intersectPercent);
+	float conditionalDistanceY = (obj->getHeight() / 2.) + (this->height / 2.) * (1. - intersectPercent);
+
+	if (abs(this->mX - obj->getX()) <= conditionalDistanceX && abs(this->mY - obj->getY()) <= conditionalDistanceY) {
+		return true;
+	}
+	return false;
 }
-
-bool Player::isImpact(const Obstacle& obstacle) {
-
-}
-
-bool Player::isImpact(const Item& item) {
-
-}
-
 
 //Check collision with Item or Obstacle/Spawner
-void Player::CheckCollision() {
-	std::cout << "OK";
-
+void Player::CheckCollision(Object* obj, float intersectPercent) {
+	//Test 
+	//If have condition for item and object you can put in here
+	if (this->isImpact(obj, intersectPercent)) {
+		cout << "IS IMPACT: " << this->mX << " " << this->mY << endl;
+		cout << obj->getX() << " " << obj->getY() << endl;
+	}
 }
 
+//Add item
+void Player::addItem(const Item& item) {
+	this->listItem.push_back(item);
+}
 
 //Render to the windows
 void Player::Render(sf::RenderWindow& l_window) {
 	playerSprite.setPosition(this->mX, this->mY);
-	this->SetDirection(Direction::None);
+	this->SetDirection(DirectionPlayer::None);
 	l_window.draw(playerSprite);
 }
 
