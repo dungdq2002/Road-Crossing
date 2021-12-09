@@ -23,8 +23,11 @@ const int randomStaticY = 200;
 const int randomItemX = 250;
 const int randomItemY = 150;
 enum class Direction { None, Up, Down, Left, Right };
+
+
 class Object{
 protected:
+	sf::Vector2u winSiz = sf::Vector2u(700, 350);
 	string srcImg;
 	string srcSound;
 	int width;
@@ -87,10 +90,10 @@ public:
 	}
 
 	//sX,sY: coordinate of start point.
-	void moveHorizontal(sf::Vector2u windowSize) {
+	void moveHorizontal() {
 		if (!isStop) {
 			if (toRight) {
-				if (mX >= windowSize.x) {
+				if (mX >= winSiz.x) {
 					mX = -width / 2;
 				}
 				else
@@ -100,7 +103,7 @@ public:
 			}
 			else {
 				if (mX + width / 2 <= 0) {
-					mX = windowSize.x;
+					mX = winSiz.x;
 				}
 				else
 				{
