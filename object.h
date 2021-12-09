@@ -27,7 +27,7 @@ enum class Direction { None, Up, Down, Left, Right };
 
 class Object{
 protected:
-	sf::Vector2u winSiz = sf::Vector2u(700, 350);
+	sf::Vector2u winSiz = sf::Vector2u(350, 700);
 	string srcImg;
 	string srcSound;
 	int width;
