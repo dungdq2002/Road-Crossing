@@ -23,8 +23,11 @@ const int randomStaticY = 200;
 const int randomItemX = 250;
 const int randomItemY = 150;
 enum class Direction { None, Up, Down, Left, Right };
+
+
 class Object{
 protected:
+	sf::Vector2u winSiz = sf::Vector2u(350, 700);
 	string srcImg;
 	string srcSound;
 	int width;
@@ -43,16 +46,19 @@ public:
 	virtual float getY() = 0;
 	virtual int getWidth() = 0;
 	virtual int getHeight() = 0;
-	virtual void moveHorizontal(int sX, int sY, bool toRight, sf::Vector2u windowSize) {
+	/*virtual void moveHorizontal(int sX, int sY, bool toRight, sf::Vector2u windowSize) {
 
-	}
+	}*/
 	virtual void render(sf::RenderWindow& l_window) = 0;
 };
 
 //SPAWNER
 class Spawner:public Object {
 public:
-	Spawner(string img, string sound, int width, int height,float speed) {
+	Spawner(string img, string sound, int width, int height,float speed, int sX, int sY, bool toRight) {
+		mX = sX;
+		mY = sY;
+		this->toRight = toRight;
 		this->speed = speed;
 		srcImg = img;
 		srcSound = sound;
@@ -62,8 +68,7 @@ public:
 			std::cerr << "error while loading texture " << std::endl;;
 			throw(this->srcImg);
 		}
-		mX = randomStartX;
-		mY = randomStartY;
+		
 		
 
 		objTexture.setSmooth(true);
@@ -85,32 +90,24 @@ public:
 	}
 
 	//sX,sY: coordinate of start point.
-	void moveHorizontal(int sX, int sY, bool toRight, sf::Vector2u windowSize) {
+	void moveHorizontal() {
 		if (!isStop) {
-			if (first) {
-				mX = sX;
-				mY = sY;
-				first = false;
+			if (toRight) {
+				if (mX >= winSiz.x) {
+					mX = -width / 2;
+				}
+				else
+				{
+					mX += speed;
+				}
 			}
 			else {
-				if (toRight) {
-					if (mX >= windowSize.x) {
-						mX = -width / 2;
-					}
-					else
-					{
-						mX += speed;
-					}
-
+				if (mX + width / 2 <= 0) {
+					mX = winSiz.x;
 				}
-				else {
-					if (mX + width / 2 <= 0) {
-						mX = windowSize.x;
-					}
-					else
-					{
+				else
+				{
 						mX -= speed;
-					}
 				}
 			}
 		}
@@ -158,6 +155,7 @@ private:
 	Direction m_dir; // current direction
 	bool first = true;
 	bool isStop = false;
+
 	//sf::Vector2f testOrigin;
 };
 
