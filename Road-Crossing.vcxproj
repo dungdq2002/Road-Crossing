@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gameworld.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="player.cpp" />
@@ -153,7 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constant.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="gameworld.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="object.h" />
