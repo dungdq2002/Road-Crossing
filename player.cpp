@@ -29,7 +29,7 @@ Player::~Player(){
 void Player::Reset() { //Reset when the player is contruct again after losing
 	SetDirection(DirectionPlayer::None); 
 	speed = 0;
-	step = 5;
+	step = PLAYER_STEP;
 	mState = true;
 	mX = startPositionX;
 	mY = startPositionY - height/2.;
@@ -58,13 +58,13 @@ float Player::getY() { return mY; }
 
 
 //Movement 
-void Player::MoveControl(sf::Vector2u windowSize, Object* obj, float intersectPercent) {
+void Player::MoveControl(Object* obj, float intersectPercent) {
 	CheckCollision(obj, intersectPercent);
 	if (m_dir == DirectionPlayer::None) { return; }
-	Move(windowSize);
+	Move();
 }
 
-void Player::Move(sf::Vector2u windowSize) {
+void Player::Move() {
 	if (m_dir == DirectionPlayer::None) { return; }
 	if (speed == 0)
 		speed = 5;
@@ -82,9 +82,9 @@ void Player::Move(sf::Vector2u windowSize) {
 	}
 	//Hanle boundary
 	if (mX - width/2. < 0) mX = width/2.;
-	if (mX + width/2 >= (int)windowSize.x) mX = windowSize.x - width/2;
+	if (mX + width/2 >= (int)SCREEN_WIDTH) mX = SCREEN_WIDTH - width/2;
 	if (mY - height/2. < 0) mY = height/2.;
-	if (mY + height/2 >= (int)windowSize.y) mY = windowSize.y - height/2;
+	if (mY + height/2 >= (int)SCREEN_HEIGHT) mY = SCREEN_HEIGHT - height/2;
 }
 
 

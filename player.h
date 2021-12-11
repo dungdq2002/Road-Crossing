@@ -9,6 +9,7 @@
 #include <math.h>
 #include "object.h"
 #include "item.h"
+#include "constant.h"
 
 enum class DirectionPlayer { None, Up, Down, Left, Right };
 
@@ -21,8 +22,8 @@ public:
 	void Reset();
 
 	//Movement
-	void Move(sf::Vector2u windowSize);
-	void MoveControl(sf::Vector2u windowSize, Object* obj, float intersectPercent);
+	void Move();
+	void MoveControl(Object* obj, float intersectPercent);
 	void SetDirection(DirectionPlayer l_dir);
 	DirectionPlayer GetDirection();
 
