@@ -159,7 +159,6 @@ void GameWorld::runLevel(int idLevel) {
         if (leftFlag) {
             cout << "left\n";  person.SetDirection(DirectionPlayer::Left);
             person.Move();
-            test = 1;
         }
         if (rightFlag) {
             cout << "right\n";  person.SetDirection(DirectionPlayer::Right);
@@ -167,7 +166,6 @@ void GameWorld::runLevel(int idLevel) {
         }
         if (upFlag) {
             cout << "up\n";  person.SetDirection(DirectionPlayer::Up);
-            test = 2;
             person.Move();
         }
         if (downFlag) {
@@ -176,9 +174,12 @@ void GameWorld::runLevel(int idLevel) {
             person.Move();
         }
 
-        // Move
-        cout << test << endl;
-
+        // EXPLAIN THE ERRORS
+        // Move inside the if, when it receive the button event, move directly
+        // The problem of the previous is when up is pressing, and we press left, the if of Up is lower so the left will first set
+        // as Direction Left but then go to up when be set as Up, results all UP
+        // If we move Left lower than Up, the result will be all LEFT
+         
         // Clear the window and apply grey background
         window.clear(sf::Color(127, 127, 127));
 
