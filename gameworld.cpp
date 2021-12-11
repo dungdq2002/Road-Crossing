@@ -105,7 +105,7 @@ void GameWorld::runLevel(int idLevel) {
     bool downFlag = false;
     bool leftFlag = false;
     bool rightFlag = false;
-
+    int test = 0;
     // Process events
     while (true) {
         sf::Event event;
@@ -158,20 +158,26 @@ void GameWorld::runLevel(int idLevel) {
 
         if (leftFlag) {
             cout << "left\n";  person.SetDirection(DirectionPlayer::Left);
+            person.Move();
+            test = 1;
         }
         if (rightFlag) {
             cout << "right\n";  person.SetDirection(DirectionPlayer::Right);
+            person.Move();
         }
         if (upFlag) {
             cout << "up\n";  person.SetDirection(DirectionPlayer::Up);
+            test = 2;
+            person.Move();
         }
         if (downFlag) {
             cout << "down\n";
             person.SetDirection(DirectionPlayer::Down);
+            person.Move();
         }
 
         // Move
-        person.Move();
+        cout << test << endl;
 
         // Clear the window and apply grey background
         window.clear(sf::Color(127, 127, 127));
