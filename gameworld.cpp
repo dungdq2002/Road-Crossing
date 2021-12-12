@@ -8,7 +8,7 @@ namespace LevelInfo {
             SLevelInfo level1;
             level1.id = 1;
 
-            Object* ship1 = new Spawner("spaceship1.png", "", 100, 80, 0.5f, 30, 40, false);
+            Object* ship1 = new Spawner("spaceship1.png", "", 100, 80, 0.5f, 200, 350, false);
             level1.objs.push_back(ship1);
 
             levels.push_back(level1);
@@ -67,11 +67,10 @@ void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanSc
     text.setOrigin(size.width / 2, size.height / 2);
     text.setPosition(coorX, coorY);
 
-    sf::Clock start;
-    while (start.getElapsedTime().asSeconds() < delaySecond) {
-        window.draw(text);
-        window.display();
-    }
+    window.draw(text);
+    window.display();
+
+    sf::sleep(sf::seconds(delaySecond));
 
     return;
 }
@@ -191,7 +190,7 @@ void GameWorld::runLevel(int idLevel) {
         if (leftFlag) {
             cout << "left\n";  person.SetDirection(DirectionPlayer::Left);
             person.Move();
-        }
+        } 
         if (rightFlag) {
             cout << "right\n";  person.SetDirection(DirectionPlayer::Right);
             person.Move();
@@ -215,10 +214,20 @@ void GameWorld::runLevel(int idLevel) {
         // Clear the window and apply grey background
         window.clear(sf::Color(127, 127, 127));
 
+        // Move Object
+        for (auto& obj : objects) obj->move();
+
         // Draw Background, Player and Objects
         window.draw(backgroundTexts[idBG]);
         for (auto& obj : objects) obj->render(window);
         person.Render(window);
+
+        // Collide with the objects
+        for (auto& obj : objects) if (person.isImpact(obj)) {
+            cout << "Game over\n";
+            temporaryMessage("GAME OVER");
+            return;
+        }
 
         // Rotate and draw the sprite
         window.display();

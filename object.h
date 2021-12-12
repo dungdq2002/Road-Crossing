@@ -146,10 +146,12 @@ public:
 	}
 	void render(sf::RenderWindow& l_window) {
 		//objSprite.setPosition(mX+width/2, mY+height/2);
+		cout << "calling\n";
 		objSprite.setPosition(mX , mY );
-
+		cout << "set\n";
 		//
 		l_window.draw(objSprite);
+		cout << "oops\n";
 	}
 private:
 	float speed;

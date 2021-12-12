@@ -28,12 +28,14 @@ namespace LevelInfo {
 class GameWorld {
 public:
     GameWorld();
+    ~GameWorld();
     void welcome();
     void runLevel(int idLevel);
 
 private:
     bool isRunning;
 
+    void temporaryMessage(string message, float delaySecond = 3.0, bool cleanScreen = false, float coorX = SCREEN_WIDTH / 2, float coorY = SCREEN_HEIGHT / 2, int sz = 35);
     void initBackground(int id, string src);
 
     sf::RenderWindow window;
@@ -41,9 +43,6 @@ private:
     Player person;
     vector <Object*> objects;
 
-    int numLevel;
-
-    int numBG;
     vector <sf::Texture> backgroundTextures;
     vector <sf::Sprite> backgroundTexts;
 };

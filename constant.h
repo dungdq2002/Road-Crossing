@@ -6,4 +6,6 @@
 
 #define PLAYER_STEP 3
 
+#define NUM_BACKGROUND 4
+
 #endif

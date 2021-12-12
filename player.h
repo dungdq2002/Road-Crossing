@@ -35,7 +35,7 @@ public:
 	bool hasLost();
 
 	//handle impacted by the Object
-	bool isImpact(Object* obj, float intersectPercent);
+	bool isImpact(Object* obj, float intersectPercent = 0.2);
 
 	//add Item
 	void addItem(const Item& item);
