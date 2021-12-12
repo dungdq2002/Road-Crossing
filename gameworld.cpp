@@ -8,9 +8,8 @@ namespace LevelInfo {
             SLevelInfo level1;
             level1.id = 1;
 
-            Spawner ship1("spaceship1.png", "", 80, 40, 0.2f, 30, 40, false);
-            level1.objs.push_back(&ship1);
-
+            Object* ship1 = new Spawner("spaceship1.png", "", 100, 80, 0.5f, 30, 40, false);
+            level1.objs.push_back(ship1);
 
             levels.push_back(level1);
         }
@@ -25,9 +24,11 @@ void GameWorld::initBackground(int id, string src) {
 }
 
 GameWorld::GameWorld() :
-	window(sf::VideoMode(350, 700), "Road Crossing"),
+	window(sf::VideoMode(350, 700), "Road Crossing", sf::Style::Close),
 	person("./asset/image/spaceShip0.png", 30, 30) 
 {
+    srand(time(0));
+
 	// Enable vertical sync. (vsync)
 	window.setVerticalSyncEnabled(true);
 	// When a key is pressed, sf::Event::KeyPressed will be true only once
@@ -35,11 +36,8 @@ GameWorld::GameWorld() :
 
 	LevelInfo::init();
 
-    numLevel = 1; // number of levels
-
-	numBG = 4; // number of available backgrounds
-	backgroundTexts.resize(numBG);
-	backgroundTextures.resize(numBG);
+	backgroundTexts.resize(NUM_BACKGROUND);
+	backgroundTextures.resize(NUM_BACKGROUND);
 
 	initBackground(0, "./asset/image/background1.jpg");
 	initBackground(1, "./asset/image/background2.png");
@@ -49,8 +47,39 @@ GameWorld::GameWorld() :
     isRunning = true;
 }
 
+GameWorld::~GameWorld() {
+    for (auto level : LevelInfo::levels) {
+        for (auto& obj : level.objs) delete obj;
+    }
+}
+
+void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanScreen, float coorX, float coorY, int sz) {
+    if (cleanScreen)
+        window.clear(sf::Color(127, 127, 127));
+
+    sf::Font font; font.loadFromFile("asset\\font\\ARCADECLASSIC.TTF");
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(sz);
+    text.setFillColor(sf::Color::White);
+    text.setString(message);
+    auto size = text.getGlobalBounds();
+    text.setOrigin(size.width / 2, size.height / 2);
+    text.setPosition(coorX, coorY);
+
+    sf::Clock start;
+    while (start.getElapsedTime().asSeconds() < delaySecond) {
+        window.draw(text);
+        window.display();
+    }
+
+    return;
+}
+
 void GameWorld::welcome() {
-	int idBG = rand() % numBG;
+	int idBG = rand() % NUM_BACKGROUND;
+
+    cout << "menu " << idBG << '\n';
 
 	Menu menu(3, "asset\\font\\ARCADECLASSIC.TTF");
 
@@ -96,7 +125,10 @@ void GameWorld::welcome() {
 }
 
 void GameWorld::runLevel(int idLevel) {
-    int idBG = rand() % numBG;
+    int idBG = rand() % NUM_BACKGROUND;
+    cout << idBG << '\n';
+
+    objects = LevelInfo::levels[idLevel].objs;
 
     person.Reset();
 
@@ -158,28 +190,41 @@ void GameWorld::runLevel(int idLevel) {
 
         if (leftFlag) {
             cout << "left\n";  person.SetDirection(DirectionPlayer::Left);
+            person.Move();
         }
         if (rightFlag) {
             cout << "right\n";  person.SetDirection(DirectionPlayer::Right);
+            person.Move();
         }
         if (upFlag) {
             cout << "up\n";  person.SetDirection(DirectionPlayer::Up);
+            person.Move();
         }
         if (downFlag) {
             cout << "down\n";
             person.SetDirection(DirectionPlayer::Down);
+            person.Move();
         }
 
-        // Move
-        person.Move();
+
+        // Move objects
+        for (auto& obj : objects) obj->move();
+
+        for (auto& obj : objects) if (person.isImpact(obj, 0.1)) {
+            temporaryMessage("GAME OVER");
+            cout << "game over\n";
+            return;
+        }
 
         // Clear the window and apply grey background
         window.clear(sf::Color(127, 127, 127));
 
+        // Draw Background, Player and Objects
         window.draw(backgroundTexts[idBG]);
+        for (auto& obj : objects) obj->render(window);
+        person.Render(window);
 
         // Rotate and draw the sprite
-        person.Render(window);
         window.display();
     }
 }
