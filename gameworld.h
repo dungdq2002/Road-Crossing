@@ -9,10 +9,16 @@
 #include "item.h"
 #include "menu.h"
 
+#include <map>
+#include <ctime>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <iomanip>
+#include <filesystem>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 namespace LevelInfo {
 	struct SLevelInfo { // information about objects
@@ -35,8 +41,11 @@ public:
 private:
     bool isRunning;
 
-    void temporaryMessage(string message, float delaySecond = 3.0, bool cleanScreen = false, float coorX = SCREEN_WIDTH / 2, float coorY = SCREEN_HEIGHT / 2, int sz = 35);
+    int menuAllInOne(Menu& menu, int idBG = -1);
+
     void initBackground(int id, string src);
+    void temporaryMessage(string message, float delaySecond = 3.0, bool cleanScreen = false, float coorX = SCREEN_WIDTH / 2, float coorY = SCREEN_HEIGHT / 2, int sz = 35);
+    //int pauseScreen();
 
     sf::RenderWindow window;
 

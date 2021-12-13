@@ -75,6 +75,44 @@ void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanSc
     return;
 }
 
+int GameWorld::menuAllInOne(Menu& menu, int idBG) {
+    window.clear(sf::Color(127, 127, 127));
+
+    while (true) {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+             //Close the window if a key is pressed or if requested
+            if (event.type == sf::Event::Closed) {
+                isRunning = false;
+                window.close();
+            }
+
+             //If a key is released
+            if (event.type == sf::Event::KeyReleased)
+            {
+                switch (event.key.code)
+                {
+                     //Process the up, down, left and right keys
+                case sf::Keyboard::Escape: return -1;
+                case sf::Keyboard::Up: menu.moveUp(); break;
+                case sf::Keyboard::Down: menu.moveDown(); break;
+                case sf::Keyboard::Return: return menu.select();
+                    
+                default: break;
+                }
+            }
+        }
+        if (idBG != -1) window.draw(backgroundTexts[idBG]);
+        menu.draw(window);
+        window.display();
+    }
+
+    throw " oops ??";
+    return -1;
+}
+
+
 void GameWorld::welcome() {
 	int idBG = rand() % NUM_BACKGROUND;
 
@@ -87,39 +125,54 @@ void GameWorld::welcome() {
 	menu.add("Exit");
 
     while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            // Close the window if a key is pressed or if requested
-            if (event.type == sf::Event::Closed) window.close();
+        //window.draw(backgroundTexts[idBG]);
+        switch (menuAllInOne(menu, idBG)) {
+        case 0:
+            std::cout << "go to new game\n";
+            runLevel(0);
+            break;
+        case 1: {
+            cout << " load game \n";
+            Menu data(5, "asset\\font\\CONSOLAB.TTF");
 
-            // If a key is released
-            if (event.type == sf::Event::KeyReleased)
-            {
-                switch (event.key.code)
-                {
-                    // Process the up, down, left and right keys
-                case sf::Keyboard::Up:    menu.moveUp(); break;
-                case sf::Keyboard::Down:  menu.moveDown(); break;
-                case sf::Keyboard::Return:
-                    switch (menu.select()) {
-                    case 0:
-                        std::cout << "go to game\n";
-                        runLevel(0);
-                        break;
-                    default: break;
+            auto zeroPadding = [&](string& s, int sz = 2) {
+                while (s.size() < sz) s.insert(s.begin(), '0');
+                return s;
+            };
 
-                    }
-                default: break;
+            map <int, int> m;
+            for (int i = 0; i < 5; i++) {
+                ifstream inp("./log/" + to_string(i) + ".txt");
+                if (!inp) {
+                    cout << "file " << i << " is not existed\n";
+                    data.add(to_string(i + 1) + ". ==============");
                 }
+                else {
+                    int LV; inp >> LV; 
+                    m[i] = LV;
+                    LV++;
+                    string lv = to_string(LV);
+                    string day, month, year; inp >> day >> month >> year;
+                    data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(day) + "-" + zeroPadding(month) + "-" + zeroPadding(year, 4));
+                }
+                inp.close();
             }
+            
+            int t = menuAllInOne(data, idBG);
+            cout << t << '\n';
+            if (t == -1) break;
+            if (m.count(t)) {
+                runLevel(m[t]);
+            }
+            else runLevel(0);         
+            break;
         }
-
+        case 2:
+            isRunning = false;
+            break;
+        }
+        
         if (!isRunning) break;
-
-        window.draw(backgroundTexts[idBG]);
-        menu.draw(window);
-        window.display();
     }
 }
 
@@ -154,8 +207,63 @@ void GameWorld::runLevel(int idLevel) {
             {
                 switch (event.key.code)
                 {
-                    // If escape is pressed, close the application
-                case  sf::Keyboard::Escape: window.close(); break;
+                    // If P is pressed, pause game
+                case sf::Keyboard::P: {
+                    Menu pauseScr(3, "asset\\font\\ARCADECLASSIC.TTF");
+
+                    pauseScr.add("Continue");
+                    pauseScr.add("Save");
+                    pauseScr.add("Quit");
+
+                    switch (menuAllInOne(pauseScr, idBG)) {
+                    case 0:
+                        std::cout << "continue\n";
+                        break;
+                    case 1: {
+                        // save game
+                        Menu data(5, "asset\\font\\CONSOLAB.TTF");
+
+                        auto zeroPadding = [&](string& s, int sz = 2) {
+                            while (s.size() < sz) s.insert(s.begin(), '0');
+                            return s;
+                        };
+
+                        map <int, int> m;
+                        for (int i = 0; i < 5; i++) {
+                            ifstream inp("./log/" + to_string(i) + ".txt");
+                            if (!inp) {
+                                cout << "file " << i << " is not existed\n";
+                                data.add(to_string(i + 1) + ". ==============");
+                            }
+                            else {
+                                int LV; inp >> LV;
+                                m[i] = LV;
+                                LV++;
+                                string lv = to_string(LV);
+                                string day, month, year; inp >> day >> month >> year;
+                                data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(day) + "-" + zeroPadding(month) + "-" + zeroPadding(year, 4));
+                            }
+                            inp.close();
+                        }
+
+                        int t = menuAllInOne(data, idBG);
+                        if (t == -1) break;
+
+                        ofstream out("./log/" + to_string(t) + ".txt");
+
+                        time_t timeObj = time(nullptr);
+                        tm aTime;
+                        localtime_s(&aTime, &timeObj);
+
+                        out << idLevel << ' ' << aTime.tm_mday << ' ' << 1 + aTime.tm_mon << ' ' << 1900 + aTime.tm_year << '\n';
+                        cout << "save game\n";
+                        break;
+                    }
+                    case 2:
+                        return;
+                    }
+                    break;
+                }
 
                     // Process the up, down, left and right keys
                 case sf::Keyboard::Up:     upFlag = true; break;
@@ -181,22 +289,19 @@ void GameWorld::runLevel(int idLevel) {
             }
         }
 
-        // Set direction for movement
-        //if (leftFlag) person.SetDirection(DirectionPlayer::Left);
-        //if (rightFlag) person.SetDirection(DirectionPlayer::Right);
-        //if (upFlag) person.SetDirection(DirectionPlayer::Up);
-        //if (downFlag) person.SetDirection(DirectionPlayer::Down);
-
         if (leftFlag) {
-            cout << "left\n";  person.SetDirection(DirectionPlayer::Left);
+            cout << "left\n"; 
+            person.SetDirection(DirectionPlayer::Left);
             person.Move();
         } 
         if (rightFlag) {
-            cout << "right\n";  person.SetDirection(DirectionPlayer::Right);
+            cout << "right\n";  
+            person.SetDirection(DirectionPlayer::Right);
             person.Move();
         }
         if (upFlag) {
-            cout << "up\n";  person.SetDirection(DirectionPlayer::Up);
+            cout << "up\n";  
+            person.SetDirection(DirectionPlayer::Up);
             person.Move();
         }
         if (downFlag) {

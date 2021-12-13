@@ -20,10 +20,15 @@ void Menu::add(std::string s) {
     sf::Text current;
     current.setFont(font);
     auto color = (id == 0 ? sf::Color::Yellow : sf::Color::White);
-    current.setCharacterSize(35);
     current.setFillColor(color);
     current.setString(s);
-    current.setPosition(sf::Vector2f(100, 200 + 100 * id));
+
+    auto sz = (numItem <= 3 ? 35 : 25);
+    current.setCharacterSize(sz);
+
+    auto diffY = (numItem <= 3 ? 100 : 50);
+    auto stX = (numItem <= 3 ? 100 : 50);
+    current.setPosition(sf::Vector2f(stX, 200 + diffY * id));
 
     menu.push_back(current);
 }

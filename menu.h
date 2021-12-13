@@ -10,10 +10,10 @@ public:
     Menu(int numItem, std::string srcFont);
     Menu(std::vector <std::string> list, std::string srcFont);
     void add(std::string s);
+    void draw(sf::RenderWindow &window);
     void moveUp();
     void moveDown();
     int select();
-    void draw(sf::RenderWindow &window);
 private:
     int numItem;
     int cursor;
