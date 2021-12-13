@@ -14,6 +14,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "Collision.hpp"
 using namespace std;
 
 const int randomStartX = 100;
@@ -36,12 +37,13 @@ protected:
 	
 	//image
 	sf::Texture objTexture;
-	sf::Sprite objSprite;
+	//sf::Sprite objSprite;
 
 	//sound
-	//sf::SoundBuffer objBuffer;
-	//sf::Sound objSound;
+	sf::SoundBuffer objBuffer;
+	sf::Sound objSound;
 public:
+	sf::Sprite objSprite;
 	virtual float getX() = 0;
 	virtual float getY() = 0;
 	virtual int getWidth() = 0;
@@ -66,7 +68,8 @@ public:
 		srcSound = sound;
 		this->width = width;
 		this->height = height;
-		if (!objTexture.loadFromFile(this->srcImg)) {
+		
+		if (!Collision::CreateTextureAndBitmask(objTexture, this->srcImg)) {
 			std::cerr << "error while loading texture " << std::endl;;
 			throw(this->srcImg);
 		}
@@ -89,6 +92,7 @@ public:
 			throw(this->srcSound);
 		}
 		objSound.setBuffer(objBuffer);*/
+		objSprite.setPosition(mX, mY);
 	}
 
 	//sX,sY: coordinate of start point.
@@ -114,7 +118,7 @@ public:
 				}
 			}
 		}
-		
+		objSprite.setPosition(mX, mY);
 				
 	}
 	/*float getOrigin() {
@@ -140,19 +144,20 @@ public:
 		isStop = false;
 	}
 	void onSound() {
-		/*objSound.setLoop(true);
+		objSound.setLoop(true);
 		objSound.setVolume(100.f);
-		objSound.play();*/
+		objSound.play();
 	}
 	void render(sf::RenderWindow& l_window) {
 		//objSprite.setPosition(mX+width/2, mY+height/2);
 		cout << "calling\n";
-		objSprite.setPosition(mX , mY );
+		//objSprite.setPosition(mX , mY );
 		cout << "set\n";
 		//
 		l_window.draw(objSprite);
 		cout << "oops\n";
 	}
+	
 private:
 	float speed;
 	bool toRight;
@@ -172,7 +177,7 @@ public:
 	Obstacle(string img, string sound, int width, int height) {
 		srcImg = img;
 		srcSound = sound;
-		if (!objTexture.loadFromFile(this->srcImg)) {
+		if (!Collision::CreateTextureAndBitmask(objTexture, this->srcImg)) {
 			std::cerr << "error while loading texture " << std::endl;;
 			throw(this->srcImg);
 		}
@@ -194,10 +199,12 @@ public:
 			throw(this->srcSound);
 		}
 		objSound.setBuffer(objBuffer);*/
+		objSprite.setPosition(mX, mY);
 	}
 	void place(int coorX, int coorY) {
 		mX = coorX;
 		mY = coorY;
+		objSprite.setPosition(mX, mY);
 	}
 	void collapse() {
 
@@ -205,7 +212,7 @@ public:
 
 	void render(sf::RenderWindow& l_window) {
 		
-		objSprite.setPosition(mX,mY);
+		
 		//
 		l_window.draw(objSprite);
 

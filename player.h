@@ -10,7 +10,7 @@
 #include "object.h"
 #include "item.h"
 #include "constant.h"
-
+#include "Collision.hpp"
 enum class DirectionPlayer { None, Up, Down, Left, Right };
 
 class Player {

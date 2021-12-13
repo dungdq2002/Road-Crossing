@@ -105,14 +105,20 @@ bool Player::isImpact(Object* obj, float intersectPercent) {
 		throw "Intersection has to less than 1.";
 	if (obj == nullptr)
 		return false;
-
+	/*
 	float conditionalDistanceX = (obj->getWidth() / 2.) + (this->width / 2.) * (1. - intersectPercent);
 	float conditionalDistanceY = (obj->getHeight() / 2.) + (this->height / 2.) * (1. - intersectPercent);
 
 	if (abs(this->mX - obj->getX()) <= conditionalDistanceX && abs(this->mY - obj->getY()) <= conditionalDistanceY) {
 		return true;
 	}
+	return false;*/
+
+	if (Collision::PixelPerfectTest(obj->objSprite, playerSprite)) {
+		return true;
+	}
 	return false;
+
 }
 
 //Check collision with Item or Obstacle/Spawner

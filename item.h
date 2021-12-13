@@ -1,6 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 #include "object.h"
+
 enum SpecialItem { HEART, FROZEN, INVISIBLE, GOAL };
 class Item:public Object{
 private:
@@ -13,7 +14,7 @@ public:
 	}
 	Item(string srcImg, int width, int height, SpecialItem s) {
 		this->srcImg = srcImg;
-		if (!objTexture.loadFromFile(this->srcImg)) {
+		if (!Collision::CreateTextureAndBitmask(objTexture,this->srcImg)) {
 			std::cerr << "error while loading texture " << std::endl;;
 			throw(this->srcImg);
 		}
