@@ -8,7 +8,7 @@ namespace LevelInfo {
             SLevelInfo level1;
             level1.id = 1;
 
-            Object* ship1 = new Spawner("spaceship1.png", "", 100, 80, 0.5f, 200, 350, false);
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level1.objs.push_back(ship1);
 
             levels.push_back(level1);
