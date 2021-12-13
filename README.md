@@ -45,3 +45,24 @@ friend void drawObject(sf::RenderWindow &window, ..object..) {
 - Code tham khảo cho dễ nhìn sơ qua (mình sẽ sử dụng background kiểu này): https://drive.google.com/drive/folders/1r9QRgxVx61quz0DssRqDb-U9xdJAjFis?usp=sharing
 - Code test phần movement của Player: https://drive.google.com/drive/folders/1dUYmvS-l_yRVMCb0Psvv2MfUgTHoykUa?usp=sharing
 - Code test phần object: https://drive.google.com/file/d/1DG4eIGpvUJLzgdcyDnivCf4OiYNrL_5H/view?usp=sharing
+
+
+--------------
+__Cách khởi tạo level mới__  
+- Bước 1: Trong `gameworld.cpp`, thêm 1 block code mới ở LevelInfo::Init(), mỗi level một block. Mỗi level khởi tạo theo mẫu như level 1, cần khởi tạo hoàn toàn từ đầu các object.
+- Bước 2: Trong `constant.h`, sửa lại `NUM_LEVEL` phù hợp.
+- Bước 3: Chạy thôi.
+
+__Yêu cầu của SPECIALITEM__
+- Mỗi map bao gồm đúng 1 GOAL (để qua round tiếp theo, round cuối có thể không cần), tối đa 1 FROZEN và tối đa 1 INVISIBLE.
+- Danh sách các SpecialItem lưu trong vector `items`.
+- Khởi tạo các SPECIALITEM này như các object nói ở _Cách khởi tạo level mới_ nói trên.
+- Khi đi vào GOAL, break cái vòng `while(true)` ở `runLevel`, thoát vòng lặp sẽ gọi `runLevel(idLevel+1)`.
+- Có thể gọi hàm `temporaryMessage` để chuyển cảnh (hoặc làm hàm khác hay cái gì để chuyển cảnh cũng được).
+- Khi ăn được INVISIBLE hoặc FROZEN, thêm cái item đó vào player.
+- User nhấn `Z` để dùng INVISIBLE và `X` để dùng FROZEN.
+- Sau khi User dùng, phải xóa nó ra khỏi vector `items` của class `GameWorld` để tránh draw lại.
+- INVISIBLE: Làm mờ nhân vật, trong thời gian làm mờ, không check `isImpact`.
+- FROZEN: tất cả Spawner (mấy cái tàu chạy chạy) sẽ bị gọi vào `stop`.
+- Nên thêm 1 cái clock để kiểm soát thời gian dùng Items ở trên.
+

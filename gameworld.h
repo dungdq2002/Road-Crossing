@@ -24,6 +24,7 @@ namespace LevelInfo {
 	struct SLevelInfo { // information about objects
 		int id; // level id
 		std::vector <Object*> objs;
+		std::vector <Item*> items;
 	};
 
 	extern vector <SLevelInfo> levels;
@@ -51,6 +52,7 @@ private:
 
     Player person;
     vector <Object*> objects;
+	vector <Item*> items;
 
     vector <sf::Texture> backgroundTextures;
     vector <sf::Sprite> backgroundTexts;

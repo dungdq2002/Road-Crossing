@@ -11,6 +11,10 @@ namespace LevelInfo {
             Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level1.objs.push_back(ship1);
 
+            // Insert new code as this
+            // Items* abc = new ...
+            // level1.items.push_back(abc)
+
             levels.push_back(level1);
         }
     }
@@ -50,6 +54,7 @@ GameWorld::GameWorld() :
 GameWorld::~GameWorld() {
     for (auto level : LevelInfo::levels) {
         for (auto& obj : level.objs) delete obj;
+        for (auto& item : level.items) delete item;
     }
 }
 
@@ -177,10 +182,18 @@ void GameWorld::welcome() {
 }
 
 void GameWorld::runLevel(int idLevel) {
+    sf::Font font; font.loadFromFile("asset\\font\\CONSOLAB.TTF");
+    sf::Text levelLogo;
+    levelLogo.setFont(font);
+    levelLogo.setString("LEVEL " + to_string(idLevel + 1));
+    levelLogo.setPosition(10, 670);
+    levelLogo.setCharacterSize(15);
+
     int idBG = rand() % NUM_BACKGROUND;
     cout << idBG << '\n';
 
     objects = LevelInfo::levels[idLevel].objs;
+	items = LevelInfo::levels[idLevel].items;
 
     person.Reset();
 
@@ -319,11 +332,16 @@ void GameWorld::runLevel(int idLevel) {
         // Clear the window and apply grey background
         window.clear(sf::Color(127, 127, 127));
 
+/*
+    If reach GOAL, check idLevel vs NUM_LEVEL (in constant.h)
+*/
+
         // Move Object
         for (auto& obj : objects) obj->move();
 
         // Draw Background, Player and Objects
         window.draw(backgroundTexts[idBG]);
+        window.draw(levelLogo);
         for (auto& obj : objects) obj->render(window);
         person.Render(window);
 
