@@ -407,6 +407,12 @@ void GameWorld::runLevel(int idLevel) {
         // catch item
         for (int i = 1; i < items.size(); i++) {
             if (person.isImpact(items[i])) {
+                sf::SoundBuffer bufferTem;
+                sf::Sound soundTem;
+                bufferTem.loadFromFile("./asset/sound/collision.wav");
+                soundTem.setBuffer(bufferTem);
+                soundTem.play();
+                sf::sleep(sf::seconds(0.1));
                 person.addItem(*items[i]);              
                 items.erase(items.begin() + i, items.begin() + i + 1);
             }
@@ -417,7 +423,13 @@ void GameWorld::runLevel(int idLevel) {
 
         // Collide with the objects
         for (auto& obj : objects) if (person.isImpact(obj)) {
+            sf::SoundBuffer bufferTem;
+            sf::Sound soundTem;
+            bufferTem.loadFromFile("./asset/sound/collision.wav");
+            soundTem.setBuffer(bufferTem);
+            soundTem.play();
             cout << "Game over\n";
+            
             temporaryMessage("GAME OVER");
             return;
         }
