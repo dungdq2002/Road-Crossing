@@ -150,7 +150,7 @@ void GameWorld::welcome() {
         switch (menuAllInOne(menu, idBG)) {
         case 0:
             std::cout << "go to new game\n";
-            runLevel(1);
+            runLevel(0);
             break;
         case 1: {
             cout << " load game \n";
@@ -231,6 +231,8 @@ void GameWorld::runLevel(int idLevel) {
     bool leftFlag = false;
     bool rightFlag = false;
     int test = 0;
+
+    bool winGame = false;
     // Process events
    
     while (true) {
@@ -313,7 +315,7 @@ void GameWorld::runLevel(int idLevel) {
                         for (auto& obj : objects) {
                             obj->stop();
                         }
-                        temporaryMessage("FROZEN", 1, false, 175.0f, 350.0f, 24);
+                        temporaryMessage("FROZEN", 0.3, false, 175.0f, 350.0f, 24);
                         clock1.restart();
                         countDown1 = true;
                     }
@@ -438,6 +440,7 @@ void GameWorld::runLevel(int idLevel) {
         // reach goal
         // first element is goal, second element is item
         if (person.isImpact(items[0])) {
+            winGame = true;
             break;
         }
         // catch item
@@ -474,5 +477,16 @@ void GameWorld::runLevel(int idLevel) {
         
         // Rotate and draw the sprite
         window.display();
+    }
+
+    if (winGame) {
+        if (idLevel == NUM_LEVEL - 1) {
+            cout << "game clear";
+            temporaryMessage("GAME CLEAR");
+        }
+        else {
+            temporaryMessage("Pass", 1.0);
+            runLevel(idLevel + 1);
+        }
     }
 }
