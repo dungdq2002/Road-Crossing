@@ -51,6 +51,7 @@ public:
 	/*virtual void moveHorizontal(int sX, int sY, bool toRight, sf::Vector2u windowSize) {
 
 	}*/
+	virtual void continueRun(){}
 	virtual void move() { /* nothing */}
 	virtual void stop() { /* nothing */ }
 	virtual void render(sf::RenderWindow& l_window) = 0;

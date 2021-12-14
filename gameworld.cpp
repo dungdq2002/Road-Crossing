@@ -204,7 +204,16 @@ void GameWorld::runLevel(int idLevel) {
     levelLogo.setString("LEVEL " + to_string(idLevel + 1));
     levelLogo.setPosition(10, 670);
     levelLogo.setCharacterSize(15);
-
+    // count item duration
+    //frozen
+    bool countDown1 = false;
+    sf::Clock clock1;
+    sf::Time time1;
+    //invisible
+    bool countDown2 = false;
+    sf::Clock clock2;
+    sf::Time time2;
+    //
     int idBG = rand() % NUM_BACKGROUND;
     cout << idBG << '\n';
 
@@ -220,6 +229,7 @@ void GameWorld::runLevel(int idLevel) {
     bool rightFlag = false;
     int test = 0;
     // Process events
+   
     while (true) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -302,6 +312,8 @@ void GameWorld::runLevel(int idLevel) {
                             }
                             person.listItem.erase(person.listItem.begin() + i, person.listItem.begin() + i + 1);
                         }
+                        clock1.restart();
+                        countDown1 = true;
                     }
                     break;
                 }
@@ -312,6 +324,8 @@ void GameWorld::runLevel(int idLevel) {
                             person.Transparent();
                             person.listItem.erase(person.listItem.begin() + i, person.listItem.begin() + i + 1);
                         }
+                        clock2.restart();
+                        countDown2 = true;
                     }
                     break;
                 }
@@ -352,7 +366,26 @@ void GameWorld::runLevel(int idLevel) {
         //    }
         //}
         }
+        // time for item
+        if (countDown1) {
+            time1 = clock1.getElapsedTime();
+            if (time1.asSeconds() > 2.5) {
+                countDown1 = false;
+                for (auto& obj : objects) {
+                    obj->continueRun();
+                }
+            }
+        }
+        if (countDown2) {
+            time2 = clock1.getElapsedTime();
+            if (time2.asSeconds() > 6.0) {
+                countDown2 = false;
+                person.unTransparent();
+            }
+        }
 
+
+        //
         if (leftFlag) {
             cout << "left\n"; 
             person.SetDirection(DirectionPlayer::Left);
@@ -412,7 +445,7 @@ void GameWorld::runLevel(int idLevel) {
                 bufferTem.loadFromFile("./asset/sound/collision.wav");
                 soundTem.setBuffer(bufferTem);
                 soundTem.play();
-                sf::sleep(sf::seconds(0.1));
+                //sf::sleep(sf::seconds(0.1));
                 person.addItem(*items[i]);              
                 items.erase(items.begin() + i, items.begin() + i + 1);
             }
