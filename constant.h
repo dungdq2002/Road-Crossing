@@ -10,4 +10,11 @@
 
 #define NUM_LEVEL 2
 
+#define ACTIVATE_FROZEN_TIME 2.5
+
+#define ACTIVATE_INVISIBLE_TIME 6.0
+
+#define NUM_INVISIBLE 0
+
+#define NUM_FROZEN 0
 #endif

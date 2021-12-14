@@ -200,10 +200,12 @@ void GameWorld::welcome() {
 void GameWorld::runLevel(int idLevel) {
     sf::Font font; font.loadFromFile("asset\\font\\CONSOLAB.TTF");
     sf::Text levelLogo;
+
     levelLogo.setFont(font);
     levelLogo.setString("LEVEL " + to_string(idLevel + 1));
     levelLogo.setPosition(10, 670);
     levelLogo.setCharacterSize(15);
+
     // count item duration
     //frozen
     bool countDown1 = false;
@@ -214,6 +216,7 @@ void GameWorld::runLevel(int idLevel) {
     sf::Clock clock2;
     sf::Time time2;
     //
+
     int idBG = rand() % NUM_BACKGROUND;
     cout << idBG << '\n';
 
@@ -305,13 +308,12 @@ void GameWorld::runLevel(int idLevel) {
                 }
                 case sf::Keyboard::X: {
                     //cout << "press X";
-                    for (int i = 0; i < person.listItem.size(); i++) {
-                        if (person.listItem[i].isFrozen()) {
-                            for (auto& obj : objects) {
-                                obj->stop();
-                            }
-                            person.listItem.erase(person.listItem.begin() + i, person.listItem.begin() + i + 1);
+                    if (!countDown2 && person.isAbleFrozen()){
+                        person.eraseItemFrozen();
+                        for (auto& obj : objects) {
+                            obj->stop();
                         }
+                        temporaryMessage("FROZEN", 1, false, 175.0f, 350.0f, 24);
                         clock1.restart();
                         countDown1 = true;
                     }
@@ -319,11 +321,10 @@ void GameWorld::runLevel(int idLevel) {
                 }
                 case sf::Keyboard::Z:
                 {
-                    for (int i = 0; i < person.listItem.size(); i++) {
-                        if (person.listItem[i].isInvisible()) {
-                            person.Transparent();
-                            person.listItem.erase(person.listItem.begin() + i, person.listItem.begin() + i + 1);
-                        }
+                    if (!countDown1 && person.isAbleInvisible()){
+                        person.eraseItemInvisible();
+                        person.Transparent();
+                        temporaryMessage("INVISIBLE", 1, false, 175.0f, 350.0f, 24);
                         clock2.restart();
                         countDown2 = true;
                     }
@@ -369,7 +370,7 @@ void GameWorld::runLevel(int idLevel) {
         // time for item
         if (countDown1) {
             time1 = clock1.getElapsedTime();
-            if (time1.asSeconds() > 2.5) {
+            if (time1.asSeconds() > ACTIVATE_FROZEN_TIME) {
                 countDown1 = false;
                 for (auto& obj : objects) {
                     obj->continueRun();
@@ -377,8 +378,8 @@ void GameWorld::runLevel(int idLevel) {
             }
         }
         if (countDown2) {
-            time2 = clock1.getElapsedTime();
-            if (time2.asSeconds() > 6.0) {
+            time2 = clock2.getElapsedTime();
+            if (time2.asSeconds() > ACTIVATE_INVISIBLE_TIME) {
                 countDown2 = false;
                 person.unTransparent();
             }
@@ -430,6 +431,8 @@ void GameWorld::runLevel(int idLevel) {
         person.Render(window);
         
         for (auto& item : items) {
+            if (item->isFrozen() || item->isInvisible())
+                item->falling(0.5);
             item->render(window);
         }
         // reach goal
@@ -451,11 +454,13 @@ void GameWorld::runLevel(int idLevel) {
             }
         }
         // use item
-       
+        /*
+            Use item was implemented when receive event above
+        */
 
 
         // Collide with the objects
-        for (auto& obj : objects) if (person.isImpact(obj)) {
+        for (auto& obj : objects) if (!countDown2 && person.isImpact(obj)) {
             sf::SoundBuffer bufferTem;
             sf::Sound soundTem;
             bufferTem.loadFromFile("./asset/sound/collision.wav");

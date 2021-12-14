@@ -5,13 +5,16 @@
 enum SpecialItem { HEART, FROZEN, INVISIBLE, GOAL };
 class Item:public Object{
 private:
-	
 	SpecialItem speItem;
+	bool isActivated;
 public:
 	void place(float x, float y) {
 		mX = x;
 		mY = y;
 		objSprite.setPosition(mX, mY);
+	}
+	void falling(float step) {
+		mY += step;
 	}
 	bool isFrozen() {
 		return speItem == FROZEN;

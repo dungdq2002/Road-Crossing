@@ -33,6 +33,7 @@ void Player::Reset() { //Reset when the player is contruct again after losing
 	mState = true;
 	mX = startPositionX;
 	mY = startPositionY - height/2.;
+	this->unTransparent();
 	listItem.clear();
 }
 
@@ -136,6 +137,41 @@ void Player::addItem(const Item& item) {
 	this->listItem.push_back(item);
 }
 
+//Special item controller
+bool Player::isAbleFrozen() {
+	for (auto it = listItem.begin(); it != listItem.end(); it++) {
+		if (it->isFrozen()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Player::isAbleInvisible() {
+	for (auto it = listItem.begin(); it != listItem.end(); it++) {
+		if (it->isInvisible()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Player::eraseItemFrozen() {
+	for (auto it = listItem.begin(); it != listItem.end(); it++) {
+		if (it->isFrozen()) {
+			listItem.erase(it);
+			return;
+		}
+	}
+}
+
+void Player::eraseItemInvisible() {
+	for (auto it = listItem.begin(); it != listItem.end(); it++) {
+		if (it->isInvisible()) {
+			listItem.erase(it);
+		}
+	}
+}
 //Render to the windows
 void Player::Render(sf::RenderWindow& l_window) {
 	playerSprite.setPosition(this->mX, this->mY);
