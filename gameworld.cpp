@@ -10,20 +10,25 @@ namespace LevelInfo {
 
             Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level1.objs.push_back(ship1);
+
             Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
-            goal1->place(rand()%300+50, 20);
+            goal1->place(rand() % 300 + 50, 20);
             level1.items.push_back(goal1);
-            // Insert new code as this
-            // Items* abc = new ...
-            // level1.items.push_back(abc)
+
 
             levels.push_back(level1);
 
+        }
+
+        {
+            // level 2
             SLevelInfo level2;
             level2.id = 2;
 
             Object* ship2_0= new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level2.objs.push_back(ship2_0);
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
+            goal1->place(rand() % 300 + 50, 20);
             level2.items.push_back(goal1);
             Item* item2_f = new Item("./asset/image/frozen/frozen.png", 40, 40, FROZEN);
             item2_f->place(300, 100);
@@ -326,7 +331,7 @@ void GameWorld::runLevel(int idLevel) {
                     if (!countDown1 && person.isAbleInvisible()){
                         person.eraseItemInvisible();
                         person.Transparent();
-                        temporaryMessage("INVISIBLE", 1, false, 175.0f, 350.0f, 24);
+                        temporaryMessage("INVISIBLE", 0.3, false, 175.0f, 350.0f, 24);
                         clock2.restart();
                         countDown2 = true;
                     }

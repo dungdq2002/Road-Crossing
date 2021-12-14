@@ -169,6 +169,7 @@ void Player::eraseItemInvisible() {
 	for (auto it = listItem.begin(); it != listItem.end(); it++) {
 		if (it->isInvisible()) {
 			listItem.erase(it);
+			return;
 		}
 	}
 }
