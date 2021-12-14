@@ -97,7 +97,7 @@ public:
 
 	//sX,sY: coordinate of start point.
 	void move() {
-		isStop = false;
+		//isStop = false;
 		if (!isStop) {
 			if (toRight) {
 				if (mX >= winSiz.x) {

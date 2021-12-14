@@ -11,6 +11,16 @@ public:
 	void place(float x, float y) {
 		mX = x;
 		mY = y;
+		objSprite.setPosition(mX, mY);
+	}
+	bool isFrozen() {
+		return speItem == FROZEN;
+	}
+	bool isInvisible() {
+		return speItem == INVISIBLE;
+	}
+	bool isGoal() {
+		return speItem == GOAL;
 	}
 	Item(string srcImg, int width, int height, SpecialItem s) {
 		this->srcImg = srcImg;
@@ -32,6 +42,7 @@ public:
 		objSprite.setOrigin(spriteSize.width / 2, spriteSize.height / 2);
 		this->width = width;
 		this->height = height;
+		objSprite.setPosition(mX, mY);
 	}
 	float getX() {
 		return mX;

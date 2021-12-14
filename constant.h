@@ -8,6 +8,6 @@
 
 #define NUM_BACKGROUND 4
 
-#define NUM_LEVEL 1
+#define NUM_LEVEL 2
 
 #endif

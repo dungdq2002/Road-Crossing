@@ -45,6 +45,7 @@ public:
 	//void passPhase();
 	void Render(sf::RenderWindow& l_window);
 	~Player();
+	std::vector<Item> listItem;
 private:
 	void CheckCollision(Object* obj, float intersectPercent);
 	sf::Sprite playerSprite;
@@ -57,7 +58,7 @@ private:
 	int step;
 	bool mState; //Alive or not
 	DirectionPlayer m_dir;
-	std::vector<Item> listItem; //Contain special item
+	//std::vector<Item> listItem; //Contain special item
 };
 
 #endif

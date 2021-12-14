@@ -10,12 +10,28 @@ namespace LevelInfo {
 
             Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level1.objs.push_back(ship1);
-
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
+            goal1->place(rand()%300+50, 20);
+            level1.items.push_back(goal1);
             // Insert new code as this
             // Items* abc = new ...
             // level1.items.push_back(abc)
 
             levels.push_back(level1);
+
+            SLevelInfo level2;
+            level2.id = 2;
+
+            Object* ship2_0= new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
+            level2.objs.push_back(ship2_0);
+            level2.items.push_back(goal1);
+            Item* item2_f = new Item("./asset/image/frozen/frozen.png", 40, 40, FROZEN);
+            item2_f->place(300, 100);
+            level2.items.push_back(item2_f);
+            Item* item2_i = new Item("./asset/image/invisible/invisible.png", 40, 40, INVISIBLE);
+            item2_i->place(200, 150);
+            level2.items.push_back(item2_i);
+            levels.push_back(level2);
         }
     }
 }
@@ -134,7 +150,7 @@ void GameWorld::welcome() {
         switch (menuAllInOne(menu, idBG)) {
         case 0:
             std::cout << "go to new game\n";
-            runLevel(0);
+            runLevel(1);
             break;
         case 1: {
             cout << " load game \n";
@@ -223,7 +239,7 @@ void GameWorld::runLevel(int idLevel) {
                     // If P is pressed, pause game
                 case sf::Keyboard::P: {
                     Menu pauseScr(3, "asset\\font\\ARCADECLASSIC.TTF");
-
+                    
                     pauseScr.add("Continue");
                     pauseScr.add("Save");
                     pauseScr.add("Quit");
@@ -277,7 +293,28 @@ void GameWorld::runLevel(int idLevel) {
                     }
                     break;
                 }
-
+                case sf::Keyboard::X: {
+                    //cout << "press X";
+                    for (int i = 0; i < person.listItem.size(); i++) {
+                        if (person.listItem[i].isFrozen()) {
+                            for (auto& obj : objects) {
+                                obj->stop();
+                            }
+                            person.listItem.erase(person.listItem.begin() + i, person.listItem.begin() + i + 1);
+                        }
+                    }
+                    break;
+                }
+                case sf::Keyboard::Z:
+                {
+                    for (int i = 0; i < person.listItem.size(); i++) {
+                        if (person.listItem[i].isInvisible()) {
+                            person.Transparent();
+                            person.listItem.erase(person.listItem.begin() + i, person.listItem.begin() + i + 1);
+                        }
+                    }
+                    break;
+                }
                     // Process the up, down, left and right keys
                 case sf::Keyboard::Up:     upFlag = true; break;
                 case sf::Keyboard::Down:    downFlag = true; break;
@@ -300,6 +337,20 @@ void GameWorld::runLevel(int idLevel) {
                 default: break;
                 }
             }
+
+        //if (!person.listItem.empty()) {
+
+        //    if (event.type == sf::Event::KeyPressed)
+        //    {
+        //        switch (event.key.code)
+        //        {
+        //            // If P is pressed, pause game
+        //        
+        //        default:break;
+        //        }
+
+        //    }
+        //}
         }
 
         if (leftFlag) {
@@ -344,6 +395,25 @@ void GameWorld::runLevel(int idLevel) {
         window.draw(levelLogo);
         for (auto& obj : objects) obj->render(window);
         person.Render(window);
+        
+        for (auto& item : items) {
+            item->render(window);
+        }
+        // reach goal
+        // first element is goal, second element is item
+        if (person.isImpact(items[0])) {
+            break;
+        }
+        // catch item
+        for (int i = 1; i < items.size(); i++) {
+            if (person.isImpact(items[i])) {
+                person.addItem(*items[i]);              
+                items.erase(items.begin() + i, items.begin() + i + 1);
+            }
+        }
+        // use item
+       
+
 
         // Collide with the objects
         for (auto& obj : objects) if (person.isImpact(obj)) {
@@ -351,7 +421,7 @@ void GameWorld::runLevel(int idLevel) {
             temporaryMessage("GAME OVER");
             return;
         }
-
+        
         // Rotate and draw the sprite
         window.display();
     }
