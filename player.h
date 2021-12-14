@@ -48,6 +48,11 @@ public:
 	void eraseItemFrozen();
 	void eraseItemInvisible();
 	
+	void sound() {
+		eatItem.play();
+	}
+	// eat item sound
+	
 
 	float getX();
 	float getY();
@@ -67,6 +72,9 @@ private:
 	bool mState; //Alive or not
 	DirectionPlayer m_dir;
 	std::vector<Item> listItem; //Contain special item
+
+	sf::SoundBuffer eatItemBuffer;
+	sf::Sound eatItem;
 };
 
 #endif

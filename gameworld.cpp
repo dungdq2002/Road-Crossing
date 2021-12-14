@@ -446,11 +446,12 @@ void GameWorld::runLevel(int idLevel) {
         // catch item
         for (int i = 1; i < items.size(); i++) {
             if (person.isImpact(items[i])) {
-                sf::SoundBuffer bufferTem;
+                /*sf::SoundBuffer bufferTem;
                 sf::Sound soundTem;
                 bufferTem.loadFromFile("./asset/sound/collision.wav");
                 soundTem.setBuffer(bufferTem);
-                soundTem.play();
+                soundTem.play();*/
+                person.sound();
                 //sf::sleep(sf::seconds(0.1));
                 person.addItem(*items[i]);              
                 items.erase(items.begin() + i, items.begin() + i + 1);

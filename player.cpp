@@ -13,6 +13,10 @@ Player::Player(std::string srcImg, int width, int height) {
 		throw(this->srcImg);
 	}
 
+	eatItemBuffer.loadFromFile("./asset/sound/getItem.wav");
+	eatItem.setBuffer(eatItemBuffer);
+	eatItem.setVolume(5.f);
+
 	playerSprite.setTexture(playerTexture);
 	playerTexture.setSmooth(true);
 	auto tmp = playerSprite.getGlobalBounds();
