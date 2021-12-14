@@ -166,6 +166,13 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
 
 
 void GameWorld::welcome() {
+    sf::Music musicBG;
+    musicBG.openFromFile("./asset/sound/Athletic Theme - Yoshi's Island.wav");
+
+    musicBG.play();
+
+    musicBG.setLoop(true);
+
 	int idBG = rand() % NUM_BACKGROUND;
 
     cout << "menu " << idBG << '\n';
@@ -178,7 +185,9 @@ void GameWorld::welcome() {
 
     while (window.isOpen()) {
         //window.draw(backgroundTexts[idBG]);
-        switch (menuAllInOne(menu, idBG)) {
+        int t = menuAllInOne(menu, idBG);
+        musicBG.stop();
+        switch (t) {
         case 0:
             std::cout << "go to new game\n";
             runLevel(0);
