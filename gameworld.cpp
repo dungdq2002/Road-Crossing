@@ -10,20 +10,25 @@ namespace LevelInfo {
 
             Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level1.objs.push_back(ship1);
+
             Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
-            goal1->place(rand()%300+50, 20);
+            goal1->place(rand() % 300 + 50, 20);
             level1.items.push_back(goal1);
-            // Insert new code as this
-            // Items* abc = new ...
-            // level1.items.push_back(abc)
+
 
             levels.push_back(level1);
 
+        }
+
+        {
+            // level 2
             SLevelInfo level2;
             level2.id = 2;
 
             Object* ship2_0= new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level2.objs.push_back(ship2_0);
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
+            goal1->place(rand() % 300 + 50, 20);
             level2.items.push_back(goal1);
             Item* item2_f = new Item("./asset/image/frozen/frozen.png", 40, 40, FROZEN);
             item2_f->place(300, 100);
@@ -32,6 +37,32 @@ namespace LevelInfo {
             item2_i->place(200, 150);
             level2.items.push_back(item2_i);
             levels.push_back(level2);
+        }
+
+        {
+            // level 3
+            SLevelInfo level3;
+            level3.id = 3;
+
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
+            level3.objs.push_back(ship1);
+
+            Object* ship2 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 1.5f, 200, 500, true);
+            level3.objs.push_back(ship2);
+
+            Object* planet1 = new Obstacle("./asset/image/planet/planet2.png", "", 50, 50);
+            planet1->place(280, 200);
+            level3.objs.push_back(planet1);
+
+            Object* planet2 = new Obstacle("./asset/image/planet/planet2.png", "", 80, 80);
+            planet2->place(100, 200);
+            level3.objs.push_back(planet2);
+            
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
+            goal1->place(rand() % 300 + 50, 20);
+            level3.items.push_back(goal1);
+            
+            levels.push_back(level3);
         }
     }
 }
@@ -74,11 +105,11 @@ GameWorld::~GameWorld() {
     }
 }
 
-void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanScreen, float coorX, float coorY, int sz) {
+void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanScreen, float coorX, float coorY, int sz, string srcFont) {
     if (cleanScreen)
-        window.clear(sf::Color(127, 127, 127));
+        window.clear(sf::Color::Black);
 
-    sf::Font font; font.loadFromFile("asset\\font\\ARCADECLASSIC.TTF");
+    sf::Font font; font.loadFromFile(srcFont);
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(sz);
@@ -135,6 +166,13 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
 
 
 void GameWorld::welcome() {
+    sf::Music musicBG;
+    musicBG.openFromFile("./asset/sound/Athletic Theme - Yoshi's Island.wav");
+
+    musicBG.play();
+
+    musicBG.setLoop(true);
+
 	int idBG = rand() % NUM_BACKGROUND;
 
     cout << "menu " << idBG << '\n';
@@ -147,7 +185,9 @@ void GameWorld::welcome() {
 
     while (window.isOpen()) {
         //window.draw(backgroundTexts[idBG]);
-        switch (menuAllInOne(menu, idBG)) {
+        int t = menuAllInOne(menu, idBG);
+        musicBG.stop();
+        switch (t) {
         case 0:
             std::cout << "go to new game\n";
             runLevel(0);
@@ -198,6 +238,12 @@ void GameWorld::welcome() {
 }
 
 void GameWorld::runLevel(int idLevel) {
+    // instruction
+    if (idLevel == 0)
+        temporaryMessage("Press Arrow keys\n\tto move", 1.5, true, SCREEN_WIDTH / 2, 200, 30, "asset\\font\\CONSOLAB.TTF");
+    else if (idLevel == 1)
+        temporaryMessage("Press Z - Invisible\n\nPress X - Frozen", 2.0, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
+
     sf::Font font; font.loadFromFile("asset\\font\\CONSOLAB.TTF");
     sf::Text levelLogo;
 
@@ -326,7 +372,7 @@ void GameWorld::runLevel(int idLevel) {
                     if (!countDown1 && person.isAbleInvisible()){
                         person.eraseItemInvisible();
                         person.Transparent();
-                        temporaryMessage("INVISIBLE", 1, false, 175.0f, 350.0f, 24);
+                        temporaryMessage("INVISIBLE", 0.3, false, 175.0f, 350.0f, 24);
                         clock2.restart();
                         countDown2 = true;
                     }
@@ -437,6 +483,27 @@ void GameWorld::runLevel(int idLevel) {
                 item->falling(0.5);
             item->render(window);
         }
+
+        sf::Texture __frozen__; __frozen__.loadFromFile("./asset/image/frozen/frozen.png");
+        sf::Sprite __frozen; __frozen.setTexture(__frozen__); 
+        auto __szfrozen = __frozen.getGlobalBounds();
+        __frozen.setScale(25 / __szfrozen.width, 25 / __szfrozen.height);
+        __frozen.setOrigin(__szfrozen.width / 2, __szfrozen.height / 2);
+        __frozen.setPosition(280, 680);
+        if (person.isAbleFrozen()) {
+            window.draw(__frozen);
+        }
+
+        sf::Texture __invisible__; __invisible__.loadFromFile("./asset/image/invisible/invisible.png");
+        sf::Sprite __invisible; __invisible.setTexture(__invisible__);
+        auto __szinvisible = __invisible.getGlobalBounds();
+        __invisible.setScale(25 / __szinvisible.width, 25 / __szinvisible.height);
+        __invisible.setOrigin(__szinvisible.width / 2, __szinvisible.height / 2);
+        __invisible.setPosition(320, 680);
+        if (person.isAbleInvisible()) {
+            window.draw(__invisible);
+        }
+
         // reach goal
         // first element is goal, second element is item
         if (person.isImpact(items[0])) {

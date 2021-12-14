@@ -54,6 +54,7 @@ public:
 	virtual void continueRun(){}
 	virtual void move() { /* nothing */}
 	virtual void stop() { /* nothing */ }
+	virtual void place(int, int) { /* nothing */ }
 	virtual void render(sf::RenderWindow& l_window) = 0;
 };
 

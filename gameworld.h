@@ -45,7 +45,7 @@ private:
     int menuAllInOne(Menu& menu, int idBG = -1);
 
     void initBackground(int id, string src);
-    void temporaryMessage(string message, float delaySecond = 3.0, bool cleanScreen = false, float coorX = SCREEN_WIDTH / 2, float coorY = SCREEN_HEIGHT / 2, int sz = 35);
+    void temporaryMessage(string message, float delaySecond = 3.0, bool cleanScreen = false, float coorX = SCREEN_WIDTH / 2, float coorY = SCREEN_HEIGHT / 2, int sz = 35, string srcFont = "asset\\font\\ARCADECLASSIC.TTF");
     //int pauseScreen();
 
     sf::RenderWindow window;
