@@ -38,6 +38,32 @@ namespace LevelInfo {
             level2.items.push_back(item2_i);
             levels.push_back(level2);
         }
+
+        {
+            // level 3
+            SLevelInfo level3;
+            level3.id = 3;
+
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
+            level3.objs.push_back(ship1);
+
+            Object* ship2 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 1.5f, 200, 500, true);
+            level3.objs.push_back(ship2);
+
+            Object* planet1 = new Obstacle("./asset/image/planet/planet2.png", "", 50, 50);
+            planet1->place(280, 200);
+            level3.objs.push_back(planet1);
+
+            Object* planet2 = new Obstacle("./asset/image/planet/planet2.png", "", 80, 80);
+            planet2->place(100, 200);
+            level3.objs.push_back(planet2);
+            
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
+            goal1->place(rand() % 300 + 50, 20);
+            level3.items.push_back(goal1);
+            
+            levels.push_back(level3);
+        }
     }
 }
 
@@ -79,11 +105,11 @@ GameWorld::~GameWorld() {
     }
 }
 
-void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanScreen, float coorX, float coorY, int sz) {
+void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanScreen, float coorX, float coorY, int sz, string srcFont) {
     if (cleanScreen)
-        window.clear(sf::Color(127, 127, 127));
+        window.clear(sf::Color::Black);
 
-    sf::Font font; font.loadFromFile("asset\\font\\ARCADECLASSIC.TTF");
+    sf::Font font; font.loadFromFile(srcFont);
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(sz);
@@ -203,6 +229,12 @@ void GameWorld::welcome() {
 }
 
 void GameWorld::runLevel(int idLevel) {
+    // instruction
+    if (idLevel == 0)
+        temporaryMessage("Press Arrow keys\n\tto move", 1.5, true, SCREEN_WIDTH / 2, 200, 30, "asset\\font\\CONSOLAB.TTF");
+    else if (idLevel == 1)
+        temporaryMessage("Press Z - Invisible\n\nPress X - Frozen", 2.0, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
+
     sf::Font font; font.loadFromFile("asset\\font\\CONSOLAB.TTF");
     sf::Text levelLogo;
 
@@ -442,6 +474,27 @@ void GameWorld::runLevel(int idLevel) {
                 item->falling(0.5);
             item->render(window);
         }
+
+        sf::Texture __frozen__; __frozen__.loadFromFile("./asset/image/frozen/frozen.png");
+        sf::Sprite __frozen; __frozen.setTexture(__frozen__); 
+        auto __szfrozen = __frozen.getGlobalBounds();
+        __frozen.setScale(25 / __szfrozen.width, 25 / __szfrozen.height);
+        __frozen.setOrigin(__szfrozen.width / 2, __szfrozen.height / 2);
+        __frozen.setPosition(280, 680);
+        if (person.isAbleFrozen()) {
+            window.draw(__frozen);
+        }
+
+        sf::Texture __invisible__; __invisible__.loadFromFile("./asset/image/invisible/invisible.png");
+        sf::Sprite __invisible; __invisible.setTexture(__invisible__);
+        auto __szinvisible = __invisible.getGlobalBounds();
+        __invisible.setScale(25 / __szinvisible.width, 25 / __szinvisible.height);
+        __invisible.setOrigin(__szinvisible.width / 2, __szinvisible.height / 2);
+        __invisible.setPosition(320, 680);
+        if (person.isAbleInvisible()) {
+            window.draw(__invisible);
+        }
+
         // reach goal
         // first element is goal, second element is item
         if (person.isImpact(items[0])) {
