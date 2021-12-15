@@ -379,10 +379,15 @@ void GameWorld::runLevel(int idLevel) {
                     break;
                 }
                     // Process the up, down, left and right keys
-                case sf::Keyboard::Up:     upFlag = true; break;
-                case sf::Keyboard::Down:    downFlag = true; break;
-                case sf::Keyboard::Left:    leftFlag = true; break;
-                case sf::Keyboard::Right:   rightFlag = true; break;
+                case sf::Keyboard::Up: {
+                    upFlag = true; 
+                    person.sound1();
+                    break;
+
+                }
+                case sf::Keyboard::Down:    downFlag = true; person.sound1(); break;
+                case sf::Keyboard::Left:    leftFlag = true; person.sound1(); break;
+                case sf::Keyboard::Right:   rightFlag = true; person.sound1(); break;
                 default: break;
                 }
             }

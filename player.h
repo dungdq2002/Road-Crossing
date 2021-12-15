@@ -52,7 +52,9 @@ public:
 		eatItem.play();
 	}
 	// eat item sound
-	
+	void sound1() {
+		moveSound.play();
+	}
 
 	float getX();
 	float getY();
@@ -75,6 +77,8 @@ private:
 
 	sf::SoundBuffer eatItemBuffer;
 	sf::Sound eatItem;
+	sf::SoundBuffer moveBuffer;
+	sf::Sound moveSound;
 };
 
 #endif

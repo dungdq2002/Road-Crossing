@@ -16,6 +16,9 @@ Player::Player(std::string srcImg, int width, int height) {
 	eatItemBuffer.loadFromFile("./asset/sound/getItem.wav");
 	eatItem.setBuffer(eatItemBuffer);
 	eatItem.setVolume(5.f);
+	moveBuffer.loadFromFile("./asset/sound/button.wav");
+	moveSound.setBuffer(moveBuffer);
+	moveSound.setVolume(50.f);
 
 	playerSprite.setTexture(playerTexture);
 	playerTexture.setSmooth(true);
