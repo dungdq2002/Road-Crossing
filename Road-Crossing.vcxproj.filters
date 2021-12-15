@@ -13,48 +13,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\lib">
+      <UniqueIdentifier>{641b4403-3ffa-4389-b968-e2531a142591}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameworld.cpp">
+    <ClCompile Include="lib\player.h">
+      <Filter>Header Files\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
+    <ClCompile Include="src\gameworld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="object.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="lib\constant.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="item.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="lib\gameworld.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="lib\item.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="constant.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="lib\menu.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="gameworld.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="lib\object.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="lib\Collision.hpp">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

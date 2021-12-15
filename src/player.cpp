@@ -1,4 +1,4 @@
-#include "player.h"
+#include "../lib/player.h"
 
 const int startPositionX = 350/2;
 const int startPositionY = 700;

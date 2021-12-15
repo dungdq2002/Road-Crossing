@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "../lib/menu.h"
 
 Menu::Menu(int numItem, std::string srcFont) {
     if (!font.loadFromFile(srcFont)) throw "Font not found!";

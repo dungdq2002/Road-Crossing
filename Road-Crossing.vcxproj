@@ -146,21 +146,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="gameworld.cpp" />
+    <ClCompile Include="src\Collision.cpp" />
+    <ClCompile Include="src\gameworld.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="player.h" />
+    <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="lib\player.h" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collision.hpp" />
-    <ClInclude Include="constant.h" />
-    <ClInclude Include="gameworld.h" />
-    <ClInclude Include="item.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="object.h" />
+    <ClInclude Include="lib\Collision.hpp" />
+    <ClInclude Include="lib\constant.h" />
+    <ClInclude Include="lib\gameworld.h" />
+    <ClInclude Include="lib\item.h" />
+    <ClInclude Include="lib\menu.h" />
+    <ClInclude Include="lib\object.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -53,6 +53,7 @@ public:
 	}
 	// eat item sound
 	void sound1() {
+		moveSound.setVolume(5.0);
 		moveSound.play();
 	}
 

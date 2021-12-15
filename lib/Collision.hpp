@@ -1,6 +1,6 @@
 #ifndef COLLISION_H
 #define COLLISION_H
-#include "SFML-2.5.1/include/SFML/Graphics.hpp"
+#include "../SFML-2.5.1/include/SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
 namespace Collision {

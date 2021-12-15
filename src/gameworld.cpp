@@ -1,4 +1,4 @@
-#include "gameworld.h"
+#include "../lib/gameworld.h"
 
 namespace LevelInfo {
     vector <SLevelInfo> levels;
