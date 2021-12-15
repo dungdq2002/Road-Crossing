@@ -379,14 +379,20 @@ void GameWorld::runLevel(int idLevel) {
                     break;
                 }
                     // Process the up, down, left and right keys
+                case sf::Keyboard::W:
                 case sf::Keyboard::Up: {
                     upFlag = true; 
                     person.sound1();
                     break;
 
                 }
+                case sf::Keyboard::S:
                 case sf::Keyboard::Down:    downFlag = true; person.sound1(); break;
+
+                case sf::Keyboard::A:
                 case sf::Keyboard::Left:    leftFlag = true; person.sound1(); break;
+
+                case sf::Keyboard::D:
                 case sf::Keyboard::Right:   rightFlag = true; person.sound1(); break;
                 default: break;
                 }
@@ -398,9 +404,13 @@ void GameWorld::runLevel(int idLevel) {
                 switch (event.key.code)
                 {
                     // Process the up, down, left and right keys
+                case sf::Keyboard::W:
                 case sf::Keyboard::Up:     upFlag = false; break;
+                case sf::Keyboard::S:
                 case sf::Keyboard::Down:    downFlag = false; break;
+                case sf::Keyboard::A:
                 case sf::Keyboard::Left:    leftFlag = false; break;
+                case sf::Keyboard::D:
                 case sf::Keyboard::Right:   rightFlag = false; break;
                 default: break;
                 }
