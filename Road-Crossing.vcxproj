@@ -149,7 +149,9 @@
     <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\gameworld.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\object.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="lib\player.h" />
     <ClCompile Include="test.cpp" />
