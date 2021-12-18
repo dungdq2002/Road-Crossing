@@ -8,7 +8,7 @@
 
 #define NUM_BACKGROUND 4
 
-#define NUM_LEVEL 3
+#define NUM_LEVEL 4
 
 #define ACTIVATE_FROZEN_TIME 2.5
 

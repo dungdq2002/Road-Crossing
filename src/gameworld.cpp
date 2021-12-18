@@ -64,6 +64,38 @@ namespace LevelInfo {
             
             levels.push_back(level3);
         }
+
+        {
+            //level 4
+            SLevelInfo level4;
+            level4.id = 4;
+
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
+            level4.objs.push_back(ship1);
+            Object* ship5 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 5.f, 400, 80, false);
+            level4.objs.push_back(ship5);
+            Object* ship2 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 1.5f, 200, 500, true);
+            level4.objs.push_back(ship2);
+            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship2.png", "", 90, 70, 3.f, 150, 80, true);
+            level4.objs.push_back(ship3);
+            Object* ship4 = new Spawner("./asset/image/spaceship/spaceship2.png", "", 90, 70, 3.f, 250, 80, true);
+            level4.objs.push_back(ship4);
+            Object* planet1 = new Obstacle("./asset/image/planet/planet2.png", "", 50, 50);
+            planet1->place(280, 200);
+            level4.objs.push_back(planet1);
+
+            Object* planet2 = new Obstacle("./asset/image/planet/planet2.png", "", 80, 80);
+            planet2->place(100, 200);
+            level4.objs.push_back(planet2);
+            Object* planet3 = new Obstacle("./asset/image/planet/planet1.png", "", 80, 80);
+            planet3->place(170, 140);
+            level4.objs.push_back(planet3);
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
+            goal1->place(rand() % 300 + 50, 20);
+            level4.items.push_back(goal1);
+
+            levels.push_back(level4);
+        }
     }
 }
 
