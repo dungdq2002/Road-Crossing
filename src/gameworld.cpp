@@ -122,34 +122,33 @@ namespace LevelInfo {
         }
     }
 }
-
 void GameWorld::initBackground(int id, string src) {
-	backgroundTextures[id].loadFromFile(src);
-	backgroundTexts[id].setTexture(backgroundTextures[id]);
-	auto sz = backgroundTexts[id].getGlobalBounds();
-	backgroundTexts[id].setScale(SCREEN_WIDTH / sz.width, SCREEN_HEIGHT / sz.height);
+    backgroundTextures[id].loadFromFile(src);
+    backgroundTexts[id].setTexture(backgroundTextures[id]);
+    auto sz = backgroundTexts[id].getGlobalBounds();
+    backgroundTexts[id].setScale(SCREEN_WIDTH / sz.width, SCREEN_HEIGHT / sz.height);
 }
 
 GameWorld::GameWorld() :
-	window(sf::VideoMode(350, 700), "Road Crossing", sf::Style::Close),
-	person("./asset/image/spaceShip0.png", 30, 30) 
+    window(sf::VideoMode(350, 700), "Road Crossing", sf::Style::Close),
+    person("./asset/image/spaceShip0.png", 30, 30)
 {
     srand(time(0));
 
-	// Enable vertical sync. (vsync)
-	window.setVerticalSyncEnabled(true);
-	// When a key is pressed, sf::Event::KeyPressed will be true only once
-	window.setKeyRepeatEnabled(false);
+    // Enable vertical sync. (vsync)
+    window.setVerticalSyncEnabled(true);
+    // When a key is pressed, sf::Event::KeyPressed will be true only once
+    window.setKeyRepeatEnabled(false);
 
-	LevelInfo::init();
+    LevelInfo::init();
 
-	backgroundTexts.resize(NUM_BACKGROUND);
-	backgroundTextures.resize(NUM_BACKGROUND);
+    backgroundTexts.resize(NUM_BACKGROUND);
+    backgroundTextures.resize(NUM_BACKGROUND);
 
-	initBackground(0, "./asset/image/background1.jpg");
-	initBackground(1, "./asset/image/background2.png");
-	initBackground(2, "./asset/image/background3.jpg");
-	initBackground(3, "./asset/image/background4.jpg");
+    initBackground(0, "./asset/image/background1.jpg");
+    initBackground(1, "./asset/image/background2.png");
+    initBackground(2, "./asset/image/background3.jpg");
+    initBackground(3, "./asset/image/background4.jpg");
 
     isRunning = true;
 }
@@ -190,23 +189,23 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
         sf::Event event;
         while (window.pollEvent(event))
         {
-             //Close the window if a key is pressed or if requested
+            //Close the window if a key is pressed or if requested
             if (event.type == sf::Event::Closed) {
                 isRunning = false;
                 window.close();
             }
 
-             //If a key is released
+            //If a key is released
             if (event.type == sf::Event::KeyReleased)
             {
                 switch (event.key.code)
                 {
-                     //Process the up, down, left and right keys
+                    //Process the up, down, left and right keys
                 case sf::Keyboard::Escape: return -1;
                 case sf::Keyboard::Up: menu.moveUp(); break;
                 case sf::Keyboard::Down: menu.moveDown(); break;
                 case sf::Keyboard::Return: return menu.select();
-                    
+
                 default: break;
                 }
             }
@@ -229,15 +228,15 @@ void GameWorld::welcome() {
 
     musicBG.setLoop(true);
 
-	int idBG = rand() % NUM_BACKGROUND;
+    int idBG = rand() % NUM_BACKGROUND;
 
     cout << "menu " << idBG << '\n';
 
-	Menu menu(3, "asset\\font\\ARCADECLASSIC.TTF");
+    Menu menu(3, "asset\\font\\ARCADECLASSIC.TTF");
 
-	menu.add("New Game");
-	menu.add("Load Game");
-	menu.add("Exit");
+    menu.add("New Game");
+    menu.add("Load Game");
+    menu.add("Exit");
 
     while (window.isOpen()) {
         //window.draw(backgroundTexts[idBG]);
@@ -265,7 +264,7 @@ void GameWorld::welcome() {
                     data.add(to_string(i + 1) + ". ==============");
                 }
                 else {
-                    int LV; inp >> LV; 
+                    int LV; inp >> LV;
                     m[i] = LV;
                     LV++;
                     string lv = to_string(LV);
@@ -274,21 +273,21 @@ void GameWorld::welcome() {
                 }
                 inp.close();
             }
-            
+
             int t = menuAllInOne(data, idBG);
             cout << t << '\n';
             if (t == -1) break;
             if (m.count(t)) {
                 runLevel(m[t]);
             }
-            else runLevel(0);         
+            else runLevel(0);
             break;
         }
         case 2:
             isRunning = false;
             break;
         }
-        
+
         if (!isRunning) break;
     }
 }
@@ -330,7 +329,7 @@ void GameWorld::runLevel(int idLevel) {
     cout << idBG << '\n';
 
     objects = LevelInfo::levels[idLevel].objs;
-	items = LevelInfo::levels[idLevel].items;
+    items = LevelInfo::levels[idLevel].items;
 
     person.Reset();
 
@@ -343,7 +342,7 @@ void GameWorld::runLevel(int idLevel) {
 
     bool winGame = false;
     // Process events
-   
+
     while (true) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -363,7 +362,7 @@ void GameWorld::runLevel(int idLevel) {
                     // If P is pressed, pause game
                 case sf::Keyboard::P: {
                     Menu pauseScr(3, "asset\\font\\ARCADECLASSIC.TTF");
-                    
+
                     pauseScr.add("Continue");
                     pauseScr.add("Save");
                     pauseScr.add("Quit");
@@ -419,7 +418,7 @@ void GameWorld::runLevel(int idLevel) {
                 }
                 case sf::Keyboard::X: {
                     //cout << "press X";
-                    if (!countDown2 && person.isAbleFrozen()){
+                    if (!countDown2 && person.isAbleFrozen()) {
                         person.eraseItemFrozen();
                         for (auto& obj : objects) {
                             obj->stop();
@@ -432,7 +431,7 @@ void GameWorld::runLevel(int idLevel) {
                 }
                 case sf::Keyboard::Z:
                 {
-                    if (!countDown1 && person.isAbleInvisible()){
+                    if (!countDown1 && person.isAbleInvisible()) {
                         person.eraseItemInvisible();
                         person.Transparent();
                         temporaryMessage("INVISIBLE", 0.3, false, 175.0f, 350.0f, 24);
@@ -441,10 +440,10 @@ void GameWorld::runLevel(int idLevel) {
                     }
                     break;
                 }
-                    // Process the up, down, left and right keys
+                // Process the up, down, left and right keys
                 case sf::Keyboard::W:
                 case sf::Keyboard::Up: {
-                    upFlag = true; 
+                    upFlag = true;
                     person.sound1();
                     break;
 
@@ -479,19 +478,19 @@ void GameWorld::runLevel(int idLevel) {
                 }
             }
 
-        //if (!person.listItem.empty()) {
+            //if (!person.listItem.empty()) {
 
-        //    if (event.type == sf::Event::KeyPressed)
-        //    {
-        //        switch (event.key.code)
-        //        {
-        //            // If P is pressed, pause game
-        //        
-        //        default:break;
-        //        }
+            //    if (event.type == sf::Event::KeyPressed)
+            //    {
+            //        switch (event.key.code)
+            //        {
+            //            // If P is pressed, pause game
+            //        
+            //        default:break;
+            //        }
 
-        //    }
-        //}
+            //    }
+            //}
         }
         if (!countDown3 && !countDown4) {
             countDown3 = true;
@@ -546,17 +545,17 @@ void GameWorld::runLevel(int idLevel) {
 
         //
         if (leftFlag) {
-            cout << "left\n"; 
+            cout << "left\n";
             person.SetDirection(DirectionPlayer::Left);
             person.Move();
-        } 
+        }
         if (rightFlag) {
-            cout << "right\n";  
+            cout << "right\n";
             person.SetDirection(DirectionPlayer::Right);
             person.Move();
         }
         if (upFlag) {
-            cout << "up\n";  
+            cout << "up\n";
             person.SetDirection(DirectionPlayer::Up);
             person.Move();
         }
@@ -571,13 +570,13 @@ void GameWorld::runLevel(int idLevel) {
         // The problem of the previous is when up is pressing, and we press left, the if of Up is lower so the left will first set
         // as Direction Left but then go to up when be set as Up, results all UP
         // If we move Left lower than Up, the result will be all LEFT
-         
+
         // Clear the window and apply grey background
         window.clear(sf::Color(127, 127, 127));
 
-/*
-    If reach GOAL, check idLevel vs NUM_LEVEL (in constant.h)
-*/
+        /*
+            If reach GOAL, check idLevel vs NUM_LEVEL (in constant.h)
+        */
 
         // Move Object
         for (auto& obj : objects) obj->move();
@@ -587,7 +586,7 @@ void GameWorld::runLevel(int idLevel) {
         window.draw(levelLogo);
         for (auto& obj : objects) obj->render(window);
         person.Render(window);
-        
+
         for (auto& item : items) {
             if (item->isFrozen() || item->isInvisible())
                 item->falling(0.5);
@@ -595,7 +594,7 @@ void GameWorld::runLevel(int idLevel) {
         }
 
         sf::Texture __frozen__; __frozen__.loadFromFile("./asset/image/frozen/frozen.png");
-        sf::Sprite __frozen; __frozen.setTexture(__frozen__); 
+        sf::Sprite __frozen; __frozen.setTexture(__frozen__);
         auto __szfrozen = __frozen.getGlobalBounds();
         __frozen.setScale(25 / __szfrozen.width, 25 / __szfrozen.height);
         __frozen.setOrigin(__szfrozen.width / 2, __szfrozen.height / 2);
@@ -630,7 +629,7 @@ void GameWorld::runLevel(int idLevel) {
                 soundTem.play();*/
                 person.sound();
                 //sf::sleep(sf::seconds(0.1));
-                person.addItem(*items[i]);              
+                person.addItem(*items[i]);
                 items.erase(items.begin() + i, items.begin() + i + 1);
             }
         }
@@ -648,11 +647,11 @@ void GameWorld::runLevel(int idLevel) {
             soundTem.setBuffer(bufferTem);
             soundTem.play();
             cout << "Game over\n";
-            
+
             temporaryMessage("GAME OVER");
             return;
         }
-        
+
         // Rotate and draw the sprite
         window.display();
     }
