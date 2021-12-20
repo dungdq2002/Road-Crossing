@@ -1,5 +1,15 @@
 #include "../lib/gameworld.h"
 
+//lane 1,light
+// 120,50
+//lane 2,light
+// 270,200
+// lane 3,light
+// 420,350
+//lane 4,light
+//570,500
+
+
 namespace LevelInfo {
     vector <SLevelInfo> levels;
     void LevelInfo::init() {
@@ -8,9 +18,23 @@ namespace LevelInfo {
             SLevelInfo level1;
             level1.id = 1;
 
-            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 200, 120, false);
             level1.objs.push_back(ship1);
+            Object* light1 = new light("light.png", 10, 10,20,50);
+            level1.objs.push_back(light1);
 
+            Object* ship2 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 250, 270, true);
+            level1.objs.push_back(ship2);
+            /*Object* light2 = new light("light.png", 10, 10, 20, 200);
+            level1.objs.push_back(light2);*/
+            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 300, 420, false);
+            level1.objs.push_back(ship3);
+            /*Object* light3 = new light("light.png", 10, 10, 20, 350);
+            level1.objs.push_back(light3);*/
+            Object* ship4 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 350, 570, true);
+            level1.objs.push_back(ship4);
+            /*Object* light4 = new light("light.png", 10, 10, 20, 500);
+            level1.objs.push_back(light4);*/
             Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
             goal1->place(rand() % 300 + 50, 20);
             level1.items.push_back(goal1);
@@ -293,7 +317,14 @@ void GameWorld::runLevel(int idLevel) {
     bool countDown2 = false;
     sf::Clock clock2;
     sf::Time time2;
-    //
+    //green light duration
+    bool countDown3 = false;
+    sf::Clock clock3;
+    sf::Time time3;
+    // red light duration
+    bool countDown4 = false;
+    sf::Clock clock4;
+    sf::Time time4;
 
     int idBG = rand() % NUM_BACKGROUND;
     cout << idBG << '\n';
@@ -462,6 +493,38 @@ void GameWorld::runLevel(int idLevel) {
         //    }
         //}
         }
+        if (!countDown3 && !countDown4) {
+            countDown3 = true;
+            clock3.restart();
+            for (auto& obj : objects) {
+                obj->continueRun();
+            }
+
+        }
+        if (countDown3 && clock3.getElapsedTime().asSeconds() > GREEN_LIGHT) {
+            countDown3 = false;
+            clock4.restart();
+            for (auto& obj : objects) {
+                obj->stop();
+            }
+            for (auto& obj : objects) {
+                obj->changeState();
+            }
+            countDown4 = true;
+        }
+       
+        if (countDown4 && clock4.getElapsedTime().asSeconds() > RED_LIGHT) {
+            countDown4 = false;
+            clock3.restart();
+            for (auto& obj : objects) {
+                obj->continueRun();
+            }
+            for (auto& obj : objects) {
+                obj->changeState();
+            }
+            countDown3 = true;
+        }
+
         // time for item
         if (countDown1) {
             time1 = clock1.getElapsedTime();

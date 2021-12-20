@@ -40,7 +40,7 @@ void Spawner::move() {
 	//isStop = false;
 	if (!isStop) {
 		if (toRight) {
-			if (mX >= winSiz.x) {
+			if (mX >= winSiz.x+width/2) {
 				mX = -width / 2;
 			}
 			else
@@ -107,4 +107,32 @@ void Obstacle::place(int coorX, int coorY) {
 	mX = coorX;
 	mY = coorY;
 	objSprite.setPosition(mX, mY);
+}
+
+light::light(string img, int width, int height, int x, int y) {
+	srcImg = img;
+	if (!Collision::CreateTextureAndBitmask(objTexture, this->srcImg)) {
+		std::cerr << "error while loading texture " << std::endl;;
+		throw(this->srcImg);
+	}
+
+	this->width = width;
+	this->height = height;
+	mX = x;
+	mY = y;
+	objTexture.setSmooth(true);
+
+	objSprite.setTexture(objTexture);
+	auto size = objSprite.getGlobalBounds();
+	objSprite.setScale((float)width / (float)size.width, (float)height / (float)size.height);
+	sf::FloatRect spriteSize = objSprite.getLocalBounds();
+	objSprite.setOrigin(spriteSize.width / 2, spriteSize.height / 2);
+	/*if (!objBuffer.loadFromFile(this->srcSound)) {
+		std::cerr << "error while loading sound " << std::endl;;
+		throw(this->srcSound);
+	}
+	objSound.setBuffer(objBuffer);*/
+	objSprite.setPosition(mX, mY);
+	
+	state = 1;
 }

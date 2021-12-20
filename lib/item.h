@@ -43,6 +43,9 @@ public:
 		//
 		l_window.draw(objSprite);
 	}
+	void changeState() {
+
+	}
 };
 
 #endif

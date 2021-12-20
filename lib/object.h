@@ -42,6 +42,9 @@ protected:
 	//sound
 	sf::SoundBuffer objBuffer;
 	sf::Sound objSound;
+
+	bool state;
+	//1 is green , 0 is red
 public:
 	sf::Sprite objSprite;
 	virtual float getX() = 0;
@@ -51,6 +54,7 @@ public:
 	/*virtual void moveHorizontal(int sX, int sY, bool toRight, sf::Vector2u windowSize) {
 
 	}*/
+	virtual void changeState() = 0;
 	virtual void continueRun(){}
 	virtual void move() { /* nothing */}
 	virtual void stop() { /* nothing */ }
@@ -89,6 +93,9 @@ public:
 	}
 	void onSound();
 	void render(sf::RenderWindow& l_window);
+	void changeState(){
+		//nothing
+	}
 	
 private:
 	float speed;
@@ -117,6 +124,7 @@ public:
 		l_window.draw(objSprite);
 
 	}
+	void continueRun(){}
 	float getX() {
 		return mX;
 	}
@@ -129,8 +137,50 @@ public:
 	int getHeight() {
 		return height;
 	}
+	void changeState(){
+		//nothing
+	}
 private:
 
 };
-
+class light :public Object {
+public:
+	light(string img, int width, int height, int x, int y);
+	void renderRed(sf::RenderWindow& l_window);
+	void renderGreen(sf::RenderWindow& l_window);
+	float getX() {
+		return mX;
+	}
+	float getY() {
+		return mY;
+	}
+	int getWidth() {
+		return width;
+	}
+	int getHeight() {
+		return height;
+	}
+	void continueRun() {}
+	void move() { /* nothing */ }
+	void stop() { /* nothing */ }
+	void place(int, int) { /* nothing */ }
+	void render(sf::RenderWindow& l_window) {
+		if (state==1) {
+			objSprite.setColor(sf::Color(0, 255, 0, 255));//red
+			l_window.draw(objSprite);
+		}
+		if (state == 0) {
+			objSprite.setColor(sf::Color(255, 0, 0, 255));//red
+			l_window.draw(objSprite);
+		}
+	}
+	bool getState() {
+		return state;
+	}
+	void changeState() {
+		state = !state;
+	}
+private:
+	
+};
 #endif

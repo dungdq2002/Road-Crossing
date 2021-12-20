@@ -16,5 +16,8 @@
 
 #define NUM_INVISIBLE 0
 
+#define RED_LIGHT 1
+#define GREEN_LIGHT 4
+
 #define NUM_FROZEN 0
 #endif
