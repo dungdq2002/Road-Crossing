@@ -122,3 +122,9 @@ namespace LevelInfo {
         }
     }
 }
+void GameWorld::initBackground(int id, string src) {
+    backgroundTextures[id].loadFromFile(src);
+    backgroundTexts[id].setTexture(backgroundTextures[id]);
+    auto sz = backgroundTexts[id].getGlobalBounds();
+    backgroundTexts[id].setScale(SCREEN_WIDTH / sz.width, SCREEN_HEIGHT / sz.height);
+}
