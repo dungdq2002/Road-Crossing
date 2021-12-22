@@ -128,3 +128,26 @@ void GameWorld::initBackground(int id, string src) {
     auto sz = backgroundTexts[id].getGlobalBounds();
     backgroundTexts[id].setScale(SCREEN_WIDTH / sz.width, SCREEN_HEIGHT / sz.height);
 }
+GameWorld::GameWorld() :
+    window(sf::VideoMode(350, 700), "Road Crossing", sf::Style::Close),
+    person("./asset/image/spaceShip0.png", 30, 30)
+{
+    srand(time(0));
+
+    // Enable vertical sync. (vsync)
+    window.setVerticalSyncEnabled(true);
+    // When a key is pressed, sf::Event::KeyPressed will be true only once
+    window.setKeyRepeatEnabled(false);
+
+    LevelInfo::init();
+
+    backgroundTexts.resize(NUM_BACKGROUND);
+    backgroundTextures.resize(NUM_BACKGROUND);
+
+    initBackground(0, "./asset/image/background1.jpg");
+    initBackground(1, "./asset/image/background2.png");
+    initBackground(2, "./asset/image/background3.jpg");
+    initBackground(3, "./asset/image/background4.jpg");
+
+    isRunning = true;
+}
