@@ -151,3 +151,31 @@ GameWorld::GameWorld() :
 
     isRunning = true;
 }
+GameWorld::~GameWorld() {
+    for (auto level : LevelInfo::levels) {
+        for (auto& obj : level.objs) delete obj;
+        for (auto& item : level.items) delete item;
+    }
+}
+
+void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanScreen, float coorX, float coorY, int sz, string srcFont) {
+    if (cleanScreen)
+        window.clear(sf::Color::Black);
+
+    sf::Font font; font.loadFromFile(srcFont);
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(sz);
+    text.setFillColor(sf::Color::White);
+    text.setString(message);
+    auto size = text.getGlobalBounds();
+    text.setOrigin(size.width / 2, size.height / 2);
+    text.setPosition(coorX, coorY);
+
+    window.draw(text);
+    window.display();
+
+    sf::sleep(sf::seconds(delaySecond));
+
+    return;
+}
