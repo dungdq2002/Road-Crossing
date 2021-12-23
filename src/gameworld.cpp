@@ -179,3 +179,39 @@ void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanSc
 
     return;
 }
+int GameWorld::menuAllInOne(Menu& menu, int idBG) {
+    window.clear(sf::Color(127, 127, 127));
+
+    while (true) {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            //Close the window if a key is pressed or if requested
+            if (event.type == sf::Event::Closed) {
+                isRunning = false;
+                window.close();
+            }
+
+            //If a key is released
+            if (event.type == sf::Event::KeyReleased)
+            {
+                switch (event.key.code)
+                {
+                    //Process the up, down, left and right keys
+                case sf::Keyboard::Escape: return -1;
+                case sf::Keyboard::Up: menu.moveUp(); break;
+                case sf::Keyboard::Down: menu.moveDown(); break;
+                case sf::Keyboard::Return: return menu.select();
+
+                default: break;
+                }
+            }
+        }
+        if (idBG != -1) window.draw(backgroundTexts[idBG]);
+        menu.draw(window);
+        window.display();
+    }
+
+    throw " oops ??";
+    return -1;
+}
