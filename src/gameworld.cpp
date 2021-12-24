@@ -215,3 +215,74 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
     throw " oops ??";
     return -1;
 }
+void GameWorld::welcome() {
+    sf::Music musicBG;
+    musicBG.openFromFile("./asset/sound/Athletic Theme - Yoshi's Island.wav");
+
+    musicBG.play();
+
+    musicBG.setLoop(true);
+
+    int idBG = rand() % NUM_BACKGROUND;
+
+    cout << "menu " << idBG << '\n';
+
+    Menu menu(3, "asset\\font\\ARCADECLASSIC.TTF");
+
+    menu.add("New Game");
+    menu.add("Load Game");
+    menu.add("Exit");
+
+    while (window.isOpen()) {
+        //window.draw(backgroundTexts[idBG]);
+        int t = menuAllInOne(menu, idBG);
+        musicBG.stop();
+        switch (t) {
+        case 0:
+            std::cout << "go to new game\n";
+            runLevel(0);
+            break;
+        case 1: {
+            cout << " load game \n";
+            Menu data(5, "asset\\font\\CONSOLAB.TTF");
+
+            auto zeroPadding = [&](string& s, int sz = 2) {
+                while (s.size() < sz) s.insert(s.begin(), '0');
+                return s;
+            };
+
+            map <int, int> m;
+            for (int i = 0; i < 5; i++) {
+                ifstream inp("./log/" + to_string(i) + ".txt");
+                if (!inp) {
+                    cout << "file " << i << " is not existed\n";
+                    data.add(to_string(i + 1) + ". ==============");
+                }
+                else {
+                    int LV; inp >> LV;
+                    m[i] = LV;
+                    LV++;
+                    string lv = to_string(LV);
+                    string day, month, year; inp >> day >> month >> year;
+                    data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(day) + "-" + zeroPadding(month) + "-" + zeroPadding(year, 4));
+                }
+                inp.close();
+            }
+
+            int t = menuAllInOne(data, idBG);
+            cout << t << '\n';
+            if (t == -1) break;
+            if (m.count(t)) {
+                runLevel(m[t]);
+            }
+            else runLevel(0);
+            break;
+        }
+        case 2:
+            isRunning = false;
+            break;
+        }
+
+        if (!isRunning) break;
+    }
+}
