@@ -286,3 +286,28 @@ void GameWorld::welcome() {
         if (!isRunning) break;
     }
 }
+void GameWorld::runLevel(int idLevel) {
+    // instruction
+    if (idLevel == 0)
+        temporaryMessage("Press Arrow keys\n\tto move", 1.5, true, SCREEN_WIDTH / 2, 200, 30, "asset\\font\\CONSOLAB.TTF");
+    else if (idLevel == 1)
+        temporaryMessage("Press Z - Invisible\n\nPress X - Frozen", 2.0, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
+
+    sf::Font font; font.loadFromFile("asset\\font\\CONSOLAB.TTF");
+    sf::Text levelLogo;
+
+    levelLogo.setFont(font);
+    levelLogo.setString("LEVEL " + to_string(idLevel + 1));
+    levelLogo.setPosition(10, 670);
+    levelLogo.setCharacterSize(15);
+
+    // count item duration
+    //frozen
+    bool countDown1 = false;
+    sf::Clock clock1;
+    sf::Time time1;
+    //invisible
+    bool countDown2 = false;
+    sf::Clock clock2;
+    sf::Time time2;
+}
