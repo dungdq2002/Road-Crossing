@@ -326,3 +326,33 @@ void GameWorld::runLevel(int idLevel) {
     int test = 0;
 
     bool winGame = false;
+    // Process events
+
+    while (true) {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            // Close the window if a key is pressed or if requested
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                isRunning = false;
+                return;
+            }
+
+            // If a key is pressed
+            if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                    // If P is pressed, pause game
+                case sf::Keyboard::P: {
+                    Menu pauseScr(3, "asset\\font\\ARCADECLASSIC.TTF");
+
+                    pauseScr.add("Continue");
+                    pauseScr.add("Save");
+                    pauseScr.add("Quit");
+
+                    switch (menuAllInOne(pauseScr, idBG)) {
+                    case 0:
+                        std::cout << "continue\n";
+                        break;
