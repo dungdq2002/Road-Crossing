@@ -310,4 +310,19 @@ void GameWorld::runLevel(int idLevel) {
     bool countDown2 = false;
     sf::Clock clock2;
     sf::Time time2;
-}
+    int idBG = rand() % NUM_BACKGROUND;
+    cout << idBG << '\n';
+
+    objects = LevelInfo::levels[idLevel].objs;
+    items = LevelInfo::levels[idLevel].items;
+
+    person.Reset();
+
+    // Flags for key pressed
+    bool upFlag = false;
+    bool downFlag = false;
+    bool leftFlag = false;
+    bool rightFlag = false;
+    int test = 0;
+
+    bool winGame = false;
