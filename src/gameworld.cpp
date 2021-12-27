@@ -401,3 +401,64 @@ void GameWorld::runLevel(int idLevel) {
                     }
                     break;
                 }
+                case sf::Keyboard::X: {
+                    //cout << "press X";
+                    if (!countDown2 && person.isAbleFrozen()) {
+                        person.eraseItemFrozen();
+                        for (auto& obj : objects) {
+                            obj->stop();
+                        }
+                        temporaryMessage("FROZEN", 0.3, false, 175.0f, 350.0f, 24);
+                        clock1.restart();
+                        countDown1 = true;
+                    }
+                    break;
+                }
+                case sf::Keyboard::Z:
+                {
+                    if (!countDown1 && person.isAbleInvisible()) {
+                        person.eraseItemInvisible();
+                        person.Transparent();
+                        temporaryMessage("INVISIBLE", 0.3, false, 175.0f, 350.0f, 24);
+                        clock2.restart();
+                        countDown2 = true;
+                    }
+                    break;
+                }
+                // Process the up, down, left and right keys
+                case sf::Keyboard::W:
+                case sf::Keyboard::Up: {
+                    upFlag = true;
+                    person.sound1();
+                    break;
+
+                }
+                case sf::Keyboard::S:
+                case sf::Keyboard::Down:    downFlag = true; person.sound1(); break;
+
+                case sf::Keyboard::A:
+                case sf::Keyboard::Left:    leftFlag = true; person.sound1(); break;
+
+                case sf::Keyboard::D:
+                case sf::Keyboard::Right:   rightFlag = true; person.sound1(); break;
+                default: break;
+                }
+            }
+
+            // If a key is released
+            if (event.type == sf::Event::KeyReleased)
+            {
+                switch (event.key.code)
+                {
+                    // Process the up, down, left and right keys
+                case sf::Keyboard::W:
+                case sf::Keyboard::Up:     upFlag = false; break;
+                case sf::Keyboard::S:
+                case sf::Keyboard::Down:    downFlag = false; break;
+                case sf::Keyboard::A:
+                case sf::Keyboard::Left:    leftFlag = false; break;
+                case sf::Keyboard::D:
+                case sf::Keyboard::Right:   rightFlag = false; break;
+                default: break;
+                }
+            }
