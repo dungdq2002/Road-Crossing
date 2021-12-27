@@ -356,3 +356,48 @@ void GameWorld::runLevel(int idLevel) {
                     case 0:
                         std::cout << "continue\n";
                         break;
+                    case 1: {
+                        // save game
+                        Menu data(5, "asset\\font\\CONSOLAB.TTF");
+
+                        auto zeroPadding = [&](string& s, int sz = 2) {
+                            while (s.size() < sz) s.insert(s.begin(), '0');
+                            return s;
+                        };
+
+                        map <int, int> m;
+                        for (int i = 0; i < 5; i++) {
+                            ifstream inp("./log/" + to_string(i) + ".txt");
+                            if (!inp) {
+                                cout << "file " << i << " is not existed\n";
+                                data.add(to_string(i + 1) + ". ==============");
+                            }
+                            else {
+                                int LV; inp >> LV;
+                                m[i] = LV;
+                                LV++;
+                                string lv = to_string(LV);
+                                string day, month, year; inp >> day >> month >> year;
+                                data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(day) + "-" + zeroPadding(month) + "-" + zeroPadding(year, 4));
+                            }
+                            inp.close();
+                        }
+
+                        int t = menuAllInOne(data, idBG);
+                        if (t == -1) break;
+
+                        ofstream out("./log/" + to_string(t) + ".txt");
+
+                        time_t timeObj = time(nullptr);
+                        tm aTime;
+                        localtime_s(&aTime, &timeObj);
+
+                        out << idLevel << ' ' << aTime.tm_mday << ' ' << 1 + aTime.tm_mon << ' ' << 1900 + aTime.tm_year << '\n';
+                        cout << "save game\n";
+                        break;
+                    }
+                    case 2:
+                        return;
+                    }
+                    break;
+                }
