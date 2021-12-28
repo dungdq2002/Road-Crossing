@@ -462,3 +462,71 @@ void GameWorld::runLevel(int idLevel) {
                 default: break;
                 }
             }
+            //if (!person.listItem.empty()) {
+
+      //    if (event.type == sf::Event::KeyPressed)
+      //    {
+      //        switch (event.key.code)
+      //        {
+      //            // If P is pressed, pause game
+      //        
+      //        default:break;
+      //        }
+
+      //    }
+      //}
+        }
+        // time for item
+        if (countDown1) {
+            time1 = clock1.getElapsedTime();
+            if (time1.asSeconds() > ACTIVATE_FROZEN_TIME) {
+                countDown1 = false;
+                for (auto& obj : objects) {
+                    obj->continueRun();
+                }
+            }
+        }
+        if (countDown2) {
+            time2 = clock2.getElapsedTime();
+            if (time2.asSeconds() > ACTIVATE_INVISIBLE_TIME) {
+                countDown2 = false;
+                person.unTransparent();
+            }
+        }
+
+
+        //
+        if (leftFlag) {
+            cout << "left\n";
+            person.SetDirection(DirectionPlayer::Left);
+            person.Move();
+        }
+        if (rightFlag) {
+            cout << "right\n";
+            person.SetDirection(DirectionPlayer::Right);
+            person.Move();
+        }
+        if (upFlag) {
+            cout << "up\n";
+            person.SetDirection(DirectionPlayer::Up);
+            person.Move();
+        }
+        if (downFlag) {
+            cout << "down\n";
+            person.SetDirection(DirectionPlayer::Down);
+            person.Move();
+        }
+
+        // EXPLAIN THE ERRORS
+        // Move inside the if, when it receive the button event, move directly
+        // The problem of the previous is when up is pressing, and we press left, the if of Up is lower so the left will first set
+        // as Direction Left but then go to up when be set as Up, results all UP
+        // If we move Left lower than Up, the result will be all LEFT
+
+        // Clear the window and apply grey background
+        window.clear(sf::Color(127, 127, 127));
+
+        /*
+            If reach GOAL, check idLevel vs NUM_LEVEL (in constant.h)
+        */
+
