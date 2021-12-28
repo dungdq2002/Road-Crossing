@@ -529,4 +529,92 @@ void GameWorld::runLevel(int idLevel) {
         /*
             If reach GOAL, check idLevel vs NUM_LEVEL (in constant.h)
         */
+        // Move Object
+        for (auto& obj : objects) obj->move();
 
+        // Draw Background, Player and Objects
+        window.draw(backgroundTexts[idBG]);
+        window.draw(levelLogo);
+        for (auto& obj : objects) obj->render(window);
+        person.Render(window);
+
+        for (auto& item : items) {
+            if (item->isFrozen() || item->isInvisible())
+                item->falling(0.5);
+            item->render(window);
+        }
+
+        sf::Texture __frozen__; __frozen__.loadFromFile("./asset/image/frozen/frozen.png");
+        sf::Sprite __frozen; __frozen.setTexture(__frozen__);
+        auto __szfrozen = __frozen.getGlobalBounds();
+        __frozen.setScale(25 / __szfrozen.width, 25 / __szfrozen.height);
+        __frozen.setOrigin(__szfrozen.width / 2, __szfrozen.height / 2);
+        __frozen.setPosition(280, 680);
+        if (person.isAbleFrozen()) {
+            window.draw(__frozen);
+        }
+
+        sf::Texture __invisible__; __invisible__.loadFromFile("./asset/image/invisible/invisible.png");
+        sf::Sprite __invisible; __invisible.setTexture(__invisible__);
+        auto __szinvisible = __invisible.getGlobalBounds();
+        __invisible.setScale(25 / __szinvisible.width, 25 / __szinvisible.height);
+        __invisible.setOrigin(__szinvisible.width / 2, __szinvisible.height / 2);
+        __invisible.setPosition(320, 680);
+        if (person.isAbleInvisible()) {
+            window.draw(__invisible);
+        }
+
+        // reach goal
+        // first element is goal, second element is item
+        if (person.isImpact(items[0])) {
+            winGame = true;
+            break;
+        }
+        // catch item
+        for (int i = 1; i < items.size(); i++) {
+            if (person.isImpact(items[i])) {
+                /*sf::SoundBuffer bufferTem;
+                sf::Sound soundTem;
+                bufferTem.loadFromFile("./asset/sound/collision.wav");
+                soundTem.setBuffer(bufferTem);
+                soundTem.play();*/
+                person.sound();
+                //sf::sleep(sf::seconds(0.1));
+                person.addItem(*items[i]);
+                items.erase(items.begin() + i, items.begin() + i + 1);
+            }
+        }
+        // use item
+        /*
+            Use item was implemented when receive event above
+        */
+
+
+        // Collide with the objects
+        for (auto& obj : objects) if (!countDown2 && person.isImpact(obj)) {
+            sf::SoundBuffer bufferTem;
+            sf::Sound soundTem;
+            bufferTem.loadFromFile("./asset/sound/collision.wav");
+            soundTem.setBuffer(bufferTem);
+            soundTem.play();
+            cout << "Game over\n";
+
+            temporaryMessage("GAME OVER");
+            return;
+        }
+
+        // Rotate and draw the sprite
+        window.display();
+    }
+
+    if (winGame) {
+        if (idLevel == NUM_LEVEL - 1) {
+            cout << "game clear";
+            temporaryMessage("GAME CLEAR");
+        }
+        else {
+            temporaryMessage("Pass", 1.0);
+            runLevel(idLevel + 1);
+        }
+    }
+}
