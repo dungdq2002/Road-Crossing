@@ -202,12 +202,15 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
                 case sf::Keyboard::Up: menu.moveUp(); break;
                 case sf::Keyboard::Down: menu.moveDown(); break;
                 case sf::Keyboard::Return: return menu.select();
-
                 default: break;
                 }
             }
         }
-        if (idBG != -1) window.draw(backgroundTexts[idBG]);
+        if (idBG != -1) {
+            auto color = backgroundTexts[idBG].getColor();
+            backgroundTexts[idBG].setColor(sf::Color(color.r, color.g, color.b, 200));
+            window.draw(backgroundTexts[idBG]);
+        }
         menu.draw(window);
         window.display();
     }
@@ -218,8 +221,6 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
 void GameWorld::welcome() {
     sf::Music musicBG;
     musicBG.openFromFile("./asset/sound/Athletic Theme - Yoshi's Island.wav");
-
-    musicBG.play();
 
     musicBG.setLoop(true);
 
@@ -235,6 +236,7 @@ void GameWorld::welcome() {
 
     while (window.isOpen()) {
         //window.draw(backgroundTexts[idBG]);
+        musicBG.play();
         int t = menuAllInOne(menu, idBG);
         musicBG.stop();
         switch (t) {
