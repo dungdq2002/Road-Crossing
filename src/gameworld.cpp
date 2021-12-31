@@ -20,7 +20,8 @@ namespace LevelInfo {
 
             Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 200, 120, false);
             level1.objs.push_back(ship1);
-            Object* light1 = new light("light.png", 10, 10,20,50);
+		Object* light1 = new light("./asset/image/light.png", 10, 10,20,50);
+           
             level1.objs.push_back(light1);
 
             Object* ship2 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 250, 270, true);
