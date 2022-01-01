@@ -136,7 +136,8 @@ GameWorld::GameWorld() :
 	person("./asset/image/spaceShip0.png", 30, 30) 
 {
     srand(time(0));
-
+        
+    globalVolume = 4;
 	// Enable vertical sync. (vsync)
 	window.setVerticalSyncEnabled(true);
 	// When a key is pressed, sf::Event::KeyPressed will be true only once
@@ -224,6 +225,61 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
     return -1;
 }
 
+void GameWorld::setting(int idBG) {
+    window.clear(sf::Color(127, 127, 127));
+
+    sf::Text sfx;
+    sf::Font font;
+    font.loadFromFile("asset\\font\\ARCADECLASSIC.TTF");
+    sfx.setFont(font);
+    auto color = sf::Color::Yellow;
+    sfx.setFillColor(color);
+    sfx.setString("SFX");
+    sfx.setCharacterSize(25);
+    sfx.setPosition(100, 200);
+
+    sf::Text volume;
+    volume.setFont(font);
+    color = sf::Color::White;
+    volume.setFillColor(color);
+    volume.setCharacterSize(25);
+    volume.setPosition(200, 200);
+
+    while (true) {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            //Close the window if a key is pressed or if requested
+            if (event.type == sf::Event::Closed) {
+                isRunning = false;
+                window.close();
+            }
+
+            //If a key is released
+            if (event.type == sf::Event::KeyReleased)
+            {
+                switch (event.key.code)
+                {
+                    //Process the up, down, left and right keys
+                case sf::Keyboard::Escape: return;
+                case sf::Keyboard::Left: (globalVolume += 4) %= 5; break;
+                case sf::Keyboard::Right: (++globalVolume) %= 5; break;
+                default: break;
+                }
+            }
+        }
+        sf::Listener::setGlobalVolume(globalVolume * 25);
+        volume.setString(to_string(globalVolume * 25));
+        if (idBG != -1) {
+            auto color = backgroundTexts[idBG].getColor();
+            backgroundTexts[idBG].setColor(sf::Color(color.r, color.g, color.b, 200));
+            window.draw(backgroundTexts[idBG]);
+        }
+        window.draw(sfx);
+        window.draw(volume);
+        window.display();
+    }
+}
 
 void GameWorld::welcome() {
     sf::Music musicBG;
@@ -235,21 +291,25 @@ void GameWorld::welcome() {
 
     cout << "menu " << idBG << '\n';
 
-	Menu menu(3, "asset\\font\\ARCADECLASSIC.TTF");
+	Menu menu(4, "asset\\font\\ARCADECLASSIC.TTF");
 
 	menu.add("New Game");
 	menu.add("Load Game");
+    menu.add("Setting");
 	menu.add("Exit");
+    
+    musicBG.play();
 
     while (window.isOpen()) {
         //window.draw(backgroundTexts[idBG]);
-        musicBG.play();
+        //sf::Listener::setGlobalVolume(globalVolume * 25);
         int t = menuAllInOne(menu, idBG);
-        musicBG.stop();
         switch (t) {
         case 0:
             std::cout << "go to new game\n";
+            musicBG.stop();
             runLevel(0);
+            musicBG.play();
             break;
         case 1: {
             cout << " load game \n";
@@ -277,29 +337,40 @@ void GameWorld::welcome() {
                 }
                 inp.close();
             }
+
             
             int t = menuAllInOne(data, idBG);
             cout << t << '\n';
             if (t == -1) break;
+            musicBG.stop();
             if (m.count(t)) {
                 runLevel(m[t]);
             }
-            else runLevel(0);         
+            else runLevel(0);  
+            musicBG.play();
             break;
         }
-        case 2:
+        case 2: {
+            cout << "sound setting\n";
+            setting(idBG);
+            break;
+        }
+        case 3:
             isRunning = false;
             break;
         }
         
-        if (!isRunning) break;
+        if (!isRunning) {
+            musicBG.stop();
+            break;
+        }
     }
 }
 
 void GameWorld::runLevel(int idLevel) {
     // instruction
     if (idLevel == 0)
-        temporaryMessage("Press Arrow keys\n\tto move", 1.5, true, SCREEN_WIDTH / 2, 200, 30, "asset\\font\\CONSOLAB.TTF");
+        temporaryMessage("Press Arrow keys\n\tto move", 1.5, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
     else if (idLevel == 1)
         temporaryMessage("Press Z - Invisible\n\nPress X - Frozen", 2.0, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
 
@@ -345,6 +416,7 @@ void GameWorld::runLevel(int idLevel) {
     int test = 0;
 
     bool winGame = false;
+    bool loseGame = false;
     // Process events
    
     while (true) {
@@ -653,8 +725,10 @@ void GameWorld::runLevel(int idLevel) {
             cout << "Game over\n";
             
             temporaryMessage("GAME OVER");
-            return;
+            loseGame = true;
+            break;
         }
+        if (loseGame) break;
         
         // Rotate and draw the sprite
         window.display();
@@ -670,4 +744,5 @@ void GameWorld::runLevel(int idLevel) {
             runLevel(idLevel + 1);
         }
     }
+    else if (loseGame) runLevel(idLevel);
 }

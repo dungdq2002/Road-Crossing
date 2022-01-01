@@ -37,11 +37,13 @@ public:
     GameWorld();
     ~GameWorld();
     void welcome();
-    void runLevel(int idLevel);
 
 private:
     bool isRunning;
+    int globalVolume;
 
+    void runLevel(int idLevel);
+    void setting(int idBG);
     int menuAllInOne(Menu& menu, int idBG = -1);
 
     void initBackground(int id, string src);
