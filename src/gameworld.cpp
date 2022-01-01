@@ -18,22 +18,22 @@ namespace LevelInfo {
             SLevelInfo level1;
             level1.id = 1;
 
-            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 200, 120, false);
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 2.5f, 200, 120, true);
             level1.objs.push_back(ship1);
 		Object* light1 = new light("./asset/image/light.png", 10, 10,20,50);
            
             level1.objs.push_back(light1);
 
-            Object* ship2 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 250, 270, true);
-            level1.objs.push_back(ship2);
+            //Object* ship2 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 250, 270, true);
+            //level1.objs.push_back(ship2);
             /*Object* light2 = new light("light.png", 10, 10, 20, 200);
             level1.objs.push_back(light2);*/
-            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 300, 420, false);
+            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 2.5f, 300, 420, false);
             level1.objs.push_back(ship3);
-            /*Object* light3 = new light("light.png", 10, 10, 20, 350);
-            level1.objs.push_back(light3);*/
-            Object* ship4 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 350, 570, true);
-            level1.objs.push_back(ship4);
+            Object* light3 = new light("./asset/image/light.png", 10, 10, 20, 350);
+            level1.objs.push_back(light3);
+            //Object* ship4 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 1.5f, 350, 570, true);
+            //level1.objs.push_back(ship4);
             /*Object* light4 = new light("light.png", 10, 10, 20, 500);
             level1.objs.push_back(light4);*/
             Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
@@ -400,6 +400,15 @@ void GameWorld::runLevel(int idLevel) {
     sf::Clock clock4;
     sf::Time time4;
 
+    //green light duration 2
+    bool countDown5 = false;
+    sf::Clock clock5;
+    sf::Time time5;
+    // red light duration 2
+    bool countDown6 = false;
+    sf::Clock clock6;
+    sf::Time time6;
+
     int idBG = rand() % NUM_BACKGROUND;
     cout << idBG << '\n';
 
@@ -568,38 +577,84 @@ void GameWorld::runLevel(int idLevel) {
         //    }
         //}
         }
-        if (!countDown3 && !countDown4) {
-            countDown3 = true;
-            clock3.restart();
-            for (auto& obj : objects) {
-                obj->continueRun();
+        if (idLevel == 0) {
+            if (!countDown3 && !countDown4) {
+                countDown3 = true;
+                clock3.restart();
+                /*for (auto& obj : objects) {
+                    obj->continueRun();
+                }*/
+                objects[0]->continueRun();
+
+            }
+            if (countDown3 && clock3.getElapsedTime().asSeconds() > GREEN_LIGHT) {
+                countDown3 = false;
+                clock4.restart();
+                /*for (auto& obj : objects) {
+                    obj->stop();
+                }
+                for (auto& obj : objects) {
+                    obj->changeState();
+                }*/
+                objects[0]->stop();
+                objects[1]->changeState();
+                countDown4 = true;
+            }
+
+            if (countDown4 && clock4.getElapsedTime().asSeconds() > RED_LIGHT) {
+                countDown4 = false;
+                clock3.restart();
+                /*for (auto& obj : objects) {
+                    obj->continueRun();
+                }
+                for (auto& obj : objects) {
+                    obj->changeState();
+                }*/
+                objects[0]->continueRun();
+                objects[1]->changeState();
+                countDown3 = true;
+            }
+
+
+            // light 2
+            if (!countDown5 && !countDown6) {
+                countDown5 = true;
+                clock5.restart();
+                /*for (auto& obj : objects) {
+                    obj->continueRun();
+                }*/
+                objects[2]->continueRun();
+
+            }
+            if (countDown5 && clock5.getElapsedTime().asSeconds() > GREEN_LIGHT_2) {
+                countDown5 = false;
+                clock6.restart();
+                /*for (auto& obj : objects) {
+                    obj->stop();
+                }
+                for (auto& obj : objects) {
+                    obj->changeState();
+                }*/
+                objects[2]->stop();
+                objects[3]->changeState();
+                countDown6 = true;
+            }
+
+            if (countDown6 && clock6.getElapsedTime().asSeconds() > RED_LIGHT_2) {
+                countDown6 = false;
+                clock5.restart();
+                /*for (auto& obj : objects) {
+                    obj->continueRun();
+                }*/
+                objects[2]->continueRun();
+                objects[3]->changeState();
+                /*for (auto& obj : objects) {
+                    obj->changeState();
+                }*/
+                countDown5 = true;
             }
 
         }
-        if (countDown3 && clock3.getElapsedTime().asSeconds() > GREEN_LIGHT) {
-            countDown3 = false;
-            clock4.restart();
-            for (auto& obj : objects) {
-                obj->stop();
-            }
-            for (auto& obj : objects) {
-                obj->changeState();
-            }
-            countDown4 = true;
-        }
-       
-        if (countDown4 && clock4.getElapsedTime().asSeconds() > RED_LIGHT) {
-            countDown4 = false;
-            clock3.restart();
-            for (auto& obj : objects) {
-                obj->continueRun();
-            }
-            for (auto& obj : objects) {
-                obj->changeState();
-            }
-            countDown3 = true;
-        }
-
         // time for item
         if (countDown1) {
             time1 = clock1.getElapsedTime();
