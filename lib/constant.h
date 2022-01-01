@@ -19,5 +19,8 @@
 #define RED_LIGHT 1
 #define GREEN_LIGHT 4
 
+#define RED_LIGHT_2 0.7
+#define GREEN_LIGHT_2 3
+
 #define NUM_FROZEN 0
 #endif
