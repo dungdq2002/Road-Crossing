@@ -2,5 +2,5 @@
 
 int main() {
 	GameWorld game;
-	game.welcome();
+	game.loading();
 }

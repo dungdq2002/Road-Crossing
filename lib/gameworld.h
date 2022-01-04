@@ -37,6 +37,7 @@ public:
     GameWorld();
     ~GameWorld();
     void welcome();
+    void loading();
 
 private:
     bool isRunning;

@@ -132,7 +132,7 @@ void GameWorld::initBackground(int id, string src) {
 }
 
 GameWorld::GameWorld() :
-	window(sf::VideoMode(350, 700), "Road Crossing", sf::Style::Close),
+	window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "G4l4xy W4r", sf::Style::Close),
 	person("./asset/image/spaceShip0.png", 30, 30) 
 {
     srand(time(0));
@@ -281,7 +281,83 @@ void GameWorld::setting(int idBG) {
     }
 }
 
+
+void GameWorld::loading() {
+    // game logo
+    sf::Texture logoText;
+    logoText.loadFromFile("./asset/image/logo/logo.png");
+    logoText.setSmooth(true);
+    sf::Sprite logo;
+    logo.setTexture(logoText);
+    auto sz = logo.getGlobalBounds();
+    logo.setScale(250 / sz.width, 250 / sz.height);
+    sz = logo.getGlobalBounds();
+    logo.setOrigin(sz.width / 2.0, sz.height / 2.0);
+    cout << sz.width << ' ' << sz.height << '\n';
+        
+    // group logo
+    sf::Texture groupText;
+    groupText.loadFromFile("./asset/image/logo/group.png");
+    groupText.setSmooth(true);
+    sf::Sprite group;
+    group.setTexture(groupText);
+    sz = group.getGlobalBounds();
+    group.setScale(250. / sz.width, 80. / sz.height);
+   
+    // loading status
+    int step = 0;
+    sf::Font font;
+    font.loadFromFile("./asset/font/Hokjesgeest-PDGB.ttf");
+    sf::Text status;
+    status.setFont(font);
+    status.setFillColor(sf::Color::White);
+    status.setPosition(60, 500);
+    status.setCharacterSize(10);
+
+    while (window.isOpen()) {
+        window.clear(sf::Color::Black);
+
+        // loading
+        // idk why I cant set at the middle as this??
+        // logo.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        logo.setPosition(90, 150);
+        window.draw(logo);
+
+        group.setPosition(50, 600);
+        cout << group.getPosition().x << '\n';
+        window.draw(group);
+
+        string msg;
+        for (int i = 0; i < 16; i++) {
+            if (i < step) msg += "-";
+            if (i == step) msg += "o";
+            else msg += " ";
+        }
+        status.setString(msg);
+        window.draw(status);
+        
+        step++;
+
+        window.display();
+
+        if (step != 10 && step != 16)
+            sf::sleep(sf::seconds(0.1));
+        else if (step == 10)
+            sf::sleep(sf::seconds(2.0));
+        else 
+            sf::sleep(sf::seconds(1.0));
+            
+        // main menu
+        if (step == 16) {
+            welcome();
+            break;
+        }
+    }
+}
+
 void GameWorld::welcome() {
+    window.clear(sf::Color::Black);
+
     sf::Music musicBG;
     musicBG.openFromFile("./asset/sound/Athletic Theme - Yoshi's Island.wav");
 
@@ -300,7 +376,7 @@ void GameWorld::welcome() {
     
     musicBG.play();
 
-    while (window.isOpen()) {
+    while (true) {
         //window.draw(backgroundTexts[idBG]);
         //sf::Listener::setGlobalVolume(globalVolume * 25);
         int t = menuAllInOne(menu, idBG);
@@ -365,6 +441,7 @@ void GameWorld::welcome() {
             break;
         }
     }
+    musicBG.stop();
 }
 
 void GameWorld::runLevel(int idLevel) {
