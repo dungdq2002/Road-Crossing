@@ -673,7 +673,7 @@ void GameWorld::runLevel(int idLevel) {
         //}
         }
         if (jumpLevel != -1) break;
-
+        // loi den xanh den do khi chet
         if (idLevel == 0) {
             if (!countDown3 && !countDown4) {
                 countDown3 = true;
