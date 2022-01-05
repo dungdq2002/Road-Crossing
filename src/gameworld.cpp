@@ -360,6 +360,48 @@ void GameWorld::loading() {
     }
 }
 
+pair <int, int> GameWorld::chooseLog(int idBG) {
+    Menu data(5, "asset\\font\\CONSOLAB.TTF");
+
+    auto zeroPadding = [&](string& s, int sz = 2) {
+        while (s.size() < sz) s.insert(s.begin(), '0');
+        return s;
+    };
+
+    map <int, int> m;
+    for (int i = 0; i < 5; i++) {
+        ifstream inp("./log/" + to_string(i) + ".bin", ios::binary | ios::in);
+        if (!inp) {
+            //cout << "file " << i << " is not existed\n";
+            data.add(to_string(i + 1) + ". ==============");
+        }
+        else {
+            int LV;
+            inp.read(reinterpret_cast<char*>(&LV), sizeof(int));
+            m[i] = LV;
+            LV++;
+            string lv = to_string(LV);
+            int day, month, year;
+            inp.read(reinterpret_cast<char*>(&day), sizeof(int));
+            inp.read(reinterpret_cast<char*>(&month), sizeof(int));
+            inp.read(reinterpret_cast<char*>(&year), sizeof(int));
+            string Day = to_string(day);
+            string Month = to_string(month);
+            string Year = to_string(year);
+            data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(Day) + "-" + zeroPadding(Month) + "-" + zeroPadding(Year, 4));
+        }
+        inp.close();
+    }
+
+
+    int t = menuAllInOne(data, idBG);
+    if (t == -1) return { -1, -1 };
+
+    int lev = (m.count(t) ? m[t] : -1);
+    
+    return { t, lev };
+}
+
 void GameWorld::welcome() {
     window.clear(sf::Color::Black);
 
@@ -394,40 +436,13 @@ void GameWorld::welcome() {
             break;
         case 1: {
             cout << " load game \n";
-            Menu data(5, "asset\\font\\CONSOLAB.TTF");
-
-            auto zeroPadding = [&](string& s, int sz = 2) {
-                while (s.size() < sz) s.insert(s.begin(), '0');
-                return s;
-            };
-
-            map <int, int> m;
-            for (int i = 0; i < 5; i++) {
-                ifstream inp("./log/" + to_string(i) + ".txt");
-                if (!inp) {
-                    cout << "file " << i << " is not existed\n";
-                    data.add(to_string(i + 1) + ". ==============");
-                }
-                else {
-                    int LV; inp >> LV; 
-                    m[i] = LV;
-                    LV++;
-                    string lv = to_string(LV);
-                    string day, month, year; inp >> day >> month >> year;
-                    data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(day) + "-" + zeroPadding(month) + "-" + zeroPadding(year, 4));
-                }
-                inp.close();
-            }
-
-            
-            int t = menuAllInOne(data, idBG);
-            cout << t << '\n';
-            if (t == -1) break;
+            auto LOG = chooseLog(idBG);
+            if (LOG.first == -1) break;
             musicBG.stop();
-            if (m.count(t)) {
-                runLevel(m[t]);
-            }
-            else runLevel(0);  
+            if (LOG.second != -1)
+                runLevel(LOG.second);
+            else 
+                runLevel(0);  
             musicBG.play();
             break;
         }
@@ -509,6 +524,9 @@ void GameWorld::runLevel(int idLevel) {
 
     bool winGame = false;
     bool loseGame = false;
+
+    int jumpLevel = -1;
+
     // Process events
    
     while (true) {
@@ -529,10 +547,11 @@ void GameWorld::runLevel(int idLevel) {
                 {
                     // If P is pressed, pause game
                 case sf::Keyboard::P: {
-                    Menu pauseScr(3, "asset\\font\\ARCADECLASSIC.TTF");
+                    Menu pauseScr(4, "asset\\font\\ARCADECLASSIC.TTF");
                     
                     pauseScr.add("Continue");
-                    pauseScr.add("Save");
+                    pauseScr.add("Save Game");
+                    pauseScr.add("Load Game");
                     pauseScr.add("Quit");
 
                     switch (menuAllInOne(pauseScr, idBG)) {
@@ -541,45 +560,34 @@ void GameWorld::runLevel(int idLevel) {
                         break;
                     case 1: {
                         // save game
-                        Menu data(5, "asset\\font\\CONSOLAB.TTF");
+                        auto LOG = chooseLog(idBG);
+                        if (LOG.first == -1) break;
 
-                        auto zeroPadding = [&](string& s, int sz = 2) {
-                            while (s.size() < sz) s.insert(s.begin(), '0');
-                            return s;
-                        };
-
-                        map <int, int> m;
-                        for (int i = 0; i < 5; i++) {
-                            ifstream inp("./log/" + to_string(i) + ".txt");
-                            if (!inp) {
-                                cout << "file " << i << " is not existed\n";
-                                data.add(to_string(i + 1) + ". ==============");
-                            }
-                            else {
-                                int LV; inp >> LV;
-                                m[i] = LV;
-                                LV++;
-                                string lv = to_string(LV);
-                                string day, month, year; inp >> day >> month >> year;
-                                data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(day) + "-" + zeroPadding(month) + "-" + zeroPadding(year, 4));
-                            }
-                            inp.close();
-                        }
-
-                        int t = menuAllInOne(data, idBG);
-                        if (t == -1) break;
-
-                        ofstream out("./log/" + to_string(t) + ".txt");
+                        ofstream out("./log/" + to_string(LOG.first) + ".bin", ios::binary | ios::out);
 
                         time_t timeObj = time(nullptr);
                         tm aTime;
                         localtime_s(&aTime, &timeObj);
-
-                        out << idLevel << ' ' << aTime.tm_mday << ' ' << 1 + aTime.tm_mon << ' ' << 1900 + aTime.tm_year << '\n';
+                        aTime.tm_mon += 1;
+                        aTime.tm_year += 1900;
+                        //out << idLevel << ' ' << aTime.tm_mday << ' ' << 1 + aTime.tm_mon << ' ' << 1900 + aTime.tm_year << '\n';
+                        out.write(reinterpret_cast<const char*>(&idLevel), sizeof(idLevel));
+                        out.write(reinterpret_cast<const char*>(&aTime.tm_mday), sizeof(aTime.tm_mday));
+                        out.write(reinterpret_cast<const char*>(&aTime.tm_mon), sizeof(aTime.tm_mon));
+                        out.write(reinterpret_cast<const char*>(&aTime.tm_year), sizeof(aTime.tm_year));
                         cout << "save game\n";
                         break;
                     }
-                    case 2:
+                    case 2: {
+                        auto LOG = chooseLog(idBG);
+                        if (LOG.first == -1) break;
+                        if (LOG.second != -1)
+                            jumpLevel = LOG.second;
+                        else
+                            jumpLevel = 0;
+                        break;
+                    }
+                    case 3:
                         return;
                     }
                     break;
@@ -628,6 +636,7 @@ void GameWorld::runLevel(int idLevel) {
                 }
             }
 
+
             // If a key is released
             if (event.type == sf::Event::KeyReleased)
             {
@@ -660,6 +669,8 @@ void GameWorld::runLevel(int idLevel) {
         //    }
         //}
         }
+        if (jumpLevel != -1) break;
+
         if (idLevel == 0) {
             if (!countDown3 && !countDown4) {
                 countDown3 = true;
@@ -808,6 +819,7 @@ void GameWorld::runLevel(int idLevel) {
         }
 
         for (auto& creature : spaceCreatures) {
+            cout << "here we are\n";
             creature->Render(window);
         }
 
@@ -882,6 +894,11 @@ void GameWorld::runLevel(int idLevel) {
         
         // Rotate and draw the sprite
         window.display();
+    }
+
+    if (jumpLevel != -1) {
+        runLevel(jumpLevel);
+        return;
     }
 
     if (winGame) {

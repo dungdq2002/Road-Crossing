@@ -24,10 +24,13 @@ void Menu::add(std::string s) {
     current.setString(s);
 
     auto sz = (numItem <= 3 ? 35 : 25);
+    if (numItem == 5) sz = 20;
     current.setCharacterSize(sz);
 
     auto diffY = (numItem <= 3 ? 100 : 50);
+    if (numItem == 5) diffY = 50;
     auto stX = (numItem <= 3 ? 100 : 50);
+    if (numItem == 5) stX = 50;
     current.setPosition(sf::Vector2f(stX, 200 + diffY * id));
 
     menu.push_back(current);
