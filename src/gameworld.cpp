@@ -599,6 +599,9 @@ void GameWorld::runLevel(int idLevel) {
                         for (auto& obj : objects) {
                             obj->stop();
                         }
+                        for (auto& creatures : spaceCreatures) {
+                            creatures->stop();
+                        }
                         temporaryMessage("FROZEN", 0.3, false, 175.0f, 350.0f, 24);
                         clock1.restart();
                         countDown1 = true;
@@ -757,6 +760,9 @@ void GameWorld::runLevel(int idLevel) {
                 for (auto& obj : objects) {
                     obj->continueRun();
                 }
+                for (auto& creatures : spaceCreatures) {
+                    creatures->Move();
+                }
             }
         }
         if (countDown2) {
@@ -884,7 +890,7 @@ void GameWorld::runLevel(int idLevel) {
         }
 
         for (auto& creatures : spaceCreatures) {
-            if (person.isImpactCreature(creatures)) {
+            if (!countDown2 && person.isImpactCreature(creatures)) {
                 temporaryMessage("GAME OVER");
                 loseGame = true;
                 break;

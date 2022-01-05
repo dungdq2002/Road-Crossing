@@ -42,7 +42,9 @@ void Alien::setPosition(int x, int y) {
 void Alien::Render(sf::RenderWindow& l_window) {
 	alienSprite.setPosition(this->mX, this->mY);
 	l_window.draw(alienSprite);
-	this->Move();
+	if (isStop == false) {
+		this->Move();
+	}
 }
 
 sf::Sprite Alien::getSprite() {
@@ -51,6 +53,8 @@ sf::Sprite Alien::getSprite() {
 
 void Alien::Move() {
 	//Move with the function of sin
+	if (isStop == true)
+		isStop = false;
 	this->mX += SIN_SPEED;
 	this->mY += SIN_RATIO*sin((1.0/this->speed) * this->mX);
 	if (this->mX > SCREEN_WIDTH) {
@@ -60,6 +64,10 @@ void Alien::Move() {
 
 void Alien::Tell() {
 
+}
+
+void Alien::stop() {
+	isStop = true;
 }
 
 Astronaut::Astronaut(std::string srcImg, int width, int height, float speed, int x, int y) {
@@ -100,7 +108,9 @@ void Astronaut::setPosition(int x, int y) {
 void Astronaut::Render(sf::RenderWindow& l_window) {
 	astronautSprite.setPosition(this->mX, this->mY);
 	l_window.draw(astronautSprite);
-	this->Move();
+	if (isStop == false) {
+		this->Move();
+	}
 }
 
 sf::Sprite Astronaut::getSprite() {
@@ -108,6 +118,8 @@ sf::Sprite Astronaut::getSprite() {
 }
 
 void Astronaut::Move() {
+	if (isStop == true)
+		isStop = false;
 	if ((astronautSprite.getPosition().x + (width/2) > SCREEN_WIDTH && incrementMove.x > 0)
 		|| (astronautSprite.getPosition().x - (width / 2) < 0 && incrementMove.x < 0)) {
 		incrementMove.x = -incrementMove.x;
@@ -122,4 +134,8 @@ void Astronaut::Move() {
 
 void Astronaut::Tell() {
 
+}
+
+void Astronaut::stop() {
+	isStop = true;
 }
