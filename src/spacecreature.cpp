@@ -40,15 +40,14 @@ void Alien::setPosition(int x, int y) {
 
 void Alien::Render(sf::RenderWindow& l_window) {
 	alienSprite.setPosition(this->mX, this->mY);
-	this->Move();
 	l_window.draw(alienSprite);
-	cout << "Alien move";
+	this->Move();
 }
 
 void Alien::Move() {
 	//Move with the function of sin
-	this->mX += speed;
-	this->mY = sin(this->mX);
+	this->mX += SIN_SPEED;
+	this->mY += SIN_RATIO*sin((1.0/this->speed) * this->mX);
 	if (this->mX > SCREEN_WIDTH) {
 		this->mX = 0;
 	}
@@ -65,6 +64,8 @@ Astronaut::Astronaut(std::string srcImg, int width, int height, float speed, int
 	this->speed = speed;
 	this->mX = x;
 	this->mY = y;
+	this->incrementMove.x = this->speed;
+	this->incrementMove.y = this->speed;
 	if (!astronautTexture.loadFromFile(this->srcImg)) {
 		std::cout << "Wrong File Location. File Location does's exist";
 		throw(this->srcImg);
@@ -94,10 +95,20 @@ void Astronaut::setPosition(int x, int y) {
 void Astronaut::Render(sf::RenderWindow& l_window) {
 	astronautSprite.setPosition(this->mX, this->mY);
 	l_window.draw(astronautSprite);
+	this->Move();
 }
 
 void Astronaut::Move() {
-
+	if ((astronautSprite.getPosition().x + (width/2) > SCREEN_WIDTH && incrementMove.x > 0)
+		|| (astronautSprite.getPosition().x - (width / 2) < 0 && incrementMove.x < 0)) {
+		incrementMove.x = -incrementMove.x;
+	}
+	if ((astronautSprite.getPosition().y + (height / 2) > SCREEN_HEIGHT && incrementMove.y > 0)
+		|| (astronautSprite.getPosition().y - (height / 2) < 0 && incrementMove.y < 0)) {
+		incrementMove.y = -incrementMove.y;
+	}
+	this->mX += incrementMove.x;
+	this->mY += incrementMove.y;
 }
 
 void Astronaut::Tell() {

@@ -23,4 +23,11 @@
 #define GREEN_LIGHT_2 3
 
 #define NUM_FROZEN 0
+
+#define SIN_RATIO 2
+#define SIN_SPEED 0.4
+
+#define ZIGZAG_RATIO 2
+#define ZIGZAG_ANGLE 45
+
 #endif
