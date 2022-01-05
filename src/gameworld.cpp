@@ -370,18 +370,25 @@ pair <int, int> GameWorld::chooseLog(int idBG) {
 
     map <int, int> m;
     for (int i = 0; i < 5; i++) {
-        ifstream inp("./log/" + to_string(i) + ".txt");
+        ifstream inp("./log/" + to_string(i) + ".bin", ios::binary | ios::in);
         if (!inp) {
             //cout << "file " << i << " is not existed\n";
             data.add(to_string(i + 1) + ". ==============");
         }
         else {
-            int LV; inp >> LV;
+            int LV;
+            inp.read(reinterpret_cast<char*>(&LV), sizeof(int));
             m[i] = LV;
             LV++;
             string lv = to_string(LV);
-            string day, month, year; inp >> day >> month >> year;
-            data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(day) + "-" + zeroPadding(month) + "-" + zeroPadding(year, 4));
+            int day, month, year;
+            inp.read(reinterpret_cast<char*>(&day), sizeof(int));
+            inp.read(reinterpret_cast<char*>(&month), sizeof(int));
+            inp.read(reinterpret_cast<char*>(&year), sizeof(int));
+            string Day = to_string(day);
+            string Month = to_string(month);
+            string Year = to_string(year);
+            data.add(to_string(i + 1) + ". L" + zeroPadding(lv) + " " + zeroPadding(Day) + "-" + zeroPadding(Month) + "-" + zeroPadding(Year, 4));
         }
         inp.close();
     }
@@ -556,13 +563,18 @@ void GameWorld::runLevel(int idLevel) {
                         auto LOG = chooseLog(idBG);
                         if (LOG.first == -1) break;
 
-                        ofstream out("./log/" + to_string(LOG.first) + ".txt");
+                        ofstream out("./log/" + to_string(LOG.first) + ".bin", ios::binary | ios::out);
 
                         time_t timeObj = time(nullptr);
                         tm aTime;
                         localtime_s(&aTime, &timeObj);
-
-                        out << idLevel << ' ' << aTime.tm_mday << ' ' << 1 + aTime.tm_mon << ' ' << 1900 + aTime.tm_year << '\n';
+                        aTime.tm_mon += 1;
+                        aTime.tm_year += 1900;
+                        //out << idLevel << ' ' << aTime.tm_mday << ' ' << 1 + aTime.tm_mon << ' ' << 1900 + aTime.tm_year << '\n';
+                        out.write(reinterpret_cast<const char*>(&idLevel), sizeof(idLevel));
+                        out.write(reinterpret_cast<const char*>(&aTime.tm_mday), sizeof(aTime.tm_mday));
+                        out.write(reinterpret_cast<const char*>(&aTime.tm_mon), sizeof(aTime.tm_mon));
+                        out.write(reinterpret_cast<const char*>(&aTime.tm_year), sizeof(aTime.tm_year));
                         cout << "save game\n";
                         break;
                     }
