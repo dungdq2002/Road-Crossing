@@ -40,8 +40,6 @@ namespace LevelInfo {
             goal1->place(rand() % 300 + 50, 20);
             level1.items.push_back(goal1);
 
-            //SpaceCreature* alien1 = new Alien("./asset/image/spaceship/spaceship3.png", 100, 100, 1.0f, 200, 120);
-            //level1.spaceCreatures.push_back(alien1);
             cout << "Size creature: " << level1.spaceCreatures.size() << endl;
             levels.push_back(level1);
 
@@ -63,8 +61,10 @@ namespace LevelInfo {
             Item* item2_i = new Item("./asset/image/invisible/invisible.png", 40, 40, INVISIBLE);
             item2_i->place(200, 150);
             level2.items.push_back(item2_i);
-            SpaceCreature* alien1 = new Alien("./asset/image/spaceship/spaceship3.png", 100, 100, 1, 120, 520);
+            SpaceCreature* alien1 = new Alien("./asset/image/creature/alien1.png", 50, 50, 2, 120, 220);
+            SpaceCreature* astronaut1 = new Astronaut("./asset/image/creature/astronaut1.png", 50, 50, 0.4f, 120, 420);
             level2.spaceCreatures.push_back(alien1);
+            level2.spaceCreatures.push_back(astronaut1);
             levels.push_back(level2);
         }
 
@@ -496,6 +496,7 @@ void GameWorld::runLevel(int idLevel) {
 
     objects = LevelInfo::levels[idLevel].objs;
 	items = LevelInfo::levels[idLevel].items;
+    spaceCreatures = LevelInfo::levels[idLevel].spaceCreatures;
 
     person.Reset();
 
