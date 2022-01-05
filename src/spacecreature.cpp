@@ -39,6 +39,11 @@ void Alien::setPosition(int x, int y) {
 	this->mY = y;
 }
 
+sf::Vector2f Alien::getPosition() {
+	sf::Vector2f position(this->mX, this->mY);
+	return position;
+}
+
 void Alien::Render(sf::RenderWindow& l_window) {
 	alienSprite.setPosition(this->mX, this->mY);
 	l_window.draw(alienSprite);
@@ -63,7 +68,21 @@ void Alien::Move() {
 }
 
 void Alien::Tell() {
+	if (isSetSound == false) {
+		if (!tellBuffer.loadFromFile("./asset/sound/alienTell.wav")) {
+			std::cout << "Wrong File Location. File Location does's exist";
+			throw("Error: File Location don't exist");
+		}
+		tell.setBuffer(tellBuffer);
+		tell.setVolume(50.f);
+		isSetSound = true;
+	}
+	tell.play();
+	cout << "telling";
+}
 
+void Alien::Mute() {
+	tell.stop();
 }
 
 void Alien::stop() {
@@ -105,6 +124,11 @@ void Astronaut::setPosition(int x, int y) {
 	this->mY = y;
 }
 
+sf::Vector2f Astronaut::getPosition() {
+	sf::Vector2f position(this->mX, this->mY);
+	return position;
+}
+
 void Astronaut::Render(sf::RenderWindow& l_window) {
 	astronautSprite.setPosition(this->mX, this->mY);
 	l_window.draw(astronautSprite);
@@ -133,7 +157,21 @@ void Astronaut::Move() {
 }
 
 void Astronaut::Tell() {
+	if (isSetSound == false) {
+		if (!tellBuffer.loadFromFile("./asset/sound/astronautTell.wav")) {
+			std::cout << "Wrong File Location. File Location does's exist";
+			throw("Error: File Location don't exist");
+		}
+		tell.setBuffer(tellBuffer);
+		tell.setVolume(50.f);
+		isSetSound = true;
+	}
+	tell.play();
+	cout << "tellingAstro";
+}
 
+void Astronaut::Mute() {
+	tell.stop();
 }
 
 void Astronaut::stop() {

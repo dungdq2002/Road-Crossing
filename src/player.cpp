@@ -1,7 +1,7 @@
 #include "../lib/player.h"
 
-const int startPositionX = 350/2;
-const int startPositionY = 700;
+const int startPositionX = SCREEN_WIDTH/2;
+const int startPositionY = SCREEN_HEIGHT;
 
 //Constructor and destructor
 Player::Player(std::string srcImg, int width, int height) {

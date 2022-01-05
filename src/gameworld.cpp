@@ -824,9 +824,23 @@ void GameWorld::runLevel(int idLevel) {
             item->render(window);
         }
 
+        //Draw Creatures
         for (auto& creature : spaceCreatures) {
             cout << "here we are\n";
             creature->Render(window);
+        }
+
+        //Play Sound of Creatures when Player near Creature
+        for (auto& creatures : spaceCreatures) {
+            sf::Vector2f positionCreature = creatures->getPosition();
+            double distanceToCreature = sqrt(pow((person.getX() - positionCreature.x), 2) + pow((person.getY() - positionCreature.y), 2));
+            cout << distanceToCreature << endl;
+            if (distanceToCreature <= DISTANCE_TO_CREATURES) {
+                creatures->Tell();
+            }
+            else {
+                creatures->Mute();
+            }
         }
 
         sf::Texture __frozen__; __frozen__.loadFromFile("./asset/image/frozen/frozen.png");
@@ -889,6 +903,7 @@ void GameWorld::runLevel(int idLevel) {
             break;
         }
 
+        //Collide with the space creatures
         for (auto& creatures : spaceCreatures) {
             if (!countDown2 && person.isImpactCreature(creatures)) {
                 temporaryMessage("GAME OVER");

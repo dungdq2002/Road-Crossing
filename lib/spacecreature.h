@@ -18,8 +18,10 @@ public:
 	virtual ~SpaceCreature();
 	virtual void Move() = 0;
 	virtual void Tell() = 0;
+	virtual void Mute() = 0;
 
 	virtual void setPosition(int x, int y) = 0;
+	virtual sf::Vector2f getPosition() = 0;
 	virtual void setSpeed(float speed) = 0;
 	virtual void Render(sf::RenderWindow& l_window) = 0;
 	virtual void stop() = 0;
@@ -33,12 +35,14 @@ public:
 	Alien(std::string srcImg, int width, int height, float speed, int x, int y);
 	~Alien();
 	void setPosition(int x, int y);
+	sf::Vector2f getPosition();
 	void setSpeed(float speed);
 	void Render(sf::RenderWindow& l_window);
 	sf::Sprite getSprite();
 
 	void Move();
 	void Tell();
+	void Mute();
 	void stop();
 private:
 	sf::Sprite alienSprite;
@@ -50,6 +54,7 @@ private:
 	float speed;
 	bool isStop = false;
 
+	bool isSetSound = false;
 	sf::SoundBuffer tellBuffer;
 	sf::Sound tell;
 };
@@ -59,12 +64,14 @@ public:
 	Astronaut(std::string srcImg, int width, int height, float speed, int x, int y);
 	~Astronaut();
 	void setPosition(int x, int y);
+	sf::Vector2f getPosition();
 	void setSpeed(float speed);
 	void Render(sf::RenderWindow& l_window);
 	sf::Sprite getSprite();
 
 	void Move();
 	void Tell();
+	void Mute();
 	void stop();
 private:
 	sf::Sprite astronautSprite;
@@ -76,7 +83,8 @@ private:
 	int height;
 	float speed;
 	bool isStop = false;
-
+	
+	bool isSetSound = false;
 	sf::SoundBuffer tellBuffer;
 	sf::Sound tell;
 };
