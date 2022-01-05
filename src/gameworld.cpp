@@ -20,7 +20,7 @@ namespace LevelInfo {
 
             Object* ship1 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 2.5f, 200, 120, true);
             level1.objs.push_back(ship1);
-		Object* light1 = new light("./asset/image/light.png", 10, 10,20,50);
+		    Object* light1 = new light("./asset/image/light.png", 10, 10,20,50);
            
             level1.objs.push_back(light1);
 
@@ -40,7 +40,9 @@ namespace LevelInfo {
             goal1->place(rand() % 300 + 50, 20);
             level1.items.push_back(goal1);
 
-
+            //SpaceCreature* alien1 = new Alien("./asset/image/spaceship/spaceship3.png", 100, 100, 1.0f, 200, 120);
+            //level1.spaceCreatures.push_back(alien1);
+            cout << "Size creature: " << level1.spaceCreatures.size() << endl;
             levels.push_back(level1);
 
         }
@@ -61,6 +63,8 @@ namespace LevelInfo {
             Item* item2_i = new Item("./asset/image/invisible/invisible.png", 40, 40, INVISIBLE);
             item2_i->place(200, 150);
             level2.items.push_back(item2_i);
+            SpaceCreature* alien1 = new Alien("./asset/image/spaceship/spaceship3.png", 100, 100, 1, 120, 520);
+            level2.spaceCreatures.push_back(alien1);
             levels.push_back(level2);
         }
 
@@ -160,6 +164,7 @@ GameWorld::~GameWorld() {
     for (auto level : LevelInfo::levels) {
         for (auto& obj : level.objs) delete obj;
         for (auto& item : level.items) delete item;
+        for (auto& creature : level.spaceCreatures) delete creature;
     }
 }
 
@@ -799,6 +804,10 @@ void GameWorld::runLevel(int idLevel) {
             if (item->isFrozen() || item->isInvisible())
                 item->falling(0.5);
             item->render(window);
+        }
+
+        for (auto& creature : spaceCreatures) {
+            creature->Render(window);
         }
 
         sf::Texture __frozen__; __frozen__.loadFromFile("./asset/image/frozen/frozen.png");

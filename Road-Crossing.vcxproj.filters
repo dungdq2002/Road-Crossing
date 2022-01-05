@@ -21,9 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lib\player.h">
       <Filter>Header Files\lib</Filter>
     </ClCompile>
@@ -45,6 +42,9 @@
     <ClCompile Include="src\item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\spacecreature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\constant.h">
@@ -64,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="lib\Collision.hpp">
       <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\spacecreature.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

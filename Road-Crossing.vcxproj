@@ -154,7 +154,7 @@
     <ClCompile Include="src\object.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="lib\player.h" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="src\spacecreature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\Collision.hpp" />
@@ -163,6 +163,7 @@
     <ClInclude Include="lib\item.h" />
     <ClInclude Include="lib\menu.h" />
     <ClInclude Include="lib\object.h" />
+    <ClInclude Include="lib\spacecreature.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

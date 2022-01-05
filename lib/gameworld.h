@@ -6,6 +6,7 @@
 #include "constant.h"
 #include "player.h"
 #include "object.h"
+#include "spacecreature.h"
 #include "item.h"
 #include "menu.h"
 
@@ -25,6 +26,7 @@ namespace LevelInfo {
 		int id; // level id
 		std::vector <Object*> objs;
 		std::vector <Item*> items;
+        std::vector <SpaceCreature*> spaceCreatures;
 	};
 
 	extern vector <SLevelInfo> levels;
@@ -56,6 +58,7 @@ private:
     Player person;
     vector <Object*> objects;
 	vector <Item*> items;
+    vector <SpaceCreature*> spaceCreatures;
 
     vector <sf::Texture> backgroundTextures;
     vector <sf::Sprite> backgroundTexts;
