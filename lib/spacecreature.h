@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "SFML/Audio.hpp"
 #include "constant.h"
 #include <math.h>
+#include "Collision.hpp"
+
 using namespace std;
 
 
@@ -38,6 +41,9 @@ private:
 	int width;
 	int height;
 	float speed;
+
+	sf::SoundBuffer eatItemBuffer;
+	sf::Sound eatItem;
 };
 
 class Astronaut : public SpaceCreature {
@@ -53,6 +59,7 @@ public:
 private:
 	sf::Sprite astronautSprite;
 	sf::Texture astronautTexture;
+	sf::Vector2f incrementMove;
 	float mX, mY;
 	std::string srcImg; //path to the custom pixel spaceShip
 	int width;
