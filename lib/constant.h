@@ -30,4 +30,6 @@
 #define ZIGZAG_RATIO 2
 #define ZIGZAG_ANGLE 45
 
+#define DISTANCE_TO_CREATURES 150
+
 #endif
