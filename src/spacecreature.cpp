@@ -22,6 +22,7 @@ Alien::Alien(std::string srcImg, int width, int height, float speed, int x, int 
 	alienSprite.setScale(float(this->width) / tmp.width, float(this->height) / tmp.height);
 	sf::FloatRect spriteSize = alienSprite.getLocalBounds();
 	alienSprite.setOrigin(spriteSize.width / 2., spriteSize.height / 2.);
+	
 	//Reset();
 }
 
@@ -42,6 +43,10 @@ void Alien::Render(sf::RenderWindow& l_window) {
 	alienSprite.setPosition(this->mX, this->mY);
 	l_window.draw(alienSprite);
 	this->Move();
+}
+
+sf::Sprite Alien::getSprite() {
+	return alienSprite;
 }
 
 void Alien::Move() {
@@ -96,6 +101,10 @@ void Astronaut::Render(sf::RenderWindow& l_window) {
 	astronautSprite.setPosition(this->mX, this->mY);
 	l_window.draw(astronautSprite);
 	this->Move();
+}
+
+sf::Sprite Astronaut::getSprite() {
+	return astronautSprite;
 }
 
 void Astronaut::Move() {

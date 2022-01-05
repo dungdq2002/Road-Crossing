@@ -67,7 +67,7 @@ float Player::getY() { return mY; }
 
 //Movement 
 void Player::MoveControl(Object* obj, float intersectPercent) {
-	CheckCollision(obj, intersectPercent);
+	//CheckCollision(obj, intersectPercent);
 	if (m_dir == DirectionPlayer::None) { return; }
 	Move();
 }
@@ -127,6 +127,18 @@ bool Player::isImpact(Object* obj, float intersectPercent) {
 	}
 	return false;
 
+}
+
+bool Player::isImpactCreature(SpaceCreature* creatures, float intersectPercent) {
+	if (intersectPercent > 1)
+		throw "Intersection has to less than 1.";
+	if (creatures == nullptr)
+		return false;
+
+	if (Collision::PixelPerfectTest(creatures->getSprite(), playerSprite)) {
+		return true;
+	}
+	return false;
 }
 
 //Check collision with Item or Obstacle/Spawner

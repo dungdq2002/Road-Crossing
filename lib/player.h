@@ -9,6 +9,7 @@
 #include <math.h>
 #include "object.h"
 #include "item.h"
+#include "spacecreature.h"
 #include "constant.h"
 #include "Collision.hpp"
 enum class DirectionPlayer { None, Up, Down, Left, Right };
@@ -36,7 +37,9 @@ public:
 
 	//handle impacted by the Object
 	bool isImpact(Object* obj, float intersectPercent = 0.2);
-
+	
+	//handle impacted by the SpaceCreature
+	bool isImpactCreature(SpaceCreature* cr, float intersectPercent = 0.2);
 	//add Item
 	void addItem(const Item& item);
 

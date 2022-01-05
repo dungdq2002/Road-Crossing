@@ -7,6 +7,7 @@
 #include "constant.h"
 #include <math.h>
 #include "Collision.hpp"
+//#include "player.h"
 
 using namespace std;
 
@@ -21,6 +22,9 @@ public:
 	virtual void setPosition(int x, int y) = 0;
 	virtual void setSpeed(float speed) = 0;
 	virtual void Render(sf::RenderWindow& l_window) = 0;
+private:
+	friend class Player;
+	virtual sf::Sprite getSprite() = 0;
 };
 
 class Alien : public SpaceCreature {
@@ -30,6 +34,7 @@ public:
 	void setPosition(int x, int y);
 	void setSpeed(float speed);
 	void Render(sf::RenderWindow& l_window);
+	sf::Sprite getSprite();
 
 	void Move();
 	void Tell();
@@ -42,8 +47,8 @@ private:
 	int height;
 	float speed;
 
-	sf::SoundBuffer eatItemBuffer;
-	sf::Sound eatItem;
+	sf::SoundBuffer tellBuffer;
+	sf::Sound tell;
 };
 
 class Astronaut : public SpaceCreature {
@@ -53,6 +58,7 @@ public:
 	void setPosition(int x, int y);
 	void setSpeed(float speed);
 	void Render(sf::RenderWindow& l_window);
+	sf::Sprite getSprite();
 
 	void Move();
 	void Tell();
@@ -65,5 +71,8 @@ private:
 	int width;
 	int height;
 	float speed;
+
+	sf::SoundBuffer tellBuffer;
+	sf::Sound tell;
 };
 #endif // !_SPACECREATURE_H_

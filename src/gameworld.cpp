@@ -870,6 +870,14 @@ void GameWorld::runLevel(int idLevel) {
             loseGame = true;
             break;
         }
+
+        for (auto& creatures : spaceCreatures) {
+            if (person.isImpactCreature(creatures)) {
+                temporaryMessage("GAME OVER");
+                loseGame = true;
+                break;
+            }
+        }
         if (loseGame) break;
         
         // Rotate and draw the sprite
