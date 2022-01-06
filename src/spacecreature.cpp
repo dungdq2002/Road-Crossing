@@ -78,6 +78,7 @@ void Alien::Tell() {
 		isSetSound = true;
 	}
 	tell.play();
+	
 	cout << "telling";
 }
 
@@ -158,20 +159,26 @@ void Astronaut::Move() {
 
 void Astronaut::Tell() {
 	if (isSetSound == false) {
+		//./asset/sound/alienTell.wav
+		// ./asset/sound/astronautTell.wav
+		// need bigger sound at the start ( 0.0s)
 		if (!tellBuffer.loadFromFile("./asset/sound/astronautTell.wav")) {
 			std::cout << "Wrong File Location. File Location does's exist";
 			throw("Error: File Location don't exist");
 		}
 		tell.setBuffer(tellBuffer);
-		tell.setVolume(50.f);
+		tell.setVolume(100.f);
+		tell.setLoop(true);
 		isSetSound = true;
+		tell.play();
 	}
-	tell.play();
+	
 	cout << "tellingAstro";
 }
 
 void Astronaut::Mute() {
 	tell.stop();
+	isSetSound = false;
 }
 
 void Astronaut::stop() {
