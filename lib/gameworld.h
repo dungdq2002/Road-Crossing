@@ -17,6 +17,7 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
+#include <sstream>
 #include <filesystem>
 
 using namespace std;
@@ -53,6 +54,8 @@ private:
     void setting(int idBG);
     int menuAllInOne(Menu& menu, int idBG = -1);
 
+    void explode();
+
     // first = id, second = level
     pair <int, int> chooseLog();
 
@@ -60,7 +63,7 @@ private:
     void temporaryMessage(string message, float delaySecond = 3.0, bool cleanScreen = false, float coorX = SCREEN_WIDTH / 2, float coorY = SCREEN_HEIGHT / 2, int sz = 35, string srcFont = "asset\\font\\ARCADECLASSIC.TTF");
 
     void saveGame();
-    void loadGame();
+    int loadGame();
     //int pauseScreen();
 
     sf::RenderWindow window;

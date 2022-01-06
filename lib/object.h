@@ -117,6 +117,7 @@ class Obstacle :public Object {
 public:
 
 	Obstacle(string img, string sound, int width, int height);
+	void reset();
 	void place(int coorX, int coorY);
 	void collapse() {
 

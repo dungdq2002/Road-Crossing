@@ -5,6 +5,7 @@
 enum SpecialItem { HEART, FROZEN, INVISIBLE, GOAL };
 class Item:public Object{
 private:
+	int baseX, baseY;
 	SpecialItem speItem;
 	bool isActivated;
 public:
@@ -12,6 +13,9 @@ public:
 		mX = x;
 		mY = y;
 		objSprite.setPosition(mX, mY);
+	}
+	void reset() {
+		place(baseX, baseY);
 	}
 	void falling(float step) {
 		mY += step;
@@ -25,7 +29,7 @@ public:
 	bool isGoal() {
 		return speItem == GOAL;
 	}
-	Item(string srcImg, int width, int height, SpecialItem s);
+	Item(string srcImg, int width, int height, SpecialItem s, int baseX = -1, int baseY = -1);
 	float getX() {
 		return mX;
 	}

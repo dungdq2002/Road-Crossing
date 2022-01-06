@@ -1,6 +1,6 @@
 #include "../lib/item.h"
 
-Item::Item(string srcImg, int width, int height, SpecialItem s) {
+Item::Item(string srcImg, int width, int height, SpecialItem s, int baseX, int baseY) {
 	this->srcImg = srcImg;
 	if (!Collision::CreateTextureAndBitmask(objTexture, this->srcImg)) {
 		std::cerr << "error while loading texture " << std::endl;;
@@ -21,4 +21,7 @@ Item::Item(string srcImg, int width, int height, SpecialItem s) {
 	this->width = width;
 	this->height = height;
 	objSprite.setPosition(mX, mY);
+
+	this->baseX = baseX;
+	this->baseY = baseY;
 }

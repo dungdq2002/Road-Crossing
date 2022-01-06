@@ -56,7 +56,7 @@ public:
 	}
 	// eat item sound
 	void sound1() {
-		moveSound.setVolume(5.0);
+		moveSound.setVolume(15.0);
 		moveSound.play();
 	}
 

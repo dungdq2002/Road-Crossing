@@ -18,7 +18,7 @@ namespace LevelInfo {
             SLevelInfo level1;
             level1.id = 1;
 
-            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 2.5f, 200, 120, true);
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 3.5f, 200, 120, true);
             level1.objs.push_back(ship1);
 		    Object* light1 = new light("./asset/image/light.png", 10, 10,20,50);
            
@@ -28,7 +28,7 @@ namespace LevelInfo {
             //level1.objs.push_back(ship2);
             /*Object* light2 = new light("light.png", 10, 10, 20, 200);
             level1.objs.push_back(light2);*/
-            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 2.5f, 300, 420, false);
+            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 3.5f, 300, 420, false);
             level1.objs.push_back(ship3);
             Object* light3 = new light("./asset/image/light.png", 10, 10, 20, 350);
             level1.objs.push_back(light3);
@@ -36,8 +36,7 @@ namespace LevelInfo {
             //level1.objs.push_back(ship4);
             /*Object* light4 = new light("light.png", 10, 10, 20, 500);
             level1.objs.push_back(light4);*/
-            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
-            goal1->place(rand() % 300 + 50, 20);
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL, rand() % 300 + 50, 20);
             level1.items.push_back(goal1);
 
             cout << "Size creature: " << level1.spaceCreatures.size() << endl;
@@ -67,14 +66,13 @@ namespace LevelInfo {
             level2.spaceCreatures.push_back(alien1);
             level2.spaceCreatures.push_back(astronaut1);
             */
-            Item* goal = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
-            goal->place(rand() % 300 + 50, 20);
+            Item* goal = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL, rand() % 300 + 50, 20);
             level2.items.push_back(goal);
 
             for (int i = 0;i < numObjects;i++) {
                 string src = "./asset/image/spaceship/spaceship" + to_string(i + 1) + ".png";
                 int toRight = (int)(rand() * (1.0 + 1.0) / (1.0 + RAND_MAX));
-                float randomSpeed = 0.2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - 0.2)));
+                float randomSpeed = 9.2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - 0.2)));
                 Object* ship = new Spawner(src, "", 80, 60, randomSpeed, rand() % SCREEN_WIDTH, SCREEN_HEIGHT - (SCREEN_HEIGHT / (numObjects + numObstacles)) * (i + 1), toRight);
                 level2.objs.push_back(ship);
             }
@@ -82,16 +80,14 @@ namespace LevelInfo {
             for (int i = numObjects; i < numObjects + numObstacles;i++) {
                 string src = "./asset/image/planet/planet" + to_string(i - numObjects + 1) + ".png";
                 int toRight = (int)(rand() * (1.0 + 1.0) / (1.0 + RAND_MAX));
-                Obstacle* planet = new Obstacle(src, "", 50, 50);
-                planet->place(rand() % (SCREEN_WIDTH - 50), SCREEN_HEIGHT - (SCREEN_HEIGHT / (numObjects + numObstacles)) * (numObjects + 1));
+                Obstacle* planet = new Obstacle(src, "", 130, 130);
+                planet->place(80 + (i-numObjects) * 200, SCREEN_HEIGHT - (SCREEN_HEIGHT / (numObjects + numObstacles)) * (numObjects + 1));
                 level2.objs.push_back(planet);
             }
 
-            Item* item2_f = new Item("./asset/image/frozen/frozen.png", 40, 40, FROZEN);
-            item2_f->place(300, 250);
+            Item* item2_f = new Item("./asset/image/frozen/frozen.png", 40, 40, FROZEN, 300, 250);
             level2.items.push_back(item2_f);
-            Item* item2_i = new Item("./asset/image/invisible/invisible.png", 40, 40, INVISIBLE);
-            item2_i->place(200, 350);
+            Item* item2_i = new Item("./asset/image/invisible/invisible.png", 40, 40, INVISIBLE, 200, 350);
             level2.items.push_back(item2_i);
 
             levels.push_back(level2);
@@ -102,10 +98,10 @@ namespace LevelInfo {
             SLevelInfo level3;
             level3.id = 3;
 
-            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
+            Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 4.5f, 200, 350, false);
             level3.objs.push_back(ship1);
 
-            Object* ship2 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 1.5f, 200, 500, true);
+            Object* ship2 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 4.0f, 200, 500, true);
             level3.objs.push_back(ship2);
 
             Object* planet1 = new Obstacle("./asset/image/planet/planet2.png", "", 50, 50);
@@ -116,8 +112,7 @@ namespace LevelInfo {
             planet2->place(100, 200);
             level3.objs.push_back(planet2);
             
-            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
-            goal1->place(rand() % 300 + 50, 20);
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL, rand() % 300 + 50, 20);
             level3.items.push_back(goal1);
             
             SpaceCreature* alien1 = new Alien("./asset/image/creature/alien1.png", 50, 50, 2, 150, 150);
@@ -135,13 +130,13 @@ namespace LevelInfo {
 
             Object* ship1 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level4.objs.push_back(ship1);
-            Object* ship5 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 5.f, 400, 80, false);
+            Object* ship5 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 5.f, 150, 80, true);
             level4.objs.push_back(ship5);
             Object* ship2 = new Spawner("./asset/image/spaceship/spaceship1.png", "", 100, 80, 1.5f, 200, 500, true);
             level4.objs.push_back(ship2);
-            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship2.png", "", 90, 70, 3.f, 150, 80, true);
+            Object* ship3 = new Spawner("./asset/image/spaceship/spaceship2.png", "", 90, 70, 5.f, 50, 80, true);
             level4.objs.push_back(ship3);
-            Object* ship4 = new Spawner("./asset/image/spaceship/spaceship2.png", "", 90, 70, 3.f, 250, 80, true);
+            Object* ship4 = new Spawner("./asset/image/spaceship/spaceship2.png", "", 90, 70, 5.f, 250, 80, true);
             level4.objs.push_back(ship4);
             Object* planet1 = new Obstacle("./asset/image/planet/planet2.png", "", 50, 50);
             planet1->place(280, 200);
@@ -153,8 +148,7 @@ namespace LevelInfo {
             Object* planet3 = new Obstacle("./asset/image/planet/planet1.png", "", 80, 80);
             planet3->place(170, 140);
             level4.objs.push_back(planet3);
-            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
-            goal1->place(rand() % 300 + 50, 20);
+            Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL, rand() % 300 + 50, 20);
             level4.items.push_back(goal1);
 
             levels.push_back(level4);
@@ -227,6 +221,12 @@ void GameWorld::temporaryMessage(string message, float delaySecond, bool cleanSc
 int GameWorld::menuAllInOne(Menu& menu, int idBG) {
     window.clear(sf::Color(127, 127, 127));
 
+    sf::SoundBuffer buffer;
+    buffer.loadFromFile("./asset/sound/button.wav");
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+    sound.setVolume(50);
+
     while (true) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -240,13 +240,18 @@ int GameWorld::menuAllInOne(Menu& menu, int idBG) {
              //If a key is released
             if (event.type == sf::Event::KeyReleased)
             {
+                sound.play();
+                cout << "sound play\n";
                 switch (event.key.code)
                 {
                      //Process the up, down, left and right keys
                 case sf::Keyboard::Escape: return -1;
                 case sf::Keyboard::Up: menu.moveUp(); break;
                 case sf::Keyboard::Down: menu.moveDown(); break;
-                case sf::Keyboard::Return: return menu.select();
+                case sf::Keyboard::Return: {
+                    sf::sleep(sf::seconds(0.1));
+                    return menu.select();
+                }
                 default: break;
                 }
             }
@@ -284,6 +289,12 @@ void GameWorld::setting(int idBG) {
     volume.setCharacterSize(25);
     volume.setPosition(200, 200);
 
+    sf::SoundBuffer buffer;
+    buffer.loadFromFile("./asset/sound/button.wav");
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+    sound.setVolume(50);
+
     while (true) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -297,6 +308,7 @@ void GameWorld::setting(int idBG) {
             //If a key is released
             if (event.type == sf::Event::KeyReleased)
             {
+                sound.play();
                 switch (event.key.code)
                 {
                     //Process the up, down, left and right keys
@@ -305,9 +317,10 @@ void GameWorld::setting(int idBG) {
                 case sf::Keyboard::Right: (++globalVolume) %= 5; break;
                 default: break;
                 }
+                sf::Listener::setGlobalVolume(globalVolume * 25);
+                sound.play();
             }
         }
-        sf::Listener::setGlobalVolume(globalVolume * 25);
         volume.setString(to_string(globalVolume * 25));
         if (idBG != -1) {
             auto color = backgroundTexts[idBG].getColor();
@@ -437,13 +450,13 @@ pair <int, int> GameWorld::chooseLog() {
     return { t, lev };
 }
 
-void GameWorld::loadGame() {
+int GameWorld::loadGame() {
     auto LOG = chooseLog();
-    if (LOG.first == -1) return;
+    if (LOG.first == -1) return -1;
     if (LOG.second != -1)
-        runLevel(LOG.second);
+        return LOG.second;
     else
-        runLevel(0);
+        return 0;
 }
 
 void GameWorld::welcome() {
@@ -482,7 +495,8 @@ void GameWorld::welcome() {
         case 1: {
             musicBG.stop();
             cout << " load game \n";
-            loadGame();
+            int t = loadGame();
+            if (t != -1) runLevel(t);
             musicBG.play();
             break;
         }
@@ -523,11 +537,32 @@ void GameWorld::saveGame() {
     cout << "save game\n";
 }
 
+void GameWorld::explode() {
+    auto x = person.getX();
+    auto y = person.getY();
+
+    sf::Texture sheet;
+    sheet.loadFromFile("./asset/image/explosion.png");
+
+    sf::Sprite epl;
+    epl.setTexture(sheet);
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++) {
+            //auto fake_windows = window;
+            epl.setTextureRect(sf::Rect(i * 64, j * 64, 64, 64));
+            epl.setOrigin(32, 32);
+            epl.setPosition(x, y);
+            window.draw(epl);
+            window.display();
+        }
+}
+
 void GameWorld::runLevel(int idLevel) {
     sf::Music musicBG;
     musicBG.openFromFile("./asset/sound/BoxCat-Games-Epic-Song.wav");
     musicBG.setLoop(true);
-    musicBG.setVolume(5);
+    musicBG.setVolume(15);
 
     curLevel = idLevel;
     // instruction
@@ -580,6 +615,7 @@ void GameWorld::runLevel(int idLevel) {
     objects = LevelInfo::levels[idLevel].objs;
 	items = LevelInfo::levels[idLevel].items;
     spaceCreatures = LevelInfo::levels[idLevel].spaceCreatures;
+    for (auto* item : items) item->reset();
 
     person.Reset();
 
@@ -594,6 +630,13 @@ void GameWorld::runLevel(int idLevel) {
     bool loseGame = false;
 
     int jumpLevel = -1;
+
+    sf::Font FONT;
+    FONT.loadFromFile("./asset/font/CONSOLAB.TTF");
+    sf::Text CLOCK;
+    CLOCK.setFont(FONT);
+    CLOCK.setPosition(175, 670);
+    CLOCK.setCharacterSize(20);
 
     // Process events
     bool running = true;
@@ -631,7 +674,8 @@ void GameWorld::runLevel(int idLevel) {
                         break;
                     }
                     case 2: {
-                        loadGame();
+                        int t = loadGame();
+                        jumpLevel = t;
                         break;
                     }
                     case 3:
@@ -722,6 +766,9 @@ void GameWorld::runLevel(int idLevel) {
         }
         if (!running) break;
         if (jumpLevel != -1) break;
+        // Clear the window and apply grey background
+        window.clear(sf::Color(127, 127, 127));
+
         // loi den xanh den do khi chet
         if (idLevel == 0) {
             if (!countDown3 && !countDown4) {
@@ -801,26 +848,38 @@ void GameWorld::runLevel(int idLevel) {
             }
 
         }
-        // time for item
-        if (countDown1) {
-            time1 = clock1.getElapsedTime();
-            if (time1.asSeconds() > ACTIVATE_FROZEN_TIME) {
-                countDown1 = false;
-                for (auto& obj : objects) {
-                    obj->continueRun();
-                }
-                for (auto& creatures : spaceCreatures) {
-                    creatures->Move();
-                }
-            }
-        }
-        if (countDown2) {
-            time2 = clock2.getElapsedTime();
-            if (time2.asSeconds() > ACTIVATE_INVISIBLE_TIME) {
-                countDown2 = false;
-                person.unTransparent();
-            }
-        }
+        //// time for item
+        //if (countDown1) {
+        //    time1 = clock1.getElapsedTime();
+        //    auto rem = (0.01, ACTIVATE_FROZEN_TIME - time1.asSeconds());
+        //    stringstream stream;
+        //    stream << fixed << setprecision(2) << rem;
+        //    string s = stream.str();
+        //    CLOCK.setString(s);
+        //    window.draw(CLOCK);
+        //    if (time1.asSeconds() > ACTIVATE_FROZEN_TIME) {
+        //        countDown1 = false;
+        //        for (auto& obj : objects) {
+        //            obj->continueRun();
+        //        }
+        //        for (auto& creatures : spaceCreatures) {
+        //            creatures->Move();
+        //        }
+        //    }
+        //}
+        //if (countDown2) {
+        //    time2 = clock2.getElapsedTime();
+        //    auto rem = (0.01, ACTIVATE_INVISIBLE_TIME - time2.asSeconds());
+        //    stringstream stream;
+        //    stream << fixed << setprecision(2) << rem;
+        //    CLOCK.setString(stream.str());
+        //    window.draw(CLOCK);
+
+        //    if (time2.asSeconds() > ACTIVATE_INVISIBLE_TIME) {
+        //        countDown2 = false;
+        //        person.unTransparent();
+        //    }
+        //}
 
 
         //
@@ -850,9 +909,6 @@ void GameWorld::runLevel(int idLevel) {
         // The problem of the previous is when up is pressing, and we press left, the if of Up is lower so the left will first set
         // as Direction Left but then go to up when be set as Up, results all UP
         // If we move Left lower than Up, the result will be all LEFT
-         
-        // Clear the window and apply grey background
-        window.clear(sf::Color(127, 127, 127));
 
 /*
     If reach GOAL, check idLevel vs NUM_LEVEL (in constant.h)
@@ -863,13 +919,54 @@ void GameWorld::runLevel(int idLevel) {
 
         // Draw Background, Player and Objects
         window.draw(backgroundTexts[idBG]);
+
+        // time for item
+        if (countDown1) {
+            time1 = clock1.getElapsedTime();
+            auto rem = (0.01, ACTIVATE_FROZEN_TIME - time1.asSeconds());
+            stringstream stream;
+            stream << fixed << setprecision(2) << rem;
+            string s = stream.str();
+            auto size = CLOCK.getGlobalBounds();
+            CLOCK.setOrigin(size.width / 2, size.height / 2);
+            CLOCK.setPosition(175, 670);
+            CLOCK.setString(s);
+            window.draw(CLOCK);
+            if (time1.asSeconds() > ACTIVATE_FROZEN_TIME) {
+                countDown1 = false;
+                for (auto& obj : objects) {
+                    obj->continueRun();
+                }
+                for (auto& creatures : spaceCreatures) {
+                    creatures->Move();
+                }
+            }
+        }
+        if (countDown2) {
+            time2 = clock2.getElapsedTime();
+            auto rem = (0.01, ACTIVATE_INVISIBLE_TIME - time2.asSeconds());
+            stringstream stream;
+            stream << fixed << setprecision(2) << rem;
+            auto size = CLOCK.getGlobalBounds();
+            CLOCK.setOrigin(size.width / 2, size.height / 2);
+            CLOCK.setPosition(175, 670);
+            CLOCK.setString(stream.str());
+            window.draw(CLOCK);
+
+            if (time2.asSeconds() > ACTIVATE_INVISIBLE_TIME) {
+                countDown2 = false;
+                person.unTransparent();
+            }
+        }
+
+
         window.draw(levelLogo);
         for (auto& obj : objects) obj->render(window);
         person.Render(window);
         
         for (auto& item : items) {
             if (item->isFrozen() || item->isInvisible())
-                item->falling(0.5);
+                item->falling(2.0);
             item->render(window);
         }
 
@@ -940,8 +1037,8 @@ void GameWorld::runLevel(int idLevel) {
 
         // Collide with the objects
         for (auto& obj : objects) if (!countDown2 && person.isImpact(obj)) {
-            
-
+            musicBG.stop();
+            explode();
             sf::SoundBuffer bufferTem;
             sf::Sound soundTem;
             bufferTem.loadFromFile("./asset/sound/collision.wav");
@@ -964,6 +1061,8 @@ void GameWorld::runLevel(int idLevel) {
         //Collide with the space creatures
         for (auto& creatures : spaceCreatures) {
             if (!countDown2 && person.isImpactCreature(creatures)) {
+                musicBG.stop();
+                explode();
                 temporaryMessage("GAME OVER");
                 loseGame = true;
                 break;
