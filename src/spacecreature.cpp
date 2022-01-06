@@ -74,7 +74,7 @@ void Alien::Tell() {
 			throw("Error: File Location don't exist");
 		}
 		tell.setBuffer(tellBuffer);
-		tell.setVolume(50.f);
+		tell.setVolume(80.f);
 		isSetSound = true;
 	}
 	tell.play();

@@ -12,6 +12,7 @@
 
 #include <map>
 #include <ctime>
+#include <cstdlib>
 #include <vector>
 #include <string>
 #include <fstream>

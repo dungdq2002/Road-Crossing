@@ -49,8 +49,9 @@ namespace LevelInfo {
             // level 2
             SLevelInfo level2;
             level2.id = 2;
-
-            Object* ship2_0= new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
+            int numObjects = 4;
+            int numObstacles = 2;
+            /*Object* ship2_0 = new Spawner("./asset/image/spaceship/spaceship3.png", "", 100, 80, 0.5f, 200, 350, false);
             level2.objs.push_back(ship2_0);
             Item* goal1 = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
             goal1->place(rand() % 300 + 50, 20);
@@ -65,6 +66,34 @@ namespace LevelInfo {
             SpaceCreature* astronaut1 = new Astronaut("./asset/image/creature/astronaut1.png", 50, 50, 0.4f, 120, 420);
             level2.spaceCreatures.push_back(alien1);
             level2.spaceCreatures.push_back(astronaut1);
+            */
+            Item* goal = new Item("./asset/image/goal/goal.gif", 40, 40, GOAL);
+            goal->place(rand() % 300 + 50, 20);
+            level2.items.push_back(goal);
+
+            for (int i = 0;i < numObjects;i++) {
+                string src = "./asset/image/spaceship/spaceship" + to_string(i + 1) + ".png";
+                int toRight = (int)(rand() * (1.0 + 1.0) / (1.0 + RAND_MAX));
+                float randomSpeed = 0.2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - 0.2)));
+                Object* ship = new Spawner(src, "", 80, 60, randomSpeed, rand() % SCREEN_WIDTH, SCREEN_HEIGHT - (SCREEN_HEIGHT / (numObjects + numObstacles)) * (i + 1), toRight);
+                level2.objs.push_back(ship);
+            }
+
+            for (int i = numObjects; i < numObjects + numObstacles;i++) {
+                string src = "./asset/image/planet/planet" + to_string(i - numObjects + 1) + ".png";
+                int toRight = (int)(rand() * (1.0 + 1.0) / (1.0 + RAND_MAX));
+                Obstacle* planet = new Obstacle(src, "", 50, 50);
+                planet->place(rand() % (SCREEN_WIDTH - 50), SCREEN_HEIGHT - (SCREEN_HEIGHT / (numObjects + numObstacles)) * (numObjects + 1));
+                level2.objs.push_back(planet);
+            }
+
+            Item* item2_f = new Item("./asset/image/frozen/frozen.png", 40, 40, FROZEN);
+            item2_f->place(300, 250);
+            level2.items.push_back(item2_f);
+            Item* item2_i = new Item("./asset/image/invisible/invisible.png", 40, 40, INVISIBLE);
+            item2_i->place(200, 350);
+            level2.items.push_back(item2_i);
+
             levels.push_back(level2);
         }
 
@@ -91,6 +120,11 @@ namespace LevelInfo {
             goal1->place(rand() % 300 + 50, 20);
             level3.items.push_back(goal1);
             
+            SpaceCreature* alien1 = new Alien("./asset/image/creature/alien1.png", 50, 50, 2, 150, 150);
+            SpaceCreature* astronaut1 = new Astronaut("./asset/image/creature/astronaut1.png", 50, 50, 0.4f, 50, 20);
+            level3.spaceCreatures.push_back(alien1);
+            level3.spaceCreatures.push_back(astronaut1);
+
             levels.push_back(level3);
         }
 
