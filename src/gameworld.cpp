@@ -360,7 +360,8 @@ void GameWorld::loading() {
     }
 }
 
-pair <int, int> GameWorld::chooseLog(int idBG) {
+pair <int, int> GameWorld::chooseLog() {
+    int idBG = curBG;
     Menu data(5, "asset\\font\\CONSOLAB.TTF");
 
     auto zeroPadding = [&](string& s, int sz = 2) {
@@ -402,6 +403,15 @@ pair <int, int> GameWorld::chooseLog(int idBG) {
     return { t, lev };
 }
 
+void GameWorld::loadGame() {
+    auto LOG = chooseLog();
+    if (LOG.first == -1) return;
+    if (LOG.second != -1)
+        runLevel(LOG.second);
+    else
+        runLevel(0);
+}
+
 void GameWorld::welcome() {
     window.clear(sf::Color::Black);
 
@@ -411,6 +421,7 @@ void GameWorld::welcome() {
     musicBG.setLoop(true);
 
 	int idBG = rand() % NUM_BACKGROUND;
+    curBG = idBG;
 
     cout << "menu " << idBG << '\n';
 
@@ -435,14 +446,9 @@ void GameWorld::welcome() {
             musicBG.play();
             break;
         case 1: {
-            cout << " load game \n";
-            auto LOG = chooseLog(idBG);
-            if (LOG.first == -1) break;
             musicBG.stop();
-            if (LOG.second != -1)
-                runLevel(LOG.second);
-            else 
-                runLevel(0);  
+            cout << " load game \n";
+            loadGame();
             musicBG.play();
             break;
         }
@@ -464,7 +470,27 @@ void GameWorld::welcome() {
     musicBG.stop();
 }
 
+void GameWorld::saveGame() {
+    auto LOG = chooseLog();
+    if (LOG.first == -1) return;
+
+    ofstream out("./log/" + to_string(LOG.first) + ".bin", ios::binary | ios::out);
+
+    time_t timeObj = time(nullptr);
+    tm aTime;
+    localtime_s(&aTime, &timeObj);
+    aTime.tm_mon += 1;
+    aTime.tm_year += 1900;
+
+    out.write(reinterpret_cast<const char*>(&curLevel), sizeof(curLevel));
+    out.write(reinterpret_cast<const char*>(&aTime.tm_mday), sizeof(aTime.tm_mday));
+    out.write(reinterpret_cast<const char*>(&aTime.tm_mon), sizeof(aTime.tm_mon));
+    out.write(reinterpret_cast<const char*>(&aTime.tm_year), sizeof(aTime.tm_year));
+    cout << "save game\n";
+}
+
 void GameWorld::runLevel(int idLevel) {
+    curLevel = idLevel;
     // instruction
     if (idLevel == 0)
         temporaryMessage("Press Arrow keys\n\tto move", 1.5, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
@@ -507,6 +533,7 @@ void GameWorld::runLevel(int idLevel) {
     sf::Time time6;
 
     int idBG = rand() % NUM_BACKGROUND;
+    curBG = idBG;
     cout << idBG << '\n';
 
     objects = LevelInfo::levels[idLevel].objs;
@@ -559,32 +586,11 @@ void GameWorld::runLevel(int idLevel) {
                         std::cout << "continue\n";
                         break;
                     case 1: {
-                        // save game
-                        auto LOG = chooseLog(idBG);
-                        if (LOG.first == -1) break;
-
-                        ofstream out("./log/" + to_string(LOG.first) + ".bin", ios::binary | ios::out);
-
-                        time_t timeObj = time(nullptr);
-                        tm aTime;
-                        localtime_s(&aTime, &timeObj);
-                        aTime.tm_mon += 1;
-                        aTime.tm_year += 1900;
-                        //out << idLevel << ' ' << aTime.tm_mday << ' ' << 1 + aTime.tm_mon << ' ' << 1900 + aTime.tm_year << '\n';
-                        out.write(reinterpret_cast<const char*>(&idLevel), sizeof(idLevel));
-                        out.write(reinterpret_cast<const char*>(&aTime.tm_mday), sizeof(aTime.tm_mday));
-                        out.write(reinterpret_cast<const char*>(&aTime.tm_mon), sizeof(aTime.tm_mon));
-                        out.write(reinterpret_cast<const char*>(&aTime.tm_year), sizeof(aTime.tm_year));
-                        cout << "save game\n";
+                        saveGame();
                         break;
                     }
                     case 2: {
-                        auto LOG = chooseLog(idBG);
-                        if (LOG.first == -1) break;
-                        if (LOG.second != -1)
-                            jumpLevel = LOG.second;
-                        else
-                            jumpLevel = 0;
+                        loadGame();
                         break;
                     }
                     case 3:
