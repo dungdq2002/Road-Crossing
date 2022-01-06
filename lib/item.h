@@ -46,6 +46,9 @@ public:
 	void changeState() {
 
 	}
+	bool getState() {
+		return true;
+	}
 };
 
 #endif

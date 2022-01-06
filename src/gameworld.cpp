@@ -891,13 +891,22 @@ void GameWorld::runLevel(int idLevel) {
 
         // Collide with the objects
         for (auto& obj : objects) if (!countDown2 && person.isImpact(obj)) {
+            
+
             sf::SoundBuffer bufferTem;
             sf::Sound soundTem;
             bufferTem.loadFromFile("./asset/sound/collision.wav");
             soundTem.setBuffer(bufferTem);
             soundTem.play();
             cout << "Game over\n";
-            
+            if (idLevel == 0) {
+                if (!objects[3]->getState()) {
+                    objects[3]->changeState();
+                }
+                if (!objects[1]->getState()) {
+                    objects[1]->changeState();
+                }
+            }
             temporaryMessage("GAME OVER");
             loseGame = true;
             break;

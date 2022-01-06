@@ -60,6 +60,7 @@ public:
 	virtual void stop() { /* nothing */ }
 	virtual void place(int, int) { /* nothing */ }
 	virtual void render(sf::RenderWindow& l_window) = 0;
+	virtual bool getState() = 0;
 };
 
 //SPAWNER
@@ -96,7 +97,9 @@ public:
 	void changeState(){
 		//nothing
 	}
-	
+	bool getState() {
+		return state;
+	}
 private:
 	float speed;
 	bool toRight;
@@ -118,7 +121,9 @@ public:
 	void collapse() {
 
 	}
-
+	bool getState() {
+		return state;
+	}
 	void render(sf::RenderWindow& l_window) {		
 		//
 		l_window.draw(objSprite);
