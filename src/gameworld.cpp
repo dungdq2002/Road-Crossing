@@ -490,12 +490,19 @@ void GameWorld::saveGame() {
 }
 
 void GameWorld::runLevel(int idLevel) {
+    sf::Music musicBG;
+    musicBG.openFromFile("./asset/sound/BoxCat-Games-Epic-Song.wav");
+    musicBG.setLoop(true);
+    musicBG.setVolume(5);
+
     curLevel = idLevel;
     // instruction
     if (idLevel == 0)
         temporaryMessage("Press Arrow keys\n\tto move", 1.5, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
     else if (idLevel == 1)
         temporaryMessage("Press Z - Invisible\n\nPress X - Frozen", 2.0, true, SCREEN_WIDTH / 2, 200, 25, "asset\\font\\CONSOLAB.TTF");
+
+    musicBG.play();
 
     sf::Font font; font.loadFromFile("asset\\font\\CONSOLAB.TTF");
     sf::Text levelLogo;
@@ -555,8 +562,8 @@ void GameWorld::runLevel(int idLevel) {
     int jumpLevel = -1;
 
     // Process events
-   
-    while (true) {
+    bool running = true;
+    while (running) {
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -594,7 +601,8 @@ void GameWorld::runLevel(int idLevel) {
                         break;
                     }
                     case 3:
-                        return;
+                        running = false;
+                        break;
                     }
                     break;
                 }
@@ -678,6 +686,7 @@ void GameWorld::runLevel(int idLevel) {
         //    }
         //}
         }
+        if (!running) break;
         if (jumpLevel != -1) break;
         // loi den xanh den do khi chet
         if (idLevel == 0) {
@@ -932,6 +941,8 @@ void GameWorld::runLevel(int idLevel) {
         window.display();
     }
 
+    musicBG.stop();
+
     if (jumpLevel != -1) {
         runLevel(jumpLevel);
         return;
@@ -945,7 +956,7 @@ void GameWorld::runLevel(int idLevel) {
             sf::Sound sound;
             sound.setBuffer(buffer);
             sound.play();
-            temporaryMessage("GAME CLEAR", 3.5);
+            temporaryMessage("GAME CLEAR", 3.2);
         }
         else {
             sf::SoundBuffer buffer;
