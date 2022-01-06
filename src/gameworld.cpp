@@ -940,9 +940,19 @@ void GameWorld::runLevel(int idLevel) {
     if (winGame) {
         if (idLevel == NUM_LEVEL - 1) {
             cout << "game clear";
-            temporaryMessage("GAME CLEAR");
+            sf::SoundBuffer buffer;
+            buffer.loadFromFile("./asset/sound/gameclear.wav");
+            sf::Sound sound;
+            sound.setBuffer(buffer);
+            sound.play();
+            temporaryMessage("GAME CLEAR", 3.5);
         }
         else {
+            sf::SoundBuffer buffer;
+            buffer.loadFromFile("./asset/sound/passlevel.wav");
+            sf::Sound sound;
+            sound.setBuffer(buffer);
+            sound.play();
             temporaryMessage("Pass", 1.0);
             runLevel(idLevel + 1);
         }
