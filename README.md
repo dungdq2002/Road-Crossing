@@ -7,8 +7,3 @@
 - INVISIBLE: Turn into gasly state and cannot be hit.
 - FROZEN: Stop all the ships for some time.
 - Only 1 FROZEN and 1 INVISIBLE can be picked up each map.
-- Team members:
-	- Đào Quang Dũng
-	- Cao Thanh Duy 
-	- Trương Việt Hoàng
-	- Trần L
